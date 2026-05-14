@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 20: Programming Languages – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px); pointer-events:none; z-index:0; }
+  body::after { content:''; position:fixed; top:0; left:70px; bottom:0; width:2px; background:rgba(239,71,111,0.3); pointer-events:none; z-index:0; }
+  .page-wrap { max-width:960px; margin:0 auto; padding:20px 30px 60px 90px; position:relative; z-index:1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+  .hero { text-align:center; padding:40px 0 20px; }
+  .hero-title { font-family:'Permanent Marker',cursive; font-size:2.8rem; color:var(--ink); text-shadow:3px 3px 0 var(--teal); letter-spacing:2px; transform:rotate(-1.5deg); display:inline-block; position:relative; }
+  .hero-title::after { content:''; position:absolute; bottom:-8px; left:0; right:0; height:4px; background:var(--blue); border-radius:2px; }
+  .hero-sub { font-family:'Caveat',cursive; font-size:1.4rem; color:var(--blue); margin-top:18px; }
+  .tabs-nav { display:flex; gap:8px; flex-wrap:wrap; margin:28px 0 20px; justify-content:center; }
+  .tab-btn { font-family:'Caveat',cursive; font-size:1.1rem; font-weight:700; padding:8px 18px; border:3px solid var(--ink); border-radius:6px; background:white; cursor:pointer; transition:all 0.2s; box-shadow:3px 3px 0 var(--ink); }
+  .tab-btn:hover { transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+  .tab-btn.active { background:var(--ink); color:white; transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background:var(--blue); }
+  .tab-btn[data-tab="notes"].active { background:var(--green); }
+  .tab-btn[data-tab="quiz"].active { background:#059669; }
+  .tab-btn[data-tab="activities"].active { background:var(--orange); }
+  .tab-btn[data-tab="exam"].active { background:var(--purple); }
+  .eq-wrap { margin-bottom:26px; border:2.5px solid var(--ink); border-radius:10px; background:white; box-shadow:4px 4px 0 var(--ink); overflow:hidden; }
+  .eq-hdr { padding:11px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);} .eq-hdr.c2{background:var(--light-blue);} .eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;} .eq-hdr.c5{background:var(--light-yellow);} .eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);} .eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family:'Permanent Marker',cursive; font-size:1.05rem; }
+  .eq-marks { font-family:'Caveat',cursive; font-size:1.1rem; font-weight:700; background:var(--ink); color:white; padding:2px 10px; border-radius:20px; }
+  .eq-bdy { padding:14px 16px; }
+  .eq-txt { font-size:1.02rem; line-height:1.6; margin-bottom:12px; }
+  .eq-ctx { background:#f5f5f5; border-left:4px solid var(--blue); padding:10px 14px; margin-bottom:12px; font-size:0.93rem; line-height:1.5; border-radius:0 6px 6px 0; font-style:italic; font-family:'Kalam',cursive; }
+  .ans-ta { width:100%; border:1.5px solid #b0bec5; border-radius:6px; background:transparent; font-family:'Patrick Hand',cursive; font-size:0.95rem; padding:8px; outline:none; resize:vertical; min-height:80px; }
+  .show-ms { font-family:'Caveat',cursive; font-size:1rem; padding:6px 16px; border:2px solid var(--purple); border-radius:20px; background:white; color:var(--purple); cursor:pointer; margin-top:10px; transition:all 0.15s; }
+  .show-ms:hover { background:var(--purple); color:white; }
+  .ms { display:none; margin-top:10px; background:var(--light-purple); border:2px solid var(--purple); border-radius:8px; padding:12px 16px; font-size:0.93rem; line-height:1.6; }
+  .ms.show { display:block; animation:fadeIn 0.3s ease; }
+  .ms ul { padding-left:20px; margin-top:6px; } .ms li { margin:4px 0; }
+  .ms-lbl { font-family:'Permanent Marker',cursive; font-size:1rem; color:var(--purple); margin-bottom:6px; }
+  .tab-panel { display:none; animation:fadeIn 0.3s ease; }
+  .tab-panel.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+  .tip-box { background:var(--light-yellow); border:2px solid var(--yellow); border-left:5px solid var(--orange); border-radius:6px; padding:12px 16px; margin:12px 0; font-family:'Kalam',cursive; font-size:0.95rem; }
+  .btn { font-family:'Caveat',cursive; font-size:1.1rem; font-weight:700; padding:9px 22px; border:2.5px solid var(--ink); border-radius:8px; cursor:pointer; box-shadow:3px 3px 0 var(--ink); transition:all 0.15s; }
+  .btn:hover { transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+  .btn:active { transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .btn-primary { background:var(--ink); color:white; }
+  .btn-teal { background:var(--teal); color:var(--ink); border-color:#059669; box-shadow:3px 3px 0 #059669; }
+  .tag { display:inline-block; padding:2px 9px; border-radius:4px; font-family:'Caveat',cursive; font-size:0.85rem; font-weight:700; border:1.5px solid; margin-right:4px; }
+  .tag-hard { color:var(--coral); border-color:var(--coral); background:var(--light-coral); }
+  .tag-med { color:var(--orange); border-color:var(--orange); background:#fff3e0; }
+  .tag-easy { color:#059669; border-color:var(--teal); background:var(--light-teal); }
+  .imp-banner { margin-bottom:20px; border:3px solid var(--ink); border-radius:12px; overflow:hidden; box-shadow:4px 4px 0 var(--ink); }
+  .imp-header { background:var(--blue); color:white; padding:10px 18px; font-family:'Permanent Marker',cursive; font-size:1.2rem; display:flex; align-items:center; gap:10px; cursor:pointer; }
+  .imp-body { display:none; background:white; }
+  .imp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+  .imp-cell { padding:14px 16px; border-right:2px solid #eee; border-bottom:2px solid #eee; }
+  .imp-cell-title { font-family:'Permanent Marker',cursive; font-size:0.95rem; margin-bottom:6px; }
+  .imp-cell p { font-family:'Kalam',cursive; font-size:0.88rem; line-height:1.5; }
+  .imp-footer { background:#fff9c4; border-top:2px solid var(--ink); padding:10px 16px; font-family:'Kalam',cursive; font-size:0.88rem; display:flex; align-items:center; gap:8px; }
+  .ig-wrap { background:#fffdf5; border:3px solid var(--ink); border-radius:12px; padding:28px; box-shadow:6px 6px 0 var(--ink); }
+  .ig-title { font-family:'Permanent Marker',cursive; font-size:2rem; text-align:center; margin-bottom:20px; }
+  .ig-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media(max-width:600px){ .ig-grid{grid-template-columns:1fr;} }
+  .ig-sec { border:2.5px solid var(--ink); border-radius:10px; padding:16px; background:white; position:relative; }
+  .ig-label { font-family:'Permanent Marker',cursive; font-size:1.05rem; position:absolute; top:-13px; left:14px; background:white; padding:0 8px; }
+  .ig-item { display:flex; align-items:flex-start; gap:9px; margin:7px 0; font-family:'Kalam',cursive; font-size:0.92rem; line-height:1.4; }
+  .ig-dot { width:20px; height:20px; border-radius:50%; border:2px solid; display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-family:'Permanent Marker',cursive; flex-shrink:0; margin-top:1px; }
+  .highlight-box { background:var(--light-teal); border:2.5px solid var(--ink); border-radius:8px; padding:12px 16px; margin:16px 0; font-family:'Kalam',cursive; font-size:1rem; text-align:center; transform:rotate(-0.3deg); }
+  .notes-sec { margin-bottom:14px; border:2.5px solid var(--ink); border-radius:10px; overflow:hidden; box-shadow:4px 4px 0 var(--ink); }
+  .notes-hdr { padding:12px 18px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none; }
+  .notes-hdr:hover { opacity:0.9; }
+  .notes-hdr-left { display:flex; align-items:center; gap:12px; }
+  .notes-num { font-family:'Permanent Marker',cursive; font-size:0.9rem; background:rgba(255,255,255,0.2); color:white; padding:2px 10px; border-radius:20px; white-space:nowrap; }
+  .notes-title { font-family:'Permanent Marker',cursive; font-size:1.1rem; color:white; }
+  .notes-tog { font-family:'Caveat',cursive; font-size:1.2rem; color:white; transition:transform 0.3s; }
+  .notes-bdy { display:none; padding:18px 20px; background:white; font-family:'Patrick Hand',cursive; font-size:0.95rem; line-height:1.65; }
+  .notes-bdy.open { display:block; animation:fadeIn 0.25s ease; }
+  .def-box { border:2px solid; border-radius:8px; padding:12px 14px 10px; margin:12px 0; position:relative; padding-top:22px; font-size:0.92rem; line-height:1.55; }
+  .def-label { position:absolute; top:-11px; left:12px; color:white; font-family:'Caveat',cursive; font-size:0.8rem; font-weight:700; padding:2px 10px; border-radius:20px; }
+  .notes-tip { background:#fff9c4; border:2px solid var(--yellow); border-left:5px solid var(--orange); border-radius:6px; padding:10px 14px; margin:12px 0 4px; font-size:0.9rem; font-family:'Kalam',cursive; }
+  .notes-eg { background:#f5f5f5; border-left:4px solid var(--blue); padding:8px 12px; margin:8px 0; border-radius:0 6px 6px 0; font-size:0.88rem; font-style:italic; font-family:'Kalam',cursive; }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:12px 0; }
+  @media(max-width:580px){ .g2{grid-template-columns:1fr;} .g3{grid-template-columns:1fr;} }
+  .nl { display:flex; align-items:flex-start; gap:9px; margin:6px 0; font-size:0.92rem; line-height:1.5; }
+  .nd { width:24px; height:24px; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-family:'Permanent Marker',cursive; flex-shrink:0; margin-top:1px; }
+  .subh { font-family:'Permanent Marker',cursive; font-size:1.05rem; margin:16px 0 8px; display:flex; align-items:center; gap:8px; }
+  .subh::after { content:''; flex:1; height:2px; background:currentColor; opacity:0.2; }
+  .n-card { border:2.5px solid; border-radius:10px; overflow:hidden; margin:10px 0; }
+  .n-card-hdr { padding:8px 14px; font-family:'Permanent Marker',cursive; font-size:1rem; color:white; }
+  .n-card-bdy { padding:12px 14px; background:white; font-size:0.92rem; line-height:1.55; }
+  .hl-b { color:var(--blue); font-weight:700; } .hl-t { color:#059669; font-weight:700; }
+  .hl-c { color:var(--coral); font-weight:700; } .hl-p { color:var(--purple); font-weight:700; }
+  .hl-o { color:var(--orange); font-weight:700; } .hl-g { color:var(--green); font-weight:700; }
+  /* code blocks */
+  .code-block { background:#1a1a2e; color:#06d6a0; font-family:'Courier New',monospace; font-size:0.9rem; padding:14px 18px; border-radius:8px; margin:10px 0; line-height:1.8; border:2px solid #06d6a0; overflow-x:auto; }
+  .code-block .kw { color:#ffd166; } .code-block .cm { color:#888; font-style:italic; }
+  .code-block .mc { color:#ef476f; }
+  .cmp-tbl { width:100%; border-collapse:collapse; margin:14px 0; font-size:0.9rem; }
+  .cmp-tbl th { background:var(--ink); color:white; font-family:'Permanent Marker',cursive; padding:10px 13px; text-align:left; }
+  .cmp-tbl td { padding:9px 13px; border-bottom:1px solid #e5e5e5; vertical-align:top; }
+  .cmp-tbl tr:nth-child(even) td { background:#f9f9f9; }
+  /* QUIZ */
+  .q-prog-wrap { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .q-prog-bar { flex:1; height:14px; background:#e0e0e0; border:2px solid var(--ink); border-radius:20px; overflow:hidden; }
+  .q-prog-fill { height:100%; background:var(--teal); border-radius:20px; transition:width 0.4s; }
+  .q-score { font-family:'Permanent Marker',cursive; font-size:1.1rem; background:var(--yellow); border:2px solid var(--ink); padding:4px 12px; border-radius:20px; }
+  .q-card { border:3px solid var(--ink); border-radius:12px; padding:22px; background:white; box-shadow:5px 5px 0 var(--ink); }
+  .q-num { font-family:'Permanent Marker',cursive; font-size:0.9rem; color:var(--teal); margin-bottom:8px; }
+  .q-text { font-family:'Caveat',cursive; font-size:1.35rem; font-weight:600; margin-bottom:16px; line-height:1.4; }
+  .q-opts { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  @media(max-width:480px){ .q-opts{grid-template-columns:1fr;} }
+  .q-opt { padding:11px 14px; border:2.5px solid var(--ink); border-radius:8px; background:white; font-family:'Patrick Hand',cursive; font-size:0.98rem; cursor:pointer; transition:all 0.15s; text-align:left; box-shadow:2px 2px 0 var(--ink); }
+  .q-opt:hover:not(:disabled) { transform:translate(-1px,-1px); background:var(--light-yellow); }
+  .q-opt.correct { background:var(--teal) !important; color:white; border-color:#059669; box-shadow:none; }
+  .q-opt.wrong { background:var(--coral) !important; color:white; border-color:#c0392b; box-shadow:none; animation:shake 0.3s; }
+  .q-opt:disabled { cursor:default; }
+  .q-fb { margin-top:12px; padding:10px 14px; border-radius:8px; font-family:'Caveat',cursive; font-size:1.1rem; font-weight:600; border:2px solid; display:none; }
+  .q-fb.show { display:block; }
+  .q-fb.fb-ok { background:#e0faf1; border-color:var(--teal); color:#059669; }
+  .q-fb.fb-no { background:var(--light-coral); border-color:var(--coral); color:var(--coral); }
+  .q-result { text-align:center; padding:30px; }
+  .q-result h2 { font-family:'Permanent Marker',cursive; font-size:2.5rem; margin-bottom:10px; }
+  .big-score { font-family:'Permanent Marker',cursive; font-size:4rem; color:var(--teal); }
+  /* ACTIVITIES */
+  .act-card { border:3px solid var(--ink); border-radius:12px; overflow:hidden; margin-bottom:22px; box-shadow:5px 5px 0 var(--ink); }
+  .act-hdr { padding:13px 18px; display:flex; align-items:center; gap:12px; border-bottom:3px solid var(--ink); }
+  .act-icon { font-size:1.8rem; }
+  .act-title { font-family:'Permanent Marker',cursive; font-size:1.25rem; }
+  .act-bdy { background:white; padding:18px; font-size:0.95rem; line-height:1.6; }
+  .chip-bank { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; padding:12px; background:#f9f9f9; border:2px dashed #ccc; border-radius:8px; min-height:48px; }
+  .chip { padding:6px 14px; background:white; border:2px solid var(--ink); border-radius:20px; font-family:'Patrick Hand',cursive; font-size:0.9rem; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:all 0.15s; user-select:none; }
+  .chip:hover { transform:translate(-1px,-1px); background:var(--light-yellow); }
+  .chip.chip-sel { background:var(--yellow); border-color:var(--orange); box-shadow:none; }
+  .chip.chip-used { opacity:0.35; pointer-events:none; }
+  .chip.chip-ok { background:var(--light-teal); border-color:#059669; }
+  .chip.chip-bad { background:var(--light-coral); border-color:var(--coral); animation:shake 0.3s; }
+  .drop-zone-wrap { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin:12px 0; }
+  .drop-col { border:2.5px solid var(--ink); border-radius:10px; overflow:hidden; }
+  .drop-col-hdr { padding:9px 14px; font-family:'Permanent Marker',cursive; font-size:1rem; color:white; text-align:center; }
+  .drop-zone { min-height:80px; padding:8px; background:white; display:flex; flex-direction:column; gap:6px; }
+  .match-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  @media(max-width:500px){ .match-grid{grid-template-columns:1fr;} }
+  .match-item { padding:10px 13px; border:2.5px solid var(--ink); border-radius:8px; font-family:'Patrick Hand',cursive; font-size:0.88rem; cursor:pointer; background:white; box-shadow:2px 2px 0 var(--ink); transition:all 0.15s; min-height:46px; display:flex; align-items:center; }
+  .match-item:hover { transform:translate(-1px,-1px); background:var(--light-yellow); }
+  .match-item.sel { background:var(--yellow); border-color:var(--orange); }
+  .match-item.ok { background:#e0faf1; border-color:var(--teal); pointer-events:none; }
+  .match-item.bad { background:var(--light-coral); border-color:var(--coral); animation:shake 0.3s; }
+  .word-bank { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+  .word { padding:5px 13px; background:white; border:2px solid var(--ink); border-radius:20px; font-family:'Caveat',cursive; font-size:1rem; font-weight:700; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:all 0.15s; }
+  .word:hover:not(.used) { background:var(--light-yellow); }
+  .word.sel { background:var(--yellow); border-color:var(--orange); }
+  .word.used { opacity:0.35; pointer-events:none; text-decoration:line-through; }
+  .fill-para { line-height:2.6; font-size:0.95rem; padding:14px; background:#fafafa; border:2px solid #ddd; border-radius:8px; }
+  .blank { display:inline-block; min-width:90px; border-bottom:2.5px solid var(--blue); padding:2px 8px; font-family:'Caveat',cursive; font-size:0.98rem; font-weight:700; text-align:center; margin:0 3px; cursor:pointer; transition:all 0.15s; border-radius:4px 4px 0 0; }
+  .blank:hover { background:rgba(255,209,102,0.25); }
+  .blank.filled { color:var(--blue); }
+  .blank.sel-b { background:rgba(255,209,102,0.4); border-color:var(--orange); }
+  .blank.ok { background:var(--light-teal); color:#059669; border-color:#059669; }
+  .blank.bad { background:var(--light-coral); color:var(--coral); border-color:var(--coral); }
+  .tf-card { border:2px solid var(--ink); border-radius:10px; padding:14px 16px; margin:10px 0; background:white; }
+  .tf-q { font-family:'Kalam',cursive; font-size:0.97rem; margin-bottom:10px; line-height:1.5; }
+  .tf-btns { display:flex; gap:10px; }
+  .tf-btn { font-family:'Caveat',cursive; font-size:1rem; font-weight:700; padding:6px 20px; border:2px solid var(--ink); border-radius:20px; cursor:pointer; transition:all 0.15s; background:white; }
+  .tf-btn:hover { background:var(--light-yellow); }
+  .tf-btn.correct { background:var(--teal); color:white; border-color:#059669; }
+  .tf-btn.wrong { background:var(--coral); color:white; border-color:#c0392b; }
+  .tf-btn:disabled { cursor:default; }
+  .tf-exp { display:none; margin-top:8px; padding:8px 12px; border-radius:6px; font-family:'Kalam',cursive; font-size:0.88rem; }
+  .tf-exp.show { display:block; }
+  /* SVG ZOOM */
+  .svg-wrap { position:relative; display:inline-block; width:100%; cursor:zoom-in; border:2px dashed transparent; border-radius:8px; transition:border-color 0.2s; }
+  .svg-wrap:hover { border-color:var(--blue); }
+  .svg-wrap:hover .svg-hint { opacity:1; }
+  .svg-hint { position:absolute; bottom:6px; right:8px; background:var(--blue); color:white; font-family:'Caveat',cursive; font-size:0.82rem; font-weight:700; padding:3px 10px; border-radius:20px; opacity:0; transition:opacity 0.2s; pointer-events:none; box-shadow:1px 1px 4px rgba(0,0,0,0.2); }
+  #svg-modal { display:none; position:fixed; inset:0; z-index:9999; background:rgba(10,10,30,0.82); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px; }
+  #svg-modal.open { display:flex; animation:fadeIn 0.2s ease; }
+  #svg-modal-inner { background:#fffdf5; border:3px solid var(--ink); border-radius:14px; box-shadow:8px 8px 0 var(--ink); max-width:95vw; max-height:90vh; overflow:auto; position:relative; padding:16px; }
+  #svg-modal-content { display:block; min-width:300px; }
+  #svg-modal-content svg { width:100% !important; max-width:none !important; height:auto; }
+  #modal-toolbar { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; align-items:center; }
+  #modal-title { font-family:'Permanent Marker',cursive; font-size:1rem; flex:1; color:var(--ink); }
+  .modal-btn { font-family:'Caveat',cursive; font-size:1rem; font-weight:700; padding:6px 16px; border:2.5px solid var(--ink); border-radius:8px; cursor:pointer; background:white; box-shadow:2px 2px 0 var(--ink); transition:all 0.15s; white-space:nowrap; }
+  .modal-btn:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--ink); background:var(--light-yellow); }
+  .modal-btn.close-btn { background:var(--coral); color:white; border-color:#c0392b; }
+  .modal-btn.close-btn:hover { background:#c0392b; }
+  .modal-btn.dl-btn { background:var(--teal); color:var(--ink); border-color:#059669; }
+  .zoom-controls { display:flex; gap:6px; align-items:center; }
+  .zoom-lbl { font-family:'Caveat',cursive; font-size:0.95rem; min-width:44px; text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#7b2d8b;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-4-computers.html" style="color:#ef476f;text-decoration:none;">📑 Topic 4 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <a href="topic-4-computers.html" style="display:inline-flex;align-items:center;gap:8px;font-family:'Permanent Marker',cursive;font-size:1rem;color:#1a1a2e;text-decoration:none;border:2.5px solid #1a1a2e;border-radius:8px;padding:8px 18px;background:#fff9c4;box-shadow:3px 3px 0 #1a1a2e;margin:20px 0 10px;transform:rotate(-0.5deg);transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'" onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">← Back to Cover Page</a>
+
+  <div class="hero">
+    <h1 class="hero-title">⌨️ Programming Languages — 20</h1>
+    <p class="hero-sub">IGCSE Computer Science · Edexcel 4CP01 · Unit 4 Computers</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">🗺 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="activities">✏️ Activities</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+  </div>
+
+  <!-- ════════════ MIND MAP TAB ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        ⌨️ Why Do Programming Languages Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🤖 CPUs Only Understand Binary</div><p>Every program must ultimately become machine code (binary 1s and 0s) before the CPU can run it. Understanding how languages get translated to machine code is fundamental.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🔧 Assembly is Still Used</div><p>Assembly language is still used for device drivers, embedded systems and performance-critical code where direct hardware control and tiny program size matter.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">⚡ Compiler vs Interpreter</div><p>This is a classic exam topic. You must know what each does, how they differ in the translation process, and the advantages and disadvantages of each approach.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">📊 Language Levels</div><p>High-level languages (Python, Java, C#) are human-readable; low-level languages (assembly, machine code) are closer to the CPU's native instructions. Each has its own use case.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">🛡️ Object Code &amp; Protection</div><p>Compiled programs produce object code which can be distributed without revealing source code — protecting intellectual property. Interpreted programs require the source code to run.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">🐛 Debugging Differences</div><p>Interpreters find errors line by line; compilers report all errors at once and won't produce output until the whole program is correct. Both have implications for development.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key distinction:</strong> Machine code = binary, CPU executes directly. Assembly = mnemonics, translated by assembler. High-level = human-readable, translated by compiler OR interpreter.</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">⌨️ Topic 20: Programming Languages — Overview</div>
+
+      <div class="highlight-box">🔑 All programs must become machine code before the CPU can run them. The path: Source Code → Translator (assembler/compiler/interpreter) → Machine Code → CPU executes</div>
+
+      <!-- Language hierarchy diagram -->
+      <div style="text-align:center;margin:18px 0;">
+        <div class="svg-wrap" onclick="openModal(this,'Programming Language Hierarchy')" title="Click to zoom">
+        <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+        <svg viewBox="0 0 620 260" style="max-width:620px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="lang_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a1a2e"/></marker></defs>
+          <!-- HIGH-LEVEL -->
+          <rect x="10" y="10" width="270" height="70" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+          <text x="145" y="36" font-size="13" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">High-Level Language</text>
+          <text x="145" y="52" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">Python, Java, C#, Visual Basic</text>
+          <text x="145" y="66" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">Human-readable · Portable · Abstracted from hardware</text>
+          <!-- ASSEMBLY -->
+          <rect x="10" y="105" width="270" height="70" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+          <text x="145" y="131" font-size="13" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Assembly Language</text>
+          <text x="145" y="147" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">LDR, ADD, STR, CMP — mnemonics</text>
+          <text x="145" y="161" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">Low-level · CPU-specific · One instruction = one CPU action</text>
+          <!-- MACHINE CODE -->
+          <rect x="10" y="200" width="270" height="50" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2.5"/>
+          <text x="145" y="223" font-size="13" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">Machine Code</text>
+          <text x="145" y="240" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">0110100100101010… binary — CPU executes directly</text>
+          <!-- Arrows left side -->
+          <line x1="145" y1="80" x2="145" y2="105" stroke="var(--orange)" stroke-width="2" marker-end="url(#lang_a)"/>
+          <text x="148" y="96" font-size="9" fill="var(--orange)" font-family="sans-serif" font-weight="bold">Compiler / Interpreter</text>
+          <line x1="145" y1="175" x2="145" y2="200" stroke="var(--coral)" stroke-width="2" marker-end="url(#lang_a)"/>
+          <text x="148" y="191" font-size="9" fill="var(--coral)" font-family="sans-serif" font-weight="bold">Assembler</text>
+          <!-- RIGHT SIDE: Translators -->
+          <rect x="350" y="10" width="255" height="115" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+          <text x="477" y="32" font-size="12" text-anchor="middle" fill="#2d6a4f" font-family="sans-serif" font-weight="bold">COMPILER</text>
+          <text x="477" y="48" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Translates WHOLE program at once</text>
+          <text x="477" y="62" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Produces object code (.exe) saved to disk</text>
+          <text x="477" y="76" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Runs on any similar computer without compiler</text>
+          <text x="477" y="90" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Faster to run · Source code protected</text>
+          <text x="477" y="106" font-size="8.5" text-anchor="middle" fill="#ef476f" font-family="sans-serif">All errors reported at once before any output</text>
+          <rect x="350" y="140" width="255" height="115" rx="10" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+          <text x="477" y="162" font-size="12" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">INTERPRETER</text>
+          <text x="477" y="178" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Translates ONE LINE at a time, then runs it</text>
+          <text x="477" y="192" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">No object code file produced</text>
+          <text x="477" y="206" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Needs interpreter installed to run</text>
+          <text x="477" y="220" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Finds errors line by line — easier to debug</text>
+          <text x="477" y="236" font-size="8.5" text-anchor="middle" fill="#ef476f" font-family="sans-serif">Slower (translates while running)</text>
+          <!-- Assembler box -->
+          <rect x="350" y="200" width="255" height="50" rx="10" fill="#fff9c4" stroke="#f77f00" stroke-width="2"/>
+          <text x="477" y="222" font-size="12" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">ASSEMBLER</text>
+          <text x="477" y="238" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Converts assembly mnemonics → machine code</text>
+        </svg>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">Language hierarchy — from high-level human-readable code down to binary machine code</p>
+      </div>
+
+      <div class="ig-grid">
+        <div class="ig-sec" style="border-color:var(--coral);">
+          <span class="ig-label" style="color:var(--coral);">⚙️ Machine Code</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">01</div><div>Binary 1s and 0s — the only language a CPU can directly execute</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">IS</div><div>Each instruction corresponds to one entry in the CPU's <strong>instruction set</strong></div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">!</div><div>Different CPUs have different instruction sets — programs are <strong>not portable</strong></div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">✗</div><div>Extremely difficult to write and debug — practically impractical for humans</div></div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--orange);">
+          <span class="ig-label" style="color:var(--orange);">🔧 Assembly Language</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">M</div><div>Uses <strong>mnemonics</strong> — short memorable keywords for each CPU instruction (e.g. ADD, LDR, STR, CMP)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">1:1</div><div>One assembly instruction = one machine code instruction</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">✅</div><div>Used for: device drivers, embedded systems, performance-critical code</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">✗</div><div>CPU-specific · No data types · Very hard to debug</div></div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">🐍 High-Level Languages</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">H</div><div>Human-readable syntax (Python, Java, C#, Visual Basic)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">P</div><div><strong>Portable</strong> — same source code runs on different hardware (via OS)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">DT</div><div>Has data types (integers, strings, floats) and structures (loops, functions)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">T</div><div>Must be translated to machine code by a <strong>compiler</strong> or <strong>interpreter</strong></div></div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">🔄 Key Terms</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">SC</div><div><strong>Source code</strong> — the text of the program a programmer writes</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">OC</div><div><strong>Object code</strong> — the translated machine code output (from a compiler)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">T</div><div><strong>Translator</strong> — any program that converts source code to machine code</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">IS</div><div><strong>Instruction set</strong> — all commands a particular CPU knows how to carry out</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end mindmap -->
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <!-- 20.1 Low-Level Languages -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,var(--coral),#922b21);">
+        <div class="notes-hdr-left"><span class="notes-num">20.1</span><span class="notes-title">Low-Level Languages: Machine Code &amp; Assembly</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>A CPU can only carry out a small number of simple operations. The list of all possible commands a CPU knows is called its <strong class="hl-c">instruction set</strong>. Each instruction is given a unique binary code. The binary codes representing a program are called <strong class="hl-c">machine code</strong>.</p>
+
+        <div class="def-box" style="border-color:var(--coral);">
+          <span class="def-label" style="background:var(--coral);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-c">Instruction set</strong> — the list of all possible commands a particular CPU knows how to carry out.<br><br>
+          <strong class="hl-c">Machine code</strong> — the binary codes representing each of the instructions in the instruction set. The only language a CPU can directly execute.<br><br>
+          <strong class="hl-c">Translator</strong> — a program that converts source code into machine code.<br><br>
+          <strong class="hl-c">Source code</strong> — the text of the program that a programmer writes.<br><br>
+          <strong class="hl-c">Assembler</strong> — a translator that converts assembly language mnemonics into machine code instructions for the CPU to carry out.<br><br>
+          <strong class="hl-c">Assembly language</strong> — a low-level language written using mnemonics (e.g. ADD, LDR, STR).<br><br>
+          <strong class="hl-c">Mnemonic</strong> — a short, memorable keyword representing a CPU instruction (e.g. ADD for addition, LDR for load register, STR for store, CMP for compare).<br><br>
+          <strong class="hl-c">Low-level programming language</strong> — a programming language closely related to the CPU's machine code (machine code and assembly language).</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--coral);">🤖 Machine Code</h4>
+        <p>Machine code looks like this — a string of binary digits:</p>
+        <div class="code-block"><span class="mc">01101001001001010101010111110101011001010110101010</span></div>
+        <p style="margin-top:8px;">Writing programs in machine code is completely impractical — it would take enormous effort to work out the correct binary sequence, and the program would only run on one specific type of CPU (since different CPUs have different instruction sets).</p>
+
+        <h4 class="subh" style="color:var(--orange);">🔧 Assembly Language</h4>
+        <p>Assembly language replaces those binary codes with short memorable <strong class="hl-o">mnemonics</strong>. For example, the instruction to add numbers (binary <span style="font-family:monospace;background:#f0f0f0;padding:1px 4px;border-radius:3px;">01101001</span>) is simply written as <span style="font-family:monospace;background:#f0f0f0;padding:1px 4px;border-radius:3px;">ADD</span> in assembly.</p>
+        <p style="margin-top:8px;">Here is an example of assembly code:</p>
+        <div class="code-block">
+<span class="kw">LDR</span> R3, [R1]   <span class="cm">; Load value from memory address in R1 into R3</span>
+<span class="kw">MQV</span> R2, #0     <span class="cm">; Move value 0 into register R2</span>
+<span class="kw">CMP</span> R3, R0     <span class="cm">; Compare R3 with R0</span>
+<span class="kw">MOVGT</span> R2, #1   <span class="cm">; If R3 > R0, move 1 into R2</span>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">The assembler replaces each mnemonic with the appropriate binary machine code.</p>
+
+        <h4 class="subh" style="color:var(--orange);">⚠️ Why Assembly is Difficult</h4>
+        <div class="g3">
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--coral);margin-bottom:4px;">Limited Instructions</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">Only the most basic operations exist. Every task must be built from the smallest steps. Some older CPUs could not even multiply.</p>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--orange);margin-bottom:4px;">Manual Data Management</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">No strings, integers or real numbers — just binary. The programmer must decide how to represent and where to store all data in memory.</p>
+          </div>
+          <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--purple);margin-bottom:4px;">Very Hard to Debug</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">Any bugs usually cause the machine to crash and require a reboot. There are no helpful error messages like in high-level languages.</p>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--orange);">✅ When Assembly IS Used</h4>
+        <p>Despite the challenges, assembly is still used for:</p>
+        <div class="g2" style="margin-top:8px;">
+          <div class="nl"><span class="nd" style="background:var(--orange);">✓</span><div><strong>Hardware device drivers</strong> — need to directly control I/O hardware at the lowest level</div></div>
+          <div class="nl"><span class="nd" style="background:var(--orange);">✓</span><div><strong>Embedded systems</strong> — need programs that are very small and very fast</div></div>
+          <div class="nl"><span class="nd" style="background:var(--orange);">✓</span><div><strong>Performance-critical sections</strong> — where every nanosecond matters</div></div>
+          <div class="nl"><span class="nd" style="background:var(--orange);">✓</span><div><strong>Direct hardware control</strong> — when you need to control the CPU's registers directly</div></div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> Assembly language is a <strong>low-level</strong> language. Machine code is ALSO low-level. The key difference: machine code = binary; assembly = mnemonics translated by an assembler. Both are CPU-specific — programs written for one CPU type will not run on another.</div>
+      </div>
+    </div>
+
+    <!-- 20.2 High-Level Languages -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,var(--blue),#0a4f70);">
+        <div class="notes-hdr-left"><span class="notes-num">20.2</span><span class="notes-title">High-Level Languages</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>High-level languages (such as Python, C#, Java, Visual Basic) are designed to be <strong class="hl-b">human-readable</strong>. They abstract away the detail of the hardware — a programmer uses meaningful commands like <span style="font-family:monospace;background:#f0f0f0;padding:1px 4px;border-radius:3px;">print("Hello")</span> without needing to know anything about the CPU's registers or memory addresses.</p>
+
+        <div class="code-block">
+<span class="cm"># High-level Python — easy for humans to read</span>
+<span class="kw">for</span> i <span class="kw">in</span> range(5):
+    <span class="kw">print</span>("Hello, World!")
+
+<span class="cm"># Compare with what machine code would look like:</span>
+<span class="mc">01101001 00100101 01010101 01111101 01011001...</span>
+        </div>
+
+        <div class="g2" style="margin-top:14px;">
+          <div style="background:var(--light-teal);border:2px solid #059669;border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:#059669;margin-bottom:6px;">✅ Advantages of High-Level</div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Human-readable — easier to write, read and maintain</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div><strong>Portable</strong> — same source code runs on different hardware (via OS)</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Has data types, variables, loops, functions — faster to develop</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Easier to debug — meaningful error messages</div></div>
+          </div>
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--coral);margin-bottom:6px;">❌ Compared to Assembly</div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Less control over hardware — cannot directly access CPU registers</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Slightly less efficient — machine code generated by compiler may not be perfectly optimised</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Must be translated before the CPU can run it</div></div>
+          </div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> "Portable" means the same source code can run on different types of hardware (as long as the correct translator is available). Assembly is NOT portable — it is specific to one CPU's instruction set.</div>
+      </div>
+    </div>
+
+    <!-- 20.3 Compilers vs Interpreters -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,#059669,#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">20.3</span><span class="notes-title">Compilers vs Interpreters — In Detail</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <div class="def-box" style="border-color:#059669;">
+          <span class="def-label" style="background:#059669;">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-t">Compiler</strong> — a translator that converts high-level language source code into object code (often machine code) <strong>all at once</strong>. The source code is translated once and the saved object code can be run later without needing the compiler.<br><br>
+          <strong class="hl-t">Interpreter</strong> — a translator that converts high-level language source code into machine code <strong>one line at a time</strong>, executing each line immediately. There is no saved object code — the source code must be translated every time the program runs.<br><br>
+          <strong class="hl-t">Object code</strong> — the translated output from a compiler. Often machine code, sometimes an intermediate code. Saved as an executable file (.exe).</p>
+        </div>
+
+        <!-- Compiler vs Interpreter process diagram -->
+        <h4 class="subh" style="color:#059669;">🔄 How Each Translator Works</h4>
+        <div style="text-align:center;margin:14px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'Compiler vs Interpreter — Translation Process')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 620 220" style="max-width:620px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="cv" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a1a2e"/></marker></defs>
+            <!-- COMPILER side -->
+            <text x="155" y="22" font-size="14" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">COMPILER</text>
+            <rect x="20" y="30" width="130" height="45" rx="8" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="85" y="50" font-size="10" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">Source Code</text>
+            <text x="85" y="65" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">(whole program)</text>
+            <line x1="150" y1="52" x2="178" y2="52" stroke="#1a1a2e" stroke-width="2" marker-end="url(#cv)"/>
+            <rect x="178" y="30" width="90" height="45" rx="8" fill="#d8f3dc" stroke="#059669" stroke-width="2"/>
+            <text x="223" y="50" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">Compiler</text>
+            <text x="223" y="65" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">translates ALL</text>
+            <line x1="268" y1="52" x2="296" y2="52" stroke="#1a1a2e" stroke-width="2" marker-end="url(#cv)"/>
+            <rect x="296" y="30" width="100" height="45" rx="8" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+            <text x="346" y="50" font-size="10" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Object Code</text>
+            <text x="346" y="65" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">saved (.exe)</text>
+            <!-- Arrow from object code to CPU run later -->
+            <line x1="396" y1="52" x2="418" y2="52" stroke="#1a1a2e" stroke-width="2" marker-end="url(#cv)"/>
+            <rect x="418" y="30" width="90" height="45" rx="8" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+            <text x="463" y="50" font-size="10" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">CPU Runs</text>
+            <text x="463" y="65" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">any time, fast</text>
+            <!-- Note: no compiler needed at runtime -->
+            <text x="335" y="92" font-size="8.5" text-anchor="middle" fill="#059669" font-family="sans-serif" font-style="italic">✓ Object code saved — compiler NOT needed at runtime</text>
+            <text x="335" y="105" font-size="8.5" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-style="italic">✗ All errors reported at once — no output until program is correct</text>
+
+            <!-- INTERPRETER side -->
+            <line x1="310" y1="115" x2="310" y2="118" stroke="#ccc" stroke-width="1" stroke-dasharray="8,4"/>
+            <text x="155" y="132" font-size="14" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">INTERPRETER</text>
+            <rect x="20" y="140" width="130" height="45" rx="8" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="85" y="160" font-size="10" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">Source Code</text>
+            <text x="85" y="175" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">(whole program)</text>
+            <line x1="150" y1="162" x2="178" y2="162" stroke="#1a1a2e" stroke-width="2" marker-end="url(#cv)"/>
+            <rect x="178" y="140" width="100" height="45" rx="8" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+            <text x="228" y="160" font-size="10" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">Interpreter</text>
+            <text x="228" y="175" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">line 1 → run</text>
+            <line x1="278" y1="162" x2="306" y2="162" stroke="#1a1a2e" stroke-width="2" marker-end="url(#cv)"/>
+            <rect x="306" y="140" width="100" height="45" rx="8" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+            <text x="356" y="160" font-size="10" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">Interpreter</text>
+            <text x="356" y="175" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">line 2 → run</text>
+            <line x1="406" y1="162" x2="424" y2="162" stroke="#7b2d8b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#cv)"/>
+            <text x="467" y="166" font-size="11" fill="#7b2d8b" font-family="sans-serif">… and so on</text>
+            <text x="310" y="202" font-size="8.5" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-style="italic">✓ Finds errors one line at a time — easier to locate bugs</text>
+            <text x="310" y="215" font-size="8.5" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-style="italic">✗ Slower — translates the same lines every time the program runs</text>
+          </svg>
+          </div>
+        </div>
+
+        <!-- Full comparison table -->
+        <h4 class="subh" style="color:#059669;">📊 Full Comparison Table</h4>
+        <table class="cmp-tbl">
+          <tr><th>Feature</th><th>🟢 Compiler</th><th>🟣 Interpreter</th></tr>
+          <tr><td><strong>Translation method</strong></td><td>Translates the <strong>whole program</strong> at once</td><td>Translates and runs <strong>one line at a time</strong></td></tr>
+          <tr><td><strong>Output</strong></td><td>Produces <strong>object code</strong> (.exe file) saved to disk</td><td>No object code — source code must be present to run</td></tr>
+          <tr><td><strong>Running the program</strong></td><td>Object code runs on any similar computer <strong>without the compiler</strong></td><td>The interpreter <strong>must be installed</strong> on every computer that runs the program</td></tr>
+          <tr><td><strong>Speed</strong></td><td><strong>Faster</strong> to run — already translated</td><td><strong>Slower</strong> — translates while running every time</td></tr>
+          <tr><td><strong>Error handling</strong></td><td>Reports <strong>all errors at once</strong> — no output until whole program is correct; harder to debug</td><td>Finds errors <strong>line by line</strong> — stops and reports the first error found; easier to debug</td></tr>
+          <tr><td><strong>Source code protection</strong></td><td>Only object code (machine code) is distributed — <strong>source code is protected</strong> and hard to reverse-engineer</td><td>Source code must be distributed — it is <strong>visible</strong> to users</td></tr>
+          <tr><td><strong>Use case</strong></td><td>Finished software (games, apps, OS components)</td><td>Development, scripting, teaching (Python, JavaScript)</td></tr>
+        </table>
+
+        <div class="notes-tip">✏️ <strong>Exam tip — 4-mark comparison questions:</strong> For each point give the compiler and interpreter. The three most-examined differences are: (1) whole program vs line by line, (2) object code produced vs not, (3) speed of execution. Always explain <em>why</em> — e.g. "slower because the interpreter has to translate the same source code every time the program runs."</div>
+      </div>
+    </div>
+
+    <!-- 20.4 Assembler -->
+    <div class="notes-sec" id="ns4">
+      <div class="notes-hdr" onclick="toggleSection('ns4')" style="background:linear-gradient(135deg,var(--orange),#7a3c00);">
+        <div class="notes-hdr-left"><span class="notes-num">20.4</span><span class="notes-title">The Assembler — Translating Assembly to Machine Code</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>The <strong class="hl-o">assembler</strong> is the simplest type of translator. It converts assembly language programs (written with mnemonics) into machine code that the CPU can execute directly. Unlike a compiler, there is a <strong>one-to-one relationship</strong> — each assembly instruction becomes exactly one machine code instruction.</p>
+
+        <div style="text-align:center;margin:16px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'Assembler — Mnemonic to Machine Code')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 540 160" style="max-width:540px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="asm_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#f77f00"/></marker></defs>
+            <!-- Assembly source -->
+            <rect x="10" y="20" width="160" height="120" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="90" y="42" font-size="11" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Assembly Source</text>
+            <text x="25" y="62" font-size="10" fill="#1a1a2e" font-family="monospace">LDR R3, [R1]</text>
+            <text x="25" y="79" font-size="10" fill="#1a1a2e" font-family="monospace">MQV R2, #0</text>
+            <text x="25" y="96" font-size="10" fill="#1a1a2e" font-family="monospace">CMP R3, R0</text>
+            <text x="25" y="113" font-size="10" fill="#1a1a2e" font-family="monospace">MOVGT R2, #1</text>
+            <text x="90" y="132" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">(mnemonics)</text>
+            <!-- Arrow + assembler box -->
+            <line x1="170" y1="80" x2="200" y2="80" stroke="#f77f00" stroke-width="2.5" marker-end="url(#asm_a)"/>
+            <rect x="200" y="58" width="110" height="44" rx="8" fill="#ffd166" stroke="#f77f00" stroke-width="2"/>
+            <text x="255" y="77" font-size="11" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif" font-weight="bold">ASSEMBLER</text>
+            <text x="255" y="93" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">replaces each mnemonic</text>
+            <line x1="310" y1="80" x2="340" y2="80" stroke="#f77f00" stroke-width="2.5" marker-end="url(#asm_a)"/>
+            <!-- Machine code output -->
+            <rect x="340" y="20" width="185" height="120" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2.5"/>
+            <text x="432" y="42" font-size="11" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">Machine Code</text>
+            <text x="355" y="62" font-size="9.5" fill="#1a1a2e" font-family="monospace">11100101 10010001</text>
+            <text x="355" y="79" font-size="9.5" fill="#1a1a2e" font-family="monospace">11100011 10100000</text>
+            <text x="355" y="96" font-size="9.5" fill="#1a1a2e" font-family="monospace">11100001 01010011</text>
+            <text x="355" y="113" font-size="9.5" fill="#1a1a2e" font-family="monospace">11000011 10100010</text>
+            <text x="432" y="132" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">(binary — CPU executes)</text>
+          </svg>
+          </div>
+        </div>
+
+        <div class="notes-eg">💡 <strong>1:1 mapping:</strong> One mnemonic → one binary instruction. This is different from a compiler, which may convert one high-level statement into many machine code instructions (e.g. a Python <code style="background:#f0f0f0;padding:1px 4px;border-radius:3px;">for</code> loop might produce dozens of machine code instructions).</div>
+        <div class="notes-tip">✏️ <strong>Three translators summary:</strong> <strong>Assembler</strong> = assembly → machine code (1:1). <strong>Compiler</strong> = high-level → object code (whole program, saved). <strong>Interpreter</strong> = high-level → machine code (one line at a time, not saved).</div>
+      </div>
+    </div>
+
+  </div><!-- end notes -->
+
+  <!-- ════════════ QUIZ TAB ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span>/<span id="qtotal">20</span></div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card">
+        <div class="q-num" id="qnum">Question 1 of 20</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="q-opts" id="qopts"></div>
+        <div class="q-fb" id="qfb"></div>
+        <div style="text-align:right;margin-top:14px;">
+          <button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACTIVITIES TAB ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Match -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🔗</span>
+        <span class="act-title">Activity 1 — Match the Term to its Definition</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Click a term on the left, then click its matching definition on the right.</p>
+        <div class="match-grid" id="match-area-1"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkMatch1()">✓ Check</button>
+          <button class="btn" onclick="resetMatch1()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="match-res-1" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Classify feature -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-green);">
+        <span class="act-icon">🗂️</span>
+        <span class="act-title">Activity 2 — Compiler or Interpreter?</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a feature, then click the correct column to classify it.</p>
+        <div class="chip-bank" id="ci-chips"></div>
+        <div class="drop-zone-wrap" id="ci-drops">
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:#059669;">🟢 Compiler</div>
+            <div class="drop-zone" id="cidrop-comp" onclick="dropCIChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--purple);">🟣 Interpreter</div>
+            <div class="drop-zone" id="cidrop-interp" onclick="dropCIChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--orange);">🟠 Both</div>
+            <div class="drop-zone" id="cidrop-both" onclick="dropCIChip(this)"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkCIClass()">✓ Check</button>
+          <button class="btn" onclick="resetCIClass()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="ci-class-res" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Fill in the blanks -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">📝</span>
+        <span class="act-title">Activity 3 — Fill in the Blanks</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a word from the bank, then click a blank to fill it in.</p>
+        <div class="word-bank" id="word-bank"></div>
+        <div class="fill-para" id="fill-para"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="checkFill()">✓ Check</button>
+          <button class="btn" onclick="revealFill()" style="background:white;">👁 Reveal</button>
+          <button class="btn" onclick="resetFill()" style="background:white;">↺ Reset</button>
+          <span id="fill-score" style="font-family:'Permanent Marker',cursive;font-size:1.3rem;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 4: True / False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <span class="act-icon">✅</span>
+        <span class="act-title">Activity 4 — True or False?</span>
+      </div>
+      <div class="act-bdy"><div id="tf-area"></div></div>
+    </div>
+
+    <!-- Activity 5: Language selector scenario -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-yellow);">
+        <span class="act-icon">🎯</span>
+        <span class="act-title">Activity 5 — Which Language Level? (Scenario Challenge)</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;margin-bottom:12px;">For each scenario, click the best language level and translator type.</p>
+        <div id="scenario-area"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities -->
+
+  <!-- ════════════ EXAM QUESTIONS TAB ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <div class="tip-box" style="margin-bottom:18px;">📋 <strong>Exam technique:</strong> Programming language questions often ask you to <em>describe</em> what a translator does, <em>compare</em> compilers and interpreters, or <em>explain</em> why a particular language is suitable. Always use the key terms: mnemonic, machine code, object code, source code, instruction set, portable.</div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c1"><span class="eq-num">Question 1 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">State what is meant by each of the following terms: (a) machine code, (b) assembly language, (c) mnemonic, (d) source code.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>(a) Machine code — the binary codes (1s and 0s) representing each instruction in the CPU's instruction set; the only language the CPU can directly execute. [1]</li>
+            <li>(b) Assembly language — a low-level programming language that uses mnemonics (short keywords) to represent CPU instructions; one instruction per machine code operation. [1]</li>
+            <li>(c) Mnemonic — a short, memorable keyword that represents a CPU instruction in assembly language (e.g. ADD, LDR, STR, CMP). [1]</li>
+            <li>(d) Source code — the text of the program written by a programmer; the input to a translator. [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c2"><span class="eq-num">Question 2 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Describe the difference between a compiler and an interpreter. In your answer, refer to how each translator works and the output each produces.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>A compiler translates the whole program at once [1]</li>
+            <li>A compiler produces object code (saved machine code / .exe file) that can be run later without the compiler [1]</li>
+            <li>An interpreter translates and runs the source code one line at a time [1]</li>
+            <li>An interpreter produces no saved object code — the source code must be present and retranslated every time the program runs [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c3"><span class="eq-num">Question 3 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Give two advantages of using a compiler and two advantages of using an interpreter when developing and distributing software.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>Compiler advantages (any 2):</strong></p>
+          <ul>
+            <li>The compiled object code runs faster because it has already been translated — no translation needed at runtime [1]</li>
+            <li>The object code can run on any similar computer without the compiler being installed [1]</li>
+            <li>Source code is protected — only the object code (machine code) is distributed, which is hard to reverse-engineer [1]</li>
+          </ul>
+          <p><strong>Interpreter advantages (any 2):</strong></p>
+          <ul>
+            <li>Errors are found line by line — the interpreter stops at the first error and reports it, making it easier to locate bugs [1]</li>
+            <li>Useful during development — can test individual lines without compiling the whole program [1]</li>
+            <li>More portable for scripting — the same source code runs on any system with the interpreter installed [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c4"><span class="eq-num">Question 4 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Explain why assembly language is considered a 'low-level' language. Give two reasons why a programmer might still choose to write in assembly language rather than a high-level language.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Assembly language is low-level because it is closely related to the CPU's machine code — each mnemonic corresponds directly to one machine code instruction [1]</li>
+            <li>It works at the level of the CPU hardware itself (registers, memory addresses) rather than abstracting away hardware detail like high-level languages [1]</li>
+            <li>Reason 1: Programs written in assembly can be very small and very fast — the programmer has full control over memory and the CPU [1]</li>
+            <li>Reason 2: Needed for direct hardware control — for example, writing device drivers or embedded system firmware where specific I/O operations must be performed [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c5"><span class="eq-num">Question 5 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">6 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A games company develops a new 3D game. They compile their source code using a C++ compiler. A student is writing a school project in Python, which uses an interpreter.</div>
+        <p class="eq-txt">Compare the use of a compiler for the games company's software with the use of an interpreter for the student's project. In your answer refer to: translation process, error detection, speed of execution, and distribution of the program.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="10"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark per valid comparative point, max 6)</div>
+          <ul>
+            <li><strong>Translation:</strong> The compiler translates the whole C++ program at once; the interpreter translates the Python code one line at a time [1]</li>
+            <li><strong>Object code:</strong> The compiler produces object code (.exe) saved to disk; the interpreter produces no saved object code [1]</li>
+            <li><strong>Error detection:</strong> The compiler reports all errors at once — the game cannot be compiled until all errors are fixed; the interpreter stops at each error line by line, making it easier for the student to debug [1]</li>
+            <li><strong>Speed:</strong> The compiled game runs faster as it is already translated; the Python script runs slower as the interpreter translates each line at runtime [1]</li>
+            <li><strong>Distribution:</strong> The games company can distribute the object code without exposing their source code, protecting their intellectual property; the student must share their Python source code for it to run [1]</li>
+            <li><strong>Dependencies:</strong> The compiled game runs on any compatible computer without the compiler; the student's Python script requires Python (the interpreter) to be installed on any machine that runs it [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c6"><span class="eq-num">Question 6 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">3 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">(a) What is meant by 'object code'? [1]  (b) What is the role of the assembler? [1]  (c) Why can a machine code program written for one type of CPU not run on a different type of CPU? [1]</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="4"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>(a) Object code is the translated output from a compiler — often machine code saved as an executable file that can be run directly by the CPU [1]</li>
+            <li>(b) An assembler translates assembly language (mnemonics) into machine code for the CPU to execute [1]</li>
+            <li>(c) Different CPUs have different instruction sets — the binary codes mean different things on different CPUs, so a program compiled for one CPU will not be understood by a different type [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c7"><span class="eq-num">Question 7 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">5 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A software developer has written a program in a high-level language. They are deciding whether to use a compiler or an interpreter to translate their program.</div>
+        <p class="eq-txt">Discuss the advantages and disadvantages of each approach. Conclude with a recommendation for which the developer should use when: (a) testing/developing the program, and (b) distributing the finished product to customers.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="10"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>Interpreter during development (up to 2):</strong></p>
+          <ul>
+            <li>Finds errors line by line — easier to identify and fix bugs during development [1]</li>
+            <li>Can run partial code without having a complete, error-free program [1]</li>
+          </ul>
+          <p><strong>Compiler for distribution (up to 2):</strong></p>
+          <ul>
+            <li>Produces object code that runs faster — better user experience for customers [1]</li>
+            <li>Object code can run without the compiler installed — customers don't need to install the translator [1]</li>
+            <li>Source code is protected — customers only receive machine code which is hard to copy or reverse-engineer [1]</li>
+          </ul>
+          <p><strong>Conclusion (1 mark for both justified):</strong></p>
+          <ul>
+            <li>Use an interpreter during development/testing; use a compiler to produce the final product for distribution [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end exam -->
+
+</div><!-- end page-wrap -->
+
+<!-- SVG ZOOM MODAL -->
+<div id="svg-modal" onclick="handleModalClick(event)">
+  <div id="svg-modal-inner">
+    <div id="modal-toolbar">
+      <span id="modal-title">Diagram</span>
+      <div class="zoom-controls">
+        <button class="modal-btn" onclick="modalZoom(-0.2)">➖</button>
+        <span class="zoom-lbl" id="zoom-lbl">100%</span>
+        <button class="modal-btn" onclick="modalZoom(+0.2)">➕</button>
+        <button class="modal-btn" onclick="modalResetZoom()">↺ Fit</button>
+      </div>
+      <button class="modal-btn dl-btn" onclick="downloadSVG()">⬇ Download</button>
+      <button class="modal-btn close-btn" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div id="svg-modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+function toggleSection(id){const bdy=document.querySelector('#'+id+' .notes-bdy'),tog=document.querySelector('#'+id+' .notes-tog');bdy.classList.toggle('open');tog.textContent=bdy.classList.contains('open')?'▲':'▼';}
+function toggleMS(btn){const ms=btn.nextElementSibling;ms.classList.toggle('show');btn.textContent=ms.classList.contains('show')?'🙈 Hide Mark Scheme':'📋 Show Mark Scheme';}
+
+// ── QUIZ ──
+const quizData=[
+  {q:'What is "machine code"?',opts:['Assembly language using mnemonics','The binary codes representing each CPU instruction — the only language the CPU can directly execute','A high-level programming language for embedded systems','The source code a programmer writes'],ans:1,fb:'Machine code = binary 1s and 0s. It is the only language the CPU can execute directly. Every program must ultimately be converted to machine code before the CPU can run it.'},
+  {q:'What is a "mnemonic" in the context of assembly language?',opts:['A type of computer memory','A short memorable keyword representing a CPU instruction (e.g. ADD, LDR, STR)','A binary machine code instruction','A type of compiler error'],ans:1,fb:'Mnemonics make assembly language easier to use than machine code. Examples: ADD (add numbers), LDR (load register), STR (store), CMP (compare). The assembler converts these to binary.'},
+  {q:'What is the role of an ASSEMBLER?',opts:['Converts high-level source code to object code (whole program at once)','Translates assembly language mnemonics into machine code','Runs source code one line at a time','Compresses programs to save disk space'],ans:1,fb:'The assembler is a translator that converts assembly language (mnemonics) into machine code. There is a 1:1 relationship — each mnemonic becomes one machine code instruction.'},
+  {q:'How does a COMPILER translate a program?',opts:['One line at a time, running each line immediately','The whole program at once, producing saved object code','Using mnemonics to represent binary instructions','By interpreting the source code at runtime each time'],ans:1,fb:'A compiler translates the WHOLE program at once. It produces object code (saved as .exe) that can be run later without the compiler. Source code is hidden — only the machine code is distributed.'},
+  {q:'How does an INTERPRETER translate a program?',opts:['Translates the whole program first, then runs it','Compresses source code into a smaller executable','Translates and executes ONE LINE at a time, producing no saved object code','Uses the assembler to convert mnemonics to binary'],ans:2,fb:'An interpreter translates one line at a time, running each line immediately. No object code is saved — the source code must be retranslated every time the program runs.'},
+  {q:'Which translator produces an "object code" file (.exe)?',opts:['Interpreter','Assembler','Compiler','Defragmenter'],ans:2,fb:'A compiler produces object code — translated machine code saved as a file (e.g. .exe). This can run on any similar computer without the compiler being installed.'},
+  {q:'Why does a program run SLOWER when using an interpreter?',opts:['The interpreter compresses the code before running it','The interpreter must translate the source code line by line every time the program runs','The interpreter uses more CPU cores','The interpreter encrypts the code before execution'],ans:1,fb:'An interpreter translates source code at runtime — every time the program runs, every line is retranslated. A compiled program runs from pre-translated machine code and needs no re-translation.'},
+  {q:'Why is an interpreter EASIER for debugging than a compiler?',opts:['Interpreters use colour-coded syntax highlighting','An interpreter finds and reports errors one line at a time, stopping at the first error','A compiler cannot detect errors at all','Interpreters automatically fix errors in source code'],ans:1,fb:'An interpreter stops at the first error it encounters, reporting exactly which line failed. A compiler reports ALL errors at once and produces no output until the entire program is error-free.'},
+  {q:'What is the key advantage of a COMPILED program for distribution?',opts:['The source code must be included so users can modify it','Only the object code (machine code) is distributed — source code is protected and hard to reverse-engineer','Compiled programs are easier to write than interpreted ones','Compiled programs always run on any CPU regardless of type'],ans:1,fb:'A compiler produces machine code — companies can distribute .exe files without exposing their source code. This protects intellectual property. An interpreter requires the source code to be present.'},
+  {q:'Why is assembly language considered "low-level"?',opts:['It can only be used on old computers','It is closely related to the CPU\'s machine code — each instruction corresponds to one CPU operation','It runs more slowly than high-level languages','It is easier for beginners to learn than Python'],ans:1,fb:'Low-level means "close to the hardware". Assembly mnemonics map 1:1 to machine code instructions. The programmer works directly with CPU registers and memory addresses — no abstraction.'},
+  {q:'What does "portable" mean for a high-level language?',opts:['The program can be stored on a USB drive','The same source code can run on different hardware/OS (given the correct translator)','The program is written for embedded systems only','The program is compressed for faster downloading'],ans:1,fb:'Portability means the same source code can be compiled or interpreted on different hardware. Assembly language is NOT portable — it is specific to one CPU\'s instruction set.'},
+  {q:'Which of these is a high-level programming language?',opts:['ADD R1, R2','01101001 00100101','Python','MOV R3, #5'],ans:2,fb:'Python is a high-level language — human-readable, with data types, loops and functions. ADD and MOV are assembly mnemonics; the binary is machine code.'},
+  {q:'What is "source code"?',opts:['The machine code stored on the hard disk','The text of the program as written by the programmer','The binary instruction set of a CPU','The object code produced by a compiler'],ans:1,fb:'Source code is the human-readable text of a program — what the programmer writes. It is the input to a translator (compiler, interpreter or assembler).'},
+  {q:'Why can\'t the same machine code program run on different CPU types?',opts:['Machine code programs are encrypted for each CPU','Different CPUs have different instruction sets — the same binary codes mean different things on different CPUs','Machine code is too large to transfer between CPUs','High-level compilers prevent cross-CPU execution'],ans:1,fb:'Different CPU types (e.g. Intel x86 vs ARM) have different instruction sets. The binary code 01101001 might mean "ADD" on one CPU but something completely different (or nothing) on another.'},
+  {q:'Which type of translator requires the translator software to be installed on every computer that runs the program?',opts:['Compiler','Assembler','Interpreter','Linker'],ans:2,fb:'An interpreter must be present on every computer that runs the program, because the source code is re-translated at runtime each time. A compiled .exe can run without the compiler.'},
+  {q:'Why might a programmer use assembly language for an embedded system?',opts:['Assembly language is easier to write than Python','Assembly programs can be very small and fast, and allow direct control of hardware','Embedded systems cannot run compiled code','Assembly language is portable across all CPU types'],ans:1,fb:'Embedded systems have limited memory and need fast, small programs. Assembly gives the programmer direct control over CPU registers and memory, producing very efficient code. The trade-off is much greater difficulty.'},
+  {q:'What does an assembler produce as output?',opts:['Object code saved as an .exe file','A Python script','Machine code instructions for the CPU','High-level source code'],ans:2,fb:'An assembler outputs machine code — binary instructions that the CPU can execute. Unlike a compiler, there is no "object code file" saved with a .exe extension; the output is directly the binary machine code.'},
+  {q:'A compiler reports "100 errors" when first used on a new program. Why?',opts:['The compiler is faulty','Compilers report all errors in the whole program at once — they cannot produce object code until the entire program is correct','The programmer used the wrong programming language','The computer has insufficient RAM to run the compiler'],ans:1,fb:'Compilers check the entire source code before producing any output. If there are errors anywhere, none of the code can be compiled. This is different from an interpreter, which only reports the error it reaches first.'},
+  {q:'What happens to the source code when a program is compiled?',opts:['It is deleted after compilation','It is converted to object code and saved; the source code remains separate and is not needed to run the program','It is sent to the CPU directly without translation','It becomes the object code — they are the same thing'],ans:1,fb:'Compilation produces a separate object code file. The source code still exists but is not needed to run the compiled program. This allows companies to distribute .exe files without sharing the source.'},
+  {q:'Which translator is BEST to use during the development and testing phase?',opts:['Compiler — because it produces faster code','Assembler — because it produces the smallest code','Interpreter — because it finds errors line by line, making debugging easier','All three must be used simultaneously'],ans:2,fb:'During development, an interpreter is better — it finds errors one line at a time, allowing quick debugging without needing the whole program to be correct. After development, a compiler is preferred for distribution.'},
+];
+let qIdx=0,qScore=0;
+function renderQ(){
+  if(qIdx>=quizData.length){document.getElementById('quiz-area').innerHTML=`<div class="q-result"><h2>Quiz Complete! 🎉</h2><div class="big-score">${qScore}/${quizData.length}</div><p style="font-family:'Caveat',cursive;font-size:1.3rem;margin:16px 0;">${qScore===quizData.length?'Perfect score! 🌟':qScore>=16?'Excellent! 💪':qScore>=12?'Good work! 📖':'Keep revising! 📚'}</p><button class="btn btn-teal" onclick="restartQuiz()">🔄 Try Again</button></div>`;return;}
+  const d=quizData[qIdx];
+  document.getElementById('qnum').textContent=`Question ${qIdx+1} of ${quizData.length}`;
+  document.getElementById('qtext').textContent=d.q;
+  document.getElementById('qtotal').textContent=quizData.length;
+  const opts=document.getElementById('qopts');opts.innerHTML='';
+  d.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='q-opt';b.textContent=o;b.onclick=()=>answerQ(i);opts.appendChild(b);});
+  document.getElementById('qfb').className='q-fb';document.getElementById('qfb').textContent='';
+  document.getElementById('qnext').style.display='none';
+  document.getElementById('qprog').style.width=(qIdx/quizData.length*100)+'%';
+}
+function answerQ(i){
+  const d=quizData[qIdx];const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.disabled=true);opts[d.ans].classList.add('correct');
+  const fb=document.getElementById('qfb');
+  if(i===d.ans){qScore++;document.getElementById('qscore').textContent=qScore;opts[i].classList.add('correct');fb.className='q-fb show fb-ok';fb.textContent='✓ Correct! '+d.fb;}
+  else{opts[i].classList.add('wrong');fb.className='q-fb show fb-no';fb.textContent='✗ Not quite. '+d.fb;}
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){qIdx++;renderQ();}
+function restartQuiz(){qIdx=0;qScore=0;document.getElementById('qscore').textContent=0;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num" id="qnum"></div><div class="q-text" id="qtext"></div><div class="q-opts" id="qopts"></div><div class="q-fb" id="qfb"></div><div style="text-align:right;margin-top:14px;"><button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button></div></div>`;renderQ();}
+renderQ();
+
+// ── ACTIVITY 1: MATCH ──
+const matchPairs1=[
+  {term:'Compiler',def:'Translates the whole program at once; produces saved object code'},
+  {term:'Interpreter',def:'Translates and runs source code one line at a time; no object code produced'},
+  {term:'Assembler',def:'Converts assembly language mnemonics into machine code (1:1)'},
+  {term:'Object code',def:'The saved machine code output produced by a compiler (.exe file)'},
+  {term:'Instruction set',def:'The list of all possible commands a particular CPU knows how to carry out'},
+  {term:'Mnemonic',def:'A short keyword representing a CPU instruction in assembly (e.g. ADD, LDR)'},
+];
+let match1Sel=null;
+function buildMatch1(){
+  const area=document.getElementById('match-area-1');area.innerHTML='';
+  const terms=matchPairs1.map(p=>p.term);
+  const defs=[...matchPairs1.map(p=>p.def)].sort(()=>Math.random()-0.5);
+  terms.forEach(t=>{const el=document.createElement('div');el.className='match-item';el.textContent=t;el.dataset.term=t;el.dataset.side='term';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+  defs.forEach(d=>{const el=document.createElement('div');el.className='match-item';el.textContent=d;el.dataset.def=d;el.dataset.side='def';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+}
+function selectMatch1(el){
+  if(el.classList.contains('ok'))return;
+  if(!match1Sel){if(match1Sel)match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;}
+  else{
+    if(match1Sel===el){el.classList.remove('sel');match1Sel=null;return;}
+    if(match1Sel.dataset.side===el.dataset.side){match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;return;}
+    const termEl=match1Sel.dataset.side==='term'?match1Sel:el;
+    const defEl=match1Sel.dataset.side==='def'?match1Sel:el;
+    const correct=matchPairs1.find(p=>p.term===termEl.dataset.term&&p.def===defEl.dataset.def);
+    if(correct){termEl.classList.remove('sel','bad');defEl.classList.remove('sel','bad');termEl.classList.add('ok');defEl.classList.add('ok');}
+    else{termEl.classList.add('bad');defEl.classList.add('bad');setTimeout(()=>{termEl.classList.remove('bad','sel');defEl.classList.remove('bad','sel');},600);}
+    match1Sel=null;
+  }
+}
+function checkMatch1(){const ok=document.querySelectorAll('#match-area-1 .ok').length/2;const res=document.getElementById('match-res-1');res.textContent=ok===matchPairs1.length?`✓ All ${matchPairs1.length} matched! 🎉`:`${ok}/${matchPairs1.length} correct.`;res.style.color=ok===matchPairs1.length?'var(--teal)':'var(--orange)';}
+function resetMatch1(){match1Sel=null;buildMatch1();document.getElementById('match-res-1').textContent='';}
+buildMatch1();
+
+// ── ACTIVITY 2: COMPILER vs INTERPRETER classify ──
+const ciItems=[
+  {name:'Translates whole program at once',cat:'comp'},
+  {name:'Translates one line at a time',cat:'interp'},
+  {name:'Produces object code (.exe)',cat:'comp'},
+  {name:'No object code produced',cat:'interp'},
+  {name:'Faster to run at runtime',cat:'comp'},
+  {name:'Slower — translates while running',cat:'interp'},
+  {name:'All errors reported at once',cat:'comp'},
+  {name:'Finds errors line by line',cat:'interp'},
+  {name:'Protects source code',cat:'comp'},
+  {name:'Source code must be distributed',cat:'interp'},
+  {name:'Runs without translator installed',cat:'comp'},
+  {name:'Translator must be installed to run',cat:'interp'},
+  {name:'Converts high-level to machine code',cat:'both'},
+  {name:'Input is source code',cat:'both'},
+];
+let ciSel=null;
+function buildCIChips(){
+  const bank=document.getElementById('ci-chips');bank.innerHTML='';
+  ciItems.forEach(item=>{
+    const c=document.createElement('div');c.className='chip';c.textContent=item.name;c.dataset.cat=item.cat;c.dataset.name=item.name;
+    c.onclick=()=>{document.querySelectorAll('#ci-chips .chip').forEach(x=>x.classList.remove('chip-sel'));c.classList.add('chip-sel');ciSel=c;};
+    bank.appendChild(c);
+  });
+}
+function dropCIChip(zone){
+  if(!ciSel)return;
+  const chip=document.createElement('div');chip.className='chip chip-used';chip.textContent=ciSel.dataset.name;
+  chip.dataset.cat=ciSel.dataset.cat;chip.dataset.expected=zone.id.replace('cidrop-','');
+  zone.appendChild(chip);ciSel.classList.add('chip-used');ciSel.classList.remove('chip-sel');ciSel=null;
+}
+function checkCIClass(){
+  let ok=0,total=0;
+  document.querySelectorAll('.drop-zone .chip').forEach(c=>{total++;if(c.dataset.cat===c.dataset.expected){c.classList.add('chip-ok');ok++;}else{c.classList.add('chip-bad');}});
+  const res=document.getElementById('ci-class-res');
+  res.textContent=total===0?'Place some items first!':ok===total?`✓ All ${total} correct! 🎉`:`${ok}/${total} correct.`;
+  res.style.color=ok===total&&total>0?'var(--teal)':'var(--coral)';
+}
+function resetCIClass(){ciSel=null;['cidrop-comp','cidrop-interp','cidrop-both'].forEach(id=>{document.getElementById(id).innerHTML='';});buildCIChips();document.getElementById('ci-class-res').textContent='';}
+buildCIChips();
+
+// ── ACTIVITY 3: FILL IN BLANKS ──
+const fillTemplate=`Computers can only execute programs written in __B1__ — binary 1s and 0s. Because this is impossible for humans to write directly, programs are written in other languages and then __B2__ into machine code. Assembly language is a __B3__-level language that uses short keywords called __B4__ (e.g. ADD, LDR) to represent CPU instructions. Each mnemonic is converted to exactly one machine code instruction by an __B5__. High-level languages like Python or Java are converted by either a __B6__ (which translates the whole program at once and saves __B7__ code) or an __B8__ (which translates one line at a time with no saved output). A compiled program runs __B9__ because it is already translated. An interpreter is better for __B10__ because it finds errors line by line.`;
+const fillAnswers={B1:'machine code',B2:'translated',B3:'low',B4:'mnemonics',B5:'assembler',B6:'compiler',B7:'object',B8:'interpreter',B9:'faster',B10:'debugging'};
+let fillState={},fillSel=null;
+function buildFill(){
+  const wb=document.getElementById('word-bank');wb.innerHTML='';
+  Object.values(fillAnswers).sort(()=>Math.random()-0.5).forEach(w=>{
+    const d=document.createElement('div');d.className='word';d.textContent=w;d.dataset.word=w;
+    d.onclick=()=>{if(d.classList.contains('used'))return;document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');fillSel=w;};
+    wb.appendChild(d);
+  });
+  renderFill();
+}
+function renderFill(){
+  const wrap=document.getElementById('fill-para');
+  let html=fillTemplate;
+  Object.keys(fillAnswers).forEach(k=>{html=html.replace(`__${k}__`,`<span class="blank" data-b="${k}">${fillState[k]||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`);});
+  wrap.innerHTML=html;
+  wrap.querySelectorAll('.blank').forEach(b=>{
+    const k=b.dataset.b;if(fillState[k])b.classList.add('filled');
+    b.onclick=()=>{if(fillSel){fillState[k]=fillSel;fillSel=null;document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));renderFill();}else{fillSel=k;wrap.querySelectorAll('.blank').forEach(x=>x.classList.remove('sel-b'));b.classList.add('sel-b');}};
+  });
+  document.querySelectorAll('#word-bank .word').forEach(w=>{w.classList.toggle('used',Object.values(fillState).includes(w.dataset.word));});
+}
+function checkFill(){let ok=0;Object.keys(fillAnswers).forEach(k=>{const b=document.querySelector(`#fill-para [data-b="${k}"]`);if(!b)return;if(fillState[k]===fillAnswers[k]){b.classList.add('ok');b.classList.remove('bad');ok++;}else if(fillState[k]){b.classList.add('bad');b.classList.remove('ok');}});const sc=document.getElementById('fill-score');sc.textContent=`${ok}/10`;sc.style.color=ok===10?'var(--teal)':'var(--coral)';}
+function revealFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]=fillAnswers[k]);renderFill();checkFill();}
+function resetFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]='');fillSel=null;renderFill();document.getElementById('fill-score').textContent='';}
+buildFill();
+
+// ── ACTIVITY 4: TRUE/FALSE ──
+const tfItems=[
+  {q:'Machine code is the only language that can be directly executed by the CPU.',ans:true,exp:'✓ True! The CPU can only understand binary machine code. ALL programs — whether written in Python, Java or assembly — must be converted to machine code before the CPU can run them.'},
+  {q:'An interpreter produces an object code file (.exe) that can be saved and run later.',ans:false,exp:'✗ False! That is the COMPILER. An interpreter translates and runs code one line at a time but produces NO saved output — the source code must be re-translated every single time the program runs.'},
+  {q:'Assembly language programs are portable — the same code runs on any CPU.',ans:false,exp:'✗ False! Assembly language is NOT portable. It is specific to one CPU\'s instruction set. Assembly code for an ARM processor will not run on an Intel x86 processor without modification.'},
+  {q:'A compiler finds and reports all errors at once before producing any output.',ans:true,exp:'✓ True! A compiler checks the entire source code first. If any errors exist, no object code is produced. This means ALL errors are reported at once — which can seem overwhelming but ensures the final compiled program is fully correct.'},
+  {q:'A program that runs using an interpreter will generally run faster than the same program compiled.',ans:false,exp:'✗ False! Compiled programs are FASTER. They are already translated into machine code. Interpreted programs are slower because the interpreter must translate each line at runtime every time the program is run.'},
+  {q:'The assembler converts assembly language mnemonics into machine code on a 1:1 basis.',ans:true,exp:'✓ True! There is a one-to-one mapping — each assembly mnemonic (e.g. ADD, LDR) corresponds to exactly one machine code instruction. This differs from a compiler, which may convert one high-level statement into many machine code instructions.'},
+  {q:'An interpreter is better suited for the distribution of finished commercial software than a compiler.',ans:false,exp:'✗ False! A compiler is better for distribution. It produces object code (machine code) that runs without the translator installed, runs faster, and protects the source code. An interpreter requires the source code to be present and the interpreter software installed — not ideal for commercial products.'},
+  {q:'During program development, an interpreter is often preferred because it finds errors line by line.',ans:true,exp:'✓ True! During development, finding bugs quickly is important. An interpreter stops at the first error and reports it — making it easy to identify exactly which line is wrong. A compiler only reports errors after attempting to compile the whole program.'},
+];
+function buildTF(){
+  const area=document.getElementById('tf-area');area.innerHTML='';
+  tfItems.forEach((item,i)=>{
+    const div=document.createElement('div');div.className='tf-card';
+    div.innerHTML=`<div class="tf-q">${i+1}. ${item.q}</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,${i},true)">TRUE</button><button class="tf-btn" onclick="checkTF(this,${i},false)">FALSE</button></div><div class="tf-exp" id="tf-exp-${i}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkTF(btn,i,ans){
+  const item=tfItems[i];const btns=btn.closest('.tf-card').querySelectorAll('.tf-btn');btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById(`tf-exp-${i}`);
+  if(ans===item.ans){btn.classList.add('correct');exp.className='tf-exp show';exp.style.cssText='background:#e0faf1;border-left:4px solid var(--teal);';}
+  else{btn.classList.add('wrong');btns.forEach(b=>{if((b.textContent==='TRUE')===item.ans)b.classList.add('correct');});exp.className='tf-exp show';exp.style.cssText='background:var(--light-coral);border-left:4px solid var(--coral);';}
+  exp.textContent=item.exp;
+}
+buildTF();
+
+// ── ACTIVITY 5: SCENARIO CHALLENGE ──
+const scenarios=[
+  {q:'A programmer is writing firmware for a microcontroller in a washing machine. Which language level is most appropriate?',opts:['High-level (Python)','Assembly language','Machine code written by hand'],ans:1,fb:'Assembly language! The embedded system needs a very small, fast program with direct hardware control. High-level languages produce larger code; writing raw machine code by hand is impractical.'},
+  {q:'A company is distributing a finished 3D game to customers. Which translator should they have used?',opts:['Interpreter','Assembler','Compiler'],ans:2,fb:'Compiler! It produces object code (.exe) that runs fast, without the compiler installed, and without exposing the source code. Perfect for commercial distribution.'},
+  {q:'A student is learning to program in Python. Which translator is Python using?',opts:['Assembler','Compiler','Interpreter'],ans:2,fb:'Interpreter! Python is typically interpreted — it translates and runs one line at a time. This is great for learning because errors are reported line by line.'},
+  {q:'A developer wants their program to run on Windows, Mac and Linux with the same source code. Which is most suitable?',opts:['Machine code','Assembly language','High-level language (e.g. Java)'],ans:2,fb:'High-level language! High-level languages are portable — the same source code can be compiled or interpreted on different operating systems. Machine code and assembly are CPU-specific.'},
+  {q:'During testing, a developer wants to quickly find which line of code has a bug. Which translator approach is better?',opts:['Compiler — reports all errors at once','Interpreter — finds errors one line at a time','Assembler — converts mnemonics to binary'],ans:1,fb:'Interpreter! It stops at the first error and reports exactly which line failed. A compiler reports all errors at once, which can be harder to debug, especially on large programs.'},
+];
+let scenScores=new Array(scenarios.length).fill(null);
+function buildScenarios(){
+  const area=document.getElementById('scenario-area');area.innerHTML='';
+  scenarios.forEach((s,i)=>{
+    const card=document.createElement('div');card.style.cssText='border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;margin-bottom:14px;box-shadow:3px 3px 0 var(--ink);';
+    card.innerHTML=`<div style="background:var(--light-yellow);padding:10px 14px;font-family:'Kalam',cursive;font-size:0.95rem;border-bottom:2px solid var(--ink);">📌 Scenario ${i+1}: ${s.q}</div>
+    <div style="padding:12px 14px;background:white;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="scen-opts-${i}">
+        ${s.opts.map((o,j)=>`<button onclick="answerScen(${i},${j})" id="scen-btn-${i}-${j}" style="font-family:'Patrick Hand',cursive;font-size:0.92rem;padding:8px 16px;border:2.5px solid var(--ink);border-radius:8px;background:white;cursor:pointer;box-shadow:2px 2px 0 var(--ink);">${o}</button>`).join('')}
+      </div>
+      <div id="scen-fb-${i}" style="margin-top:8px;display:none;padding:8px 12px;border-radius:6px;font-family:'Kalam',cursive;font-size:0.88rem;"></div>
+    </div>`;
+    area.appendChild(card);
+  });
+}
+function answerScen(i,j){
+  const s=scenarios[i];
+  document.querySelectorAll(`#scen-opts-${i} button`).forEach(b=>b.disabled=true);
+  const btn=document.getElementById(`scen-btn-${i}-${j}`);
+  const fb=document.getElementById(`scen-fb-${i}`);fb.style.display='block';
+  const correct=document.getElementById(`scen-btn-${i}-${s.ans}`);correct.style.background='var(--teal)';correct.style.color='white';correct.style.borderColor='#059669';
+  if(j===s.ans){fb.style.cssText='display:block;margin-top:8px;padding:8px 12px;border-radius:6px;font-family:"Kalam",cursive;font-size:0.88rem;background:#e0faf1;border-left:4px solid var(--teal);';fb.textContent='✓ Correct! '+s.fb;}
+  else{btn.style.background='var(--coral)';btn.style.color='white';btn.style.borderColor='#c0392b';fb.style.cssText='display:block;margin-top:8px;padding:8px 12px;border-radius:6px;font-family:"Kalam",cursive;font-size:0.88rem;background:var(--light-coral);border-left:4px solid var(--coral);';fb.textContent='✗ Not quite. '+s.fb;}
+}
+buildScenarios();
+
+// ── SVG ZOOM MODAL ──
+let modalScale=1,currentSVGEl=null;
+function openModal(wrapEl,title){const svgEl=wrapEl.querySelector('svg');if(!svgEl)return;currentSVGEl=svgEl;modalScale=1;const clone=svgEl.cloneNode(true);clone.removeAttribute('style');clone.style.width='100%';clone.style.height='auto';clone.style.display='block';const content=document.getElementById('svg-modal-content');content.innerHTML='';content.appendChild(clone);content.style.transform='scale(1)';content.style.transformOrigin='top center';document.getElementById('modal-title').textContent=title||'Diagram';document.getElementById('zoom-lbl').textContent='100%';document.getElementById('svg-modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('svg-modal').classList.remove('open');document.body.style.overflow='';currentSVGEl=null;}
+function handleModalClick(e){if(e.target===document.getElementById('svg-modal'))closeModal();}
+function modalZoom(delta){modalScale=Math.max(0.4,Math.min(4,modalScale+delta));const c=document.getElementById('svg-modal-content');c.style.transform=`scale(${modalScale})`;c.style.transformOrigin='top center';document.getElementById('zoom-lbl').textContent=Math.round(modalScale*100)+'%';}
+function modalResetZoom(){modalScale=1;document.getElementById('svg-modal-content').style.transform='scale(1)';document.getElementById('zoom-lbl').textContent='100%';}
+function downloadSVG(){const svgEl=document.getElementById('svg-modal-content').querySelector('svg');if(!svgEl)return;const varMap={'--ink':'#1a1a2e','--paper':'#fdf8f0','--yellow':'#ffd166','--coral':'#ef476f','--teal':'#06d6a0','--blue':'#118ab2','--purple':'#7b2d8b','--orange':'#f77f00','--green':'#2d6a4f','--light-yellow':'#fff9c4','--light-coral':'#fce4ec','--light-teal':'#e0f7f2','--light-blue':'#e3f2fd','--light-purple':'#f3e5f5','--light-green':'#d8f3dc'};let svgStr=svgEl.outerHTML;Object.entries(varMap).forEach(([v,val])=>{svgStr=svgStr.replaceAll(`var(${v})`,val);});svgStr=svgStr.replace('<svg',`<svg xmlns="http://www.w3.org/2000/svg"`);const vb=svgEl.getAttribute('viewBox')||'0 0 560 120';const parts=vb.split(' ');const w=parseFloat(parts[2])||560;const h=parseFloat(parts[3])||120;svgStr=svgStr.replace(/>/, `><rect width="${w}" height="${h}" fill="#fffdf5"/>`);const blob=new Blob([svgStr],{type:'image/svg+xml'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(document.getElementById('modal-title').textContent||'diagram').replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.svg';a.click();URL.revokeObjectURL(url);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.key==='+'||e.key==='=')&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(0.2);if(e.key==='-'&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(-0.2);});
+</script>
+</body>
+</html>

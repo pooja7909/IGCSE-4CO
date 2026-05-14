@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About · IGCSE Edexcel 4CP0 Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8fc; --surface: #ffffff; --surface2: #eef1f8; --border: #d8deec;
+  --t1: #0b78c2; --t2: #1f9854; --t3: #d97706; --t4: #7a4fd1; --t5: #0d9488; --t6: #c2185b;
+  --text: #1f2638; --text-dim: #5a6378; --accent: #0b78c2; --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; line-height: 1.5; }
+.container { max-width: 950px; margin: 0 auto; padding: 0 20px; }
+a { color: inherit; text-decoration: none; }
+
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 50; }
+.topbar-inner { max-width: 1180px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: 'Permanent Marker', cursive; font-size: 1.4rem; color: var(--accent); }
+.brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--t1), var(--t2)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-family: 'Nunito', sans-serif; font-size: 1rem; }
+.topbar-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.topbar-nav a { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; color: var(--text-dim); transition: all 0.15s; }
+.topbar-nav a:hover { background: var(--surface2); color: var(--accent); }
+.topbar-nav a.active { background: var(--accent); color: white; }
+.hud { display: flex; gap: 8px; flex-wrap: wrap; }
+.hud-chip { background: var(--surface2); border: 1.5px solid var(--border); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.hud-chip.streak { color: var(--t3); border-color: rgba(217,119,6,0.3); }
+.hud-chip.xp { color: var(--t1); border-color: rgba(11,120,194,0.3); }
+
+.hero { padding: 50px 0 30px; }
+.hero h1 { font-family: 'Permanent Marker', cursive; font-size: clamp(2rem, 5vw, 3rem); background: linear-gradient(135deg, var(--t1), var(--t4) 50%, var(--t2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+.hero p.lead { font-size: 1.08rem; color: var(--text-dim); max-width: 760px; }
+
+.section { padding: 24px 0 28px; }
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 26px; margin-bottom: 22px; }
+.card h2 { font-family: 'Permanent Marker', cursive; font-size: 1.5rem; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.card h3 { font-weight: 800; font-size: 1.05rem; margin: 18px 0 8px; color: var(--text); }
+.card p { font-size: 0.98rem; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+.card ul { padding-left: 22px; line-height: 1.8; margin: 6px 0 12px; }
+.card li { margin: 4px 0; }
+.card li strong { color: var(--accent); }
+.card .quote { background: var(--surface2); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 12px 0; border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-dim); font-size: 0.92rem; line-height: 1.7; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 12px; }
+.step { background: var(--surface2); border-radius: 10px; padding: 16px 18px; border-left: 4px solid var(--accent); }
+.step .num { font-family: 'Permanent Marker', cursive; font-size: 1.4rem; color: var(--accent); margin-bottom: 4px; }
+.step h4 { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+.step p { font-size: 0.88rem; color: var(--text-dim); margin: 0; }
+
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 14px; }
+.feat { background: var(--surface2); border-radius: 10px; padding: 16px; }
+.feat .ico { font-size: 1.6rem; margin-bottom: 6px; }
+.feat h4 { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+.feat p { font-size: 0.86rem; color: var(--text-dim); margin: 0; line-height: 1.5; }
+
+/* AO weights table */
+.ao-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin-top: 12px; }
+.ao-table th, .ao-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.ao-table th { background: var(--surface2); font-weight: 800; }
+.ao-table .ao-code { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 700; }
+.ao-table .pct { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--t2); text-align: right; }
+.ao-bar { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin-top: 4px; }
+.ao-bar > div { height: 100%; background: linear-gradient(90deg, var(--t1), var(--t2)); border-radius: 4px; }
+
+/* Command word grid */
+.cw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 12px; }
+.cw { background: var(--surface2); padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; }
+.cw strong { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; display: block; margin-bottom: 2px; }
+
+.cta-card { background: linear-gradient(135deg, rgba(11,120,194,0.08), rgba(31,152,84,0.08)); border-color: var(--accent); }
+.cta-card .btn { display: inline-block; margin-top: 14px; padding: 12px 24px; background: var(--accent); color: white; border-radius: 10px; font-weight: 800; font-size: 0.95rem; }
+.cta-card .btn:hover { box-shadow: 0 4px 14px rgba(11,120,194,0.3); }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 0; margin-top: 50px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+footer .foot-links { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+footer .foot-links a { color: var(--accent); font-weight: 700; }
+footer .foot-links a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .topbar-inner { flex-direction: column; align-items: stretch; }
+  .topbar-nav { justify-content: center; }
+  .hud { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">CS</span>
+      <span>Edexcel 4CP0</span>
+    </a>
+    <div class="topbar-nav">
+      <a href="index.html">Home</a>
+      <a href="index.html#topics">Topics</a>
+      <a href="past-papers.html">Past Papers</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+    <div class="hud">
+      <div class="hud-chip streak">🔥 <span id="hud-streak">0</span>d</div>
+      <div class="hud-chip xp">⭐ <span id="hud-xp">0</span> XP</div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>About this hub</h1>
+    <p class="lead">A complete, self-paced revision site for the <strong>Pearson Edexcel International GCSE in Computer Science (4CP0)</strong>, first teaching September 2017, first examination June 2019. Aligned to the official specification so every topic, sub-topic and command word in your exam is covered.</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="section">
+
+    <div class="card">
+      <h2>🎯 What this qualification is for</h2>
+      <p>The aims of the Pearson Edexcel International GCSE in Computer Science are to enable students to:</p>
+      <ul>
+        <li><strong>Understand and apply</strong> the fundamental principles and concepts of computer science — including abstraction, decomposition, logic, algorithms and data representation</li>
+        <li><strong>Analyse problems in computational terms</strong> through practical experience of solving problems, designing, writing and debugging programs</li>
+        <li><strong>Think creatively, innovatively, analytically, logically and critically</strong></li>
+        <li><strong>Understand the components</strong> that make up digital systems, and how they communicate with one another and with other systems</li>
+        <li><strong>Understand the impacts</strong> of digital technology on the individual and on wider society</li>
+        <li><strong>Apply mathematical skills</strong> relevant to computer science</li>
+      </ul>
+      <p style="font-size:0.86rem;color:var(--text-dim);">Source: Pearson Edexcel 4CP0 Specification, Issue 1, November 2016.</p>
+    </div>
+
+    <div class="card">
+      <h2>📊 How the marks are distributed</h2>
+      <p>Your final grade is built from three assessment objectives (AOs). Understanding their weights helps you spend your revision time wisely.</p>
+
+      <table class="ao-table">
+        <thead>
+          <tr><th>AO</th><th>What it tests</th><th class="pct">Weight</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ao-code">AO1</td>
+            <td>Demonstrate <strong>knowledge and understanding</strong> of the key principles of computer science
+              <div class="ao-bar"><div style="width:27.5%"></div></div>
+            </td>
+            <td class="pct">27.5%</td>
+          </tr>
+          <tr>
+            <td class="ao-code">AO2</td>
+            <td><strong>Apply knowledge and understanding</strong> of key concepts and principles of computer science
+              <div class="ao-bar"><div style="width:42.5%"></div></div>
+            </td>
+            <td class="pct">42.5%</td>
+          </tr>
+          <tr>
+            <td class="ao-code">AO3</td>
+            <td><strong>Analyse problems in computational terms</strong> — to make reasoned judgements; to design, program, test, evaluate and refine solutions
+              <div class="ao-bar"><div style="width:30%"></div></div>
+            </td>
+            <td class="pct">30%</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:14px;font-size:0.92rem;"><strong>Key takeaway:</strong> only ~27% of marks reward simple recall — over 70% test <em>application</em> and <em>analysis</em>. That's why this hub focuses heavily on quizzes, trace tables, error-spotting and the Code Lab rather than just notes.</p>
+      <h3>How the AOs split across the two papers</h3>
+      <ul>
+        <li><strong>Paper 1</strong> — AO1: 21.5% · AO2: 21% · AO3: 7.5%</li>
+        <li><strong>Paper 2</strong> — AO1: 6% · AO2: 21.5% · AO3: 22.5%</li>
+      </ul>
+      <p>So Paper 2 is overwhelmingly about <strong>applying and analysing</strong>, which is why writing real Python code is non-negotiable.</p>
+    </div>
+
+    <div class="card">
+      <h2>📚 What's inside this hub</h2>
+      <div class="feature-grid">
+        <div class="feat"><div class="ico">📖</div><h4>Annotated notes</h4><p>Every spec sub-topic explained with worked examples and "why this matters" boxes.</p></div>
+        <div class="feat"><div class="ico">⚡</div><h4>Quizzes</h4><p>Topic-filtered multiple-choice with instant feedback explaining every answer.</p></div>
+        <div class="feat"><div class="ico">✏️</div><h4>Activities</h4><p>Match-the-pairs, fill-the-blanks, true/false, error-spotting and trace tables.</p></div>
+        <div class="feat"><div class="ico">📝</div><h4>Exam questions</h4><p>Past-paper-style questions with mark schemes annotated line-by-line.</p></div>
+        <div class="feat"><div class="ico">🐍</div><h4>Python Code Lab</h4><p>Real syntax-highlighted editor with auto-scoring against official mark schemes.</p></div>
+        <div class="feat"><div class="ico">🏆</div><h4>Progress tracking</h4><p>Streak counter, XP system, per-topic mastery — all saved locally.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗺 How to use it</h2>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><h4>Pick a topic</h4><p>Start with Topic 1 if you're new, or jump straight to a weak area.</p></div>
+        <div class="step"><div class="num">2</div><h4>Read the notes</h4><p>Each topic page expands the spec one bullet at a time, with examples.</p></div>
+        <div class="step"><div class="num">3</div><h4>Test yourself</h4><p>Take the topic quiz, do the activities, mark concepts as mastered.</p></div>
+        <div class="step"><div class="num">4</div><h4>Attempt exam questions</h4><p>Try the past-paper-style questions on paper, then reveal the annotated mark scheme.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🗣 Know your command words</h2>
+      <p>Examiners give marks for answering the question that was asked — not the question you wished was asked. Each Pearson command word has a precise meaning. Memorise these.</p>
+      <div class="cw-grid">
+        <div class="cw"><strong>State / Give / Name</strong>One short piece of information. No explanation needed.</div>
+        <div class="cw"><strong>Identify</strong>Select key information from a given stimulus.</div>
+        <div class="cw"><strong>Describe</strong>Give an account — developed statements, no justification required.</div>
+        <div class="cw"><strong>Explain</strong>Justify or exemplify a point. Marks need linked reasoning.</div>
+        <div class="cw"><strong>Compare / Contrast</strong>Find similarities and/or differences. Answer must address both items.</div>
+        <div class="cw"><strong>Discuss</strong>Investigate an issue from multiple angles using reasoning.</div>
+        <div class="cw"><strong>Analyse</strong>Examine elements in detail.</div>
+        <div class="cw"><strong>Assess / Evaluate</strong>Weigh factors then come to a supported judgement.</div>
+        <div class="cw"><strong>Deduce</strong>Reach a conclusion from the information provided.</div>
+        <div class="cw"><strong>Calculate</strong>Show working and give a numerical answer with units.</div>
+        <div class="cw"><strong>Construct</strong>Create an artefact using subject-specific notation.</div>
+        <div class="cw"><strong>Convert</strong>Change information from one representation to another.</div>
+        <div class="cw"><strong>Complete</strong>Fill in a table, diagram or algorithm.</div>
+        <div class="cw"><strong>Amend</strong>Make changes/additions/deletions to a representation.</div>
+        <div class="cw"><strong>Devise</strong>Plan or invent a procedure from existing ideas.</div>
+        <div class="cw"><strong>Perform</strong>Carry out an identified task or process.</div>
+        <div class="cw"><strong>Predict</strong>Give an expected result.</div>
+        <div class="cw"><strong>Write</strong>Manipulate or create using subject-specific notation.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📝 The pseudocode you'll see in exams</h2>
+      <p>Paper 1 uses Pearson's standardised pseudocode (Appendix 5 of the spec). It's language-neutral so the questions are fair to all students — Python, Java and C# users. The full reference will be available to you in Paper 2.</p>
+      <h3>Quick reference — the syntax that always comes up</h3>
+      <ul>
+        <li><strong>Variables:</strong> <code>SET Counter TO 0</code></li>
+        <li><strong>Arrays:</strong> <code>SET ArrayValues TO [1, 2, 3, 4, 5]</code> — indices start at <strong>0</strong></li>
+        <li><strong>Input/Output:</strong> <code>RECEIVE Name FROM (STRING) KEYBOARD</code>  ·  <code>SEND 'Hello' TO DISPLAY</code></li>
+        <li><strong>Selection:</strong> <code>IF condition THEN ... ELSE ... END IF</code></li>
+        <li><strong>Pre-conditioned loop:</strong> <code>WHILE condition DO ... END WHILE</code></li>
+        <li><strong>Post-conditioned loop:</strong> <code>REPEAT ... UNTIL condition</code></li>
+        <li><strong>Count loop:</strong> <code>FOR i FROM 1 TO 10 DO ... END FOR</code></li>
+        <li><strong>For-each loop:</strong> <code>FOR EACH item FROM array DO ... END FOREACH</code></li>
+        <li><strong>Function:</strong> <code>FUNCTION name(params) BEGIN FUNCTION ... RETURN value END FUNCTION</code></li>
+        <li><strong>Procedure:</strong> <code>PROCEDURE name(params) BEGIN PROCEDURE ... END PROCEDURE</code></li>
+        <li><strong>File I/O:</strong> <code>READ MyFile.doc Record</code>  ·  <code>WRITE MyFile.doc Answer1, Answer2</code></li>
+        <li><strong>Operators:</strong> <code>+ - * /</code> with <code>MOD</code> (modulo), <code>DIV</code> (integer division), <code>^</code> (exponent)</li>
+        <li><strong>Relational:</strong> <code>= &lt;&gt; &gt; &gt;= &lt; &lt;=</code> (note: <code>&lt;&gt;</code> means "not equal to")</li>
+        <li><strong>Logical:</strong> <code>AND · OR · NOT</code></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🔷 Flowchart symbols you need to know</h2>
+      <p>Pearson uses these six symbols in all flowchart questions (Appendix 6 of the spec):</p>
+      <ul>
+        <li><strong>Oval / Pill</strong> — Start &amp; End of an algorithm</li>
+        <li><strong>Rectangle</strong> — A process to be carried out</li>
+        <li><strong>Diamond</strong> — A decision to be made</li>
+        <li><strong>Arrow</strong> — Shows the logical flow of the program</li>
+        <li><strong>Rectangle with double sides</strong> — A subprocess defined elsewhere</li>
+        <li><strong>Parallelogram</strong> — Input and/or output</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🏆 How to actually score Grade 9</h2>
+      <p>From years of mark-scheme patterns and the AO weightings above, Grade 9 in 4CP0 comes down to four habits:</p>
+      <ul>
+        <li><strong>Active recall, not re-reading.</strong> Closing the notes and writing them from memory teaches your brain ten times faster than re-reading. Use the quizzes and trace tables.</li>
+        <li><strong>Trace before you code.</strong> Walk through every algorithm by hand first. Examiners reward visible working far more than a final answer.</li>
+        <li><strong>Master the vocabulary.</strong> Marks come from precise terminology — "fetch–decode–execute cycle", "lossless compression", "two's complement". Vague phrasing loses marks.</li>
+        <li><strong>Past papers, timed.</strong> Once you've done the topic work, sit a past paper under timed conditions, then mark it strictly. Repeat at least 6 papers before exam day.</li>
+      </ul>
+    </div>
+
+    <div class="card cta-card">
+      <h2>🚀 Ready to start?</h2>
+      <p>The hub works best when you commit to a small daily session — 20 minutes is enough. Streaks and XP build automatically as you go.</p>
+      <a href="index.html#topics" class="btn">Pick your first topic →</a>
+    </div>
+
+    <div class="card">
+      <h2>🔒 Privacy</h2>
+      <p>This site uses your browser's <em>localStorage</em> to save your progress (streak, XP, mastery flags, quiz scores). That data lives only on your device — nothing is uploaded anywhere. There are no accounts, no tracking cookies, no analytics. Clear your browser's site data and everything resets.</p>
+    </div>
+
+    <div class="card">
+      <h2>📋 Specification reference</h2>
+      <p>This hub follows the <strong>Pearson Edexcel International GCSE in Computer Science (4CP0)</strong>, first teaching September 2017, first examination June 2019. The official six topics, in spec order:</p>
+      <ul>
+        <li><strong>Topic 1:</strong> Problem solving — algorithms, decomposition, abstraction</li>
+        <li><strong>Topic 2:</strong> Programming — code, constructs, data types, I/O, operators, subprograms</li>
+        <li><strong>Topic 3:</strong> Data — binary, representation, storage, encryption</li>
+        <li><strong>Topic 4:</strong> Computers — hardware, logic, software, programming languages</li>
+        <li><strong>Topic 5:</strong> Communication and the internet — networks, security, web</li>
+        <li><strong>Topic 6:</strong> The bigger picture — emerging trends, issues and impact</li>
+      </ul>
+      <p style="margin-top:12px;font-size:0.88rem;color:var(--text-dim);"><strong>Important codes:</strong> Subject code <strong>4CP0</strong> · Paper 1 code <strong>4CP0/01</strong> · Paper 2 code <strong>4CP0/02</strong>. Grade scale 9–1 (where 9 is the highest). 100% external assessment.</p>
+      <p style="font-size:0.88rem;color:var(--text-dim);">For the official specification PDF and approved sample assessment materials, see your school's Edexcel resources or Pearson's qualification pages. This hub is not affiliated with or endorsed by Pearson.</p>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="past-papers.html">Past Papers</a>
+      <a href="about.html">About</a>
+    </div>
+    <div>Pearson Edexcel International GCSE in Computer Science (4CP0) · Self-study hub · Not affiliated with or endorsed by Pearson</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function get(k, def){ try { const v = localStorage.getItem(k); return v===null ? def : JSON.parse(v); } catch(e){ return def; } }
+  const s = document.getElementById('hud-streak'); if (s) s.textContent = get('igcse_py_streak', 0);
+  const x = document.getElementById('hud-xp'); if (x) x.textContent = get('igcse_py_xp', 0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 5: Communication – IGCSE Computer Science 4CP01</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&family=Reenie+Beanie&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #fdf8f0;
+    --yellow: #ffd166;
+    --coral: #ef476f;
+    --teal: #06d6a0;
+    --blue: #118ab2;
+    --purple: #7b2d8b;
+    --orange: #f77f00;
+    --green: #2d9b5a;
+    --light-yellow: #fff9c4;
+    --light-coral: #fce4ec;
+    --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd;
+    --light-purple: #f3e5f5;
+    --line: rgba(26,26,46,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    font-family: 'Patrick Hand', cursive;
+    color: var(--ink);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(
+      transparent, transparent 31px,
+      rgba(100,149,237,0.15) 31px,
+      rgba(100,149,237,0.15) 32px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 70px; bottom: 0;
+    width: 2px;
+    background: rgba(239,71,111,0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 30px 80px 90px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 50px 0 30px;
+    position: relative;
+  }
+
+  .spec-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: var(--blue);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    transform: rotate(-0.5deg);
+    display: inline-block;
+  }
+
+  .topic-badge {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--yellow);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.1rem;
+    padding: 6px 20px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    transform: rotate(-1deg);
+    box-shadow: 3px 3px 0 var(--coral);
+    letter-spacing: 2px;
+  }
+
+  .hero-title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 4rem;
+    color: var(--ink);
+    text-shadow: 4px 4px 0 var(--teal);
+    letter-spacing: 2px;
+    transform: rotate(-1.5deg);
+    display: inline-block;
+    position: relative;
+    line-height: 1.1;
+  }
+
+  .hero-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0; right: 0;
+    height: 5px;
+    background: var(--coral);
+    border-radius: 2px;
+    transform: rotate(0.5deg);
+  }
+
+  .hero-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: var(--blue);
+    margin-top: 24px;
+    transform: rotate(0.5deg);
+    display: block;
+  }
+
+  .section-label {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin: 50px 0 20px;
+    transform: rotate(-0.8deg);
+    display: inline-block;
+    position: relative;
+  }
+
+  .section-label::before {
+    content: '→ ';
+    color: var(--coral);
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 10px;
+  }
+
+  .module-card {
+    border: 3px solid var(--ink);
+    border-radius: 12px;
+    background: white;
+    box-shadow: 6px 6px 0 var(--ink);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s;
+    position: relative;
+  }
+
+  .module-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--ink);
+  }
+
+  .module-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .card-header {
+    padding: 18px 20px 14px;
+    border-bottom: 2px dashed rgba(26,26,46,0.18);
+    position: relative;
+  }
+
+  .card-num {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2.8rem;
+    position: absolute;
+    top: 12px; right: 18px;
+    opacity: 0.1;
+  }
+
+  .card-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.45rem;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-body {
+    padding: 14px 20px 18px;
+    flex: 1;
+  }
+
+  .card-topics {
+    list-style: none;
+    padding: 0;
+  }
+
+  .card-topics li {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem;
+    padding: 3px 0 3px 22px;
+    position: relative;
+  }
+
+  .card-topics li::before {
+    content: '✎';
+    position: absolute;
+    left: 0;
+    font-size: 0.85rem;
+  }
+
+  .card-footer {
+    padding: 10px 20px;
+    border-top: 2px dashed rgba(26,26,46,0.18);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .card-arrow {
+    font-size: 1.3rem;
+    font-family: 'Permanent Marker', cursive;
+    opacity: 1;
+  }
+
+  .card-a .card-header { background: var(--light-teal); }
+  .card-b .card-header { background: var(--light-coral); }
+  .card-c .card-header { background: var(--light-blue); }
+
+  .sticky-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin: 40px 0 10px;
+  }
+
+  .sticky {
+    border-radius: 4px;
+    padding: 16px 18px;
+    font-family: 'Kalam', cursive;
+    font-size: 0.95rem;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
+    position: relative;
+    transform: rotate(var(--sr, 0deg));
+  }
+
+  .sticky-y { background: #fff9c4; --sr: -1deg; }
+  .sticky-p { background: #f3e5f5; --sr: 0.8deg; }
+  .sticky-g { background: #d8f3dc; --sr: -0.5deg; }
+  .sticky-b { background: #e3f2fd; --sr: 1deg; }
+
+  .sticky strong {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .progress-box {
+    border: 3px solid var(--ink);
+    border-radius: 10px;
+    background: white;
+    box-shadow: 5px 5px 0 var(--ink);
+    padding: 20px 24px;
+    margin: 40px 0;
+  }
+
+  .progress-title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+    transform: rotate(-0.5deg);
+    display: inline-block;
+  }
+
+  .checklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .check-item:hover { background: var(--light-yellow); }
+
+  .check-item input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--teal);
+    cursor: pointer;
+  }
+
+  .check-item.done { text-decoration: line-through; opacity: 0.55; }
+
+  .footer-note {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'Reenie Beanie', cursive;
+    font-size: 1.4rem;
+    color: var(--blue);
+    opacity: 0.7;
+    transform: rotate(-0.5deg);
+  }
+
+  .doodle-corner {
+    position: absolute;
+    opacity: 0.07;
+    font-size: 5rem;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .module-card { animation: fadeUp 0.5s ease both; }
+  .module-card:nth-child(1) { animation-delay: 0.1s; }
+  .module-card:nth-child(2) { animation-delay: 0.22s; }
+  .module-card:nth-child(3) { animation-delay: 0.34s; }
+  .hero { animation: fadeUp 0.4s ease both; }
+
+  @media (max-width: 600px) {
+    .page-wrap { padding: 20px 16px 60px 24px; }
+    .hero-title { font-size: 2.6rem; }
+    body::after { left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(13,148,136,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#0d9488;font-weight:700;font-size:1.05rem;text-decoration:none;font-family:'Caveat',cursive;">
+      ← Back to all topics
+    </a>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <span class="doodle-corner" style="top:30px; right:20px; font-size:7rem; transform:rotate(12deg);">📡</span>
+  <span class="doodle-corner" style="bottom:200px; right:10px; font-size:5rem; transform:rotate(-8deg);">🌐</span>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="spec-label">📘 IGCSE Computer Science &nbsp;·&nbsp; Edexcel 4CP01</div>
+    <div><span class="topic-badge">TOPIC 5</span></div>
+    <h1 class="hero-title">Communication</h1>
+    <span class="hero-subtitle">Networks · Protocols · Security · The Internet</span>
+  </div>
+
+  <div class="section-label">Choose your revision module</div>
+
+  <div class="modules-grid">
+
+    <!-- Card 1 — links to 5.1.html -->
+    <a class="module-card card-a" href="topic-5-1-networks.html" title="Open Module A" target="_blank">
+      <div class="card-header">
+        <span class="card-num">A</span>
+        <span class="card-icon">🖧</span>
+        <div class="card-title">5.1 – Networks</div>
+      </div>
+      <div class="card-body">
+        <ul class="card-topics">
+          <li>LANs &amp; WANs</li>
+          <li>Client-server &amp; peer-to-peer models</li>
+          <li>Wired &amp; wireless transmission media</li>
+          <li>Network topologies (bus, ring, star, mesh)</li>
+          <li>TCP/IP layers</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span>Key terms · Quiz · Activities</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Card 2 — links to 5.2.html -->
+    <a class="module-card card-b" href="topic-5-2-security.html" title="Open Module B" target="_blank">
+      <div class="card-header">
+        <span class="card-num">B</span>
+        <span class="card-icon">🔒</span>
+        <div class="card-title">5.2 – Network Security</div>
+      </div>
+      <div class="card-body">
+        <ul class="card-topics">
+          <li>Malware, phishing &amp; pharming</li>
+          <li>Denial of Service (DoS) attacks</li>
+          <li>Firewalls, authentication &amp; access control</li>
+          <li>Audit trails &amp; penetration testing</li>
+          <li>Encryption &amp; physical security</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span>Key terms · Quiz · Activities</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- Card 3 — links to 5.3.html -->
+    <a class="module-card card-c" href="topic-5-3-internet-www.html" title="Open Module C" target="_blank">
+      <div class="card-header">
+        <span class="card-num">C</span>
+        <span class="card-icon">🌐</span>
+        <div class="card-title">5.3 – The Internet &amp; WWW</div>
+      </div>
+      <div class="card-body">
+        <ul class="card-topics">
+          <li>IP addresses &amp; MAC addresses</li>
+          <li>DNS &amp; how domain names work</li>
+          <li>HTTP, HTTPS &amp; web browsers</li>
+          <li>Network hardware (routers, switches, hubs)</li>
+          <li>Packet switching &amp; routing</li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <span>Key terms · Quiz · Activities</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Sticky notes -->
+  <div class="sticky-row">
+    <div class="sticky sticky-y">
+      <strong>📌 Exam tip!</strong>
+      Always define terms precisely — "a firewall <em>monitors and filters</em> network traffic using rules" scores more than "it blocks bad stuff"
+    </div>
+    <div class="sticky sticky-p">
+      <strong>⚠️ Common mistake!</strong>
+      Don't confuse <em>encryption</em> (scrambling data) with <em>authentication</em> (verifying identity). Both are needed!
+    </div>
+    <div class="sticky sticky-g">
+      <strong>🏆 High marks!</strong>
+      Questions about protocols love asking WHY they exist — think about reliability, ordering, and error correction.
+    </div>
+    <div class="sticky sticky-b">
+      <strong>💡 Remember!</strong>
+      TCP/IP is a <em>suite</em> of protocols — TCP handles reliable delivery; IP handles addressing &amp; routing.
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="progress-box">
+    <div class="progress-title">📋 My Revision Checklist</div>
+    <div class="checklist" id="checklist">
+
+      <div style="grid-column:1/-1; font-family:'Permanent Marker',cursive; font-size:1rem; color:var(--orange); margin:6px 0 2px;">🖧 5.1 – Networks</div>
+
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain LAN vs WAN</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know client-server vs peer-to-peer</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can describe wired vs wireless transmission media</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand network topologies (bus, ring, star, mesh)</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can name &amp; explain the 4 TCP/IP layers</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know what protocols operate at each TCP/IP layer</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand bandwidth &amp; latency</label>
+
+      <div style="grid-column:1/-1; font-family:'Permanent Marker',cursive; font-size:1rem; color:var(--teal); margin:10px 0 2px;">🔒 5.2 – Network Security</div>
+
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can list &amp; describe 3+ types of malware</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain phishing vs pharming</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand Denial of Service (DoS) attacks</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain how firewalls work (hardware vs software)</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know the difference between authentication &amp; access control</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can describe what an audit trail is &amp; why it's used</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand penetration testing &amp; why it's ethical</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain encryption &amp; why it protects data</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand physical security measures</label>
+
+      <div style="grid-column:1/-1; font-family:'Permanent Marker',cursive; font-size:1rem; color:var(--blue); margin:10px 0 2px;">🌐 5.3 – The Internet &amp; WWW</div>
+
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand IP addresses &amp; how they work</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can explain what DNS is &amp; how it resolves domain names</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know the difference between HTTP &amp; HTTPS</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can describe how packet switching works</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I can describe the role of routers, switches &amp; hubs</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I understand the difference between the Internet &amp; the WWW</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I know what a URL is &amp; its components</label>
+      <label class="check-item"><input type="checkbox" onchange="toggleDone(this)"> I've done all three module quizzes ✅</label>
+
+    </div>
+  </div>
+
+  <p class="footer-note">✏️ Good luck with your revision — you've got this! 🚀</p>
+
+</div>
+
+<script>
+  function toggleDone(cb) {
+    cb.closest('.check-item').classList.toggle('done', cb.checked);
+  }
+</script>
+</body>
+</html>

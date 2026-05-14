@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IGCSE Computer Science — Complete Self-Study Hub</title>
+<meta name="description" content="Self-study site for IGCSE Computer Science covering all 6 topics, with notes, quizzes, exam-style questions and a Python code lab.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface2: #eef1f8;
+  --border: #d8deec;
+  --t1: #0b78c2;   /* topic 1 — blue (problem solving) */
+  --t2: #1f9854;   /* topic 2 — green (programming) */
+  --t3: #d97706;   /* topic 3 — amber (data) */
+  --t4: #7a4fd1;   /* topic 4 — purple (computers) */
+  --t5: #0d9488;   /* topic 5 — teal (communication) */
+  --t6: #c2185b;   /* topic 6 — pink (bigger picture) */
+  --text: #1f2638;
+  --text-dim: #5a6378;
+  --accent: #0b78c2;
+  --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; line-height: 1.5; }
+.container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+a { color: inherit; text-decoration: none; }
+
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: 'Permanent Marker', cursive; font-size: 1.4rem; color: var(--accent); }
+.brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--t1), var(--t2)); display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; font-family: 'Nunito', sans-serif; font-weight: 900; }
+.topbar-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.topbar-nav a { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; color: var(--text-dim); transition: all 0.15s; }
+.topbar-nav a:hover { background: var(--surface2); color: var(--accent); }
+.topbar-nav a.active { background: var(--accent); color: white; }
+.hud { display: flex; gap: 8px; flex-wrap: wrap; }
+.hud-chip { background: var(--surface2); border: 1.5px solid var(--border); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.hud-chip.streak { color: var(--t3); border-color: rgba(217,119,6,0.3); }
+.hud-chip.xp { color: var(--t1); border-color: rgba(11,120,194,0.3); }
+
+.hero { padding: 60px 0 36px; text-align: center; }
+.hero-badge { display: inline-block; background: linear-gradient(135deg, var(--t1), var(--t2)); color: white; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700; padding: 6px 18px; border-radius: 20px; letter-spacing: 1px; margin-bottom: 18px; }
+.hero-title { font-family: 'Permanent Marker', cursive; font-size: clamp(2.2rem, 6vw, 3.8rem); background: linear-gradient(135deg, var(--t1) 0%, var(--t4) 50%, var(--t2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; margin-bottom: 14px; }
+.hero-sub { font-size: 1.08rem; color: var(--text-dim); max-width: 720px; margin: 0 auto 24px; }
+.hero-meta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+.hero-meta .pill { background: var(--surface); border: 1.5px solid var(--border); padding: 7px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+.hero-meta .pill strong { color: var(--accent); }
+
+.section { padding: 30px 0 50px; }
+.section-title { font-family: 'Permanent Marker', cursive; font-size: 1.8rem; margin-bottom: 6px; color: var(--accent); display: flex; align-items: center; gap: 10px; }
+.section-sub { color: var(--text-dim); margin-bottom: 26px; font-size: 0.95rem; }
+
+.topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 22px; }
+.topic-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 26px 24px 22px; transition: all 0.2s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 320px; }
+.topic-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--topic-color); }
+.topic-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(31,38,56,0.08); border-color: var(--topic-color); }
+.topic-num { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--topic-color); color: white; font-family: 'Permanent Marker', cursive; font-size: 1.4rem; border-radius: 12px; margin-bottom: 14px; }
+.topic-emoji { font-size: 1.8rem; margin-left: 8px; vertical-align: middle; }
+.topic-title { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.25rem; margin-bottom: 6px; color: var(--text); }
+.topic-code { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-dim); margin-bottom: 12px; }
+.topic-desc { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; flex-grow: 1; margin-bottom: 14px; }
+.topic-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.topic-tag { background: var(--surface2); padding: 3px 10px; border-radius: 12px; font-size: 0.74rem; font-weight: 700; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+.topic-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; background: var(--topic-color); color: white; border-radius: 10px; font-weight: 800; font-size: 0.92rem; align-self: flex-start; transition: all 0.15s; }
+.topic-btn:hover { transform: translateX(3px); box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+.topic-card.coming .topic-btn { background: var(--surface2); color: var(--text-dim); pointer-events: none; }
+.topic-card.coming .topic-btn::after { content: ' · soon'; font-weight: 600; opacity: 0.8; }
+
+.topic-card.t1 { --topic-color: var(--t1); }
+.topic-card.t2 { --topic-color: var(--t2); }
+.topic-card.t3 { --topic-color: var(--t3); }
+.topic-card.t4 { --topic-color: var(--t4); }
+.topic-card.t5 { --topic-color: var(--t5); }
+.topic-card.t6 { --topic-color: var(--t6); }
+
+.exam-band { margin-top: 50px; background: linear-gradient(135deg, rgba(11,120,194,0.05), rgba(31,152,84,0.05)); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px; }
+.exam-band h3 { font-family: 'Permanent Marker', cursive; font-size: 1.5rem; color: var(--accent); margin-bottom: 16px; }
+.papers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+.paper-card { background: var(--surface); border: 1.5px solid var(--border); border-left: 4px solid var(--accent); border-radius: 10px; padding: 18px; }
+.paper-card.p2 { border-left-color: var(--t2); }
+.paper-card h4 { font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; }
+.paper-card .meta { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 10px; }
+.paper-card ul { padding-left: 18px; font-size: 0.92rem; line-height: 1.6; }
+.paper-card li { margin: 3px 0; }
+
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 20px; }
+.stat { background: var(--surface); border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 16px; text-align: center; }
+.stat .num { font-family: 'Permanent Marker', cursive; font-size: 1.8rem; color: var(--accent); line-height: 1; }
+.stat .label { font-size: 0.82rem; font-weight: 700; color: var(--text-dim); margin-top: 6px; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 0; margin-top: 50px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+footer .foot-links { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+footer .foot-links a { color: var(--accent); font-weight: 700; }
+footer .foot-links a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .topbar-inner { flex-direction: column; align-items: stretch; }
+  .topbar-nav { justify-content: center; }
+  .hud { justify-content: center; }
+  .hero { padding: 36px 0 24px; }
+  .topic-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="container topbar-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">CS</span>
+      <span>IGCSE Computer Science</span>
+    </a>
+    <div class="topbar-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="#topics">Topics</a>
+      <a href="past-papers.html">Past Papers</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="hud">
+      <div class="hud-chip streak">🔥 <span id="hud-streak">0</span>d</div>
+      <div class="hud-chip xp">⭐ <span id="hud-xp">0</span> XP</div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="hero-badge">IGCSE COMPUTER SCIENCE · COMPLETE SELF-STUDY HUB</span>
+    <h1 class="hero-title">Your complete revision hub.</h1>
+    <p class="hero-sub">Six topics. Two papers. One single goal — Grade 9. Notes, annotated mark schemes, quizzes, interactive activities, and a real Python code lab — all aligned to the full IGCSE Computer Science specification.</p>
+    <div class="hero-meta">
+      <span class="pill"><strong>Paper 1:</strong> Principles · 2h · 80 marks</span>
+      <span class="pill"><strong>Paper 2:</strong> Practical · 3h · 80 marks</span>
+      <span class="pill"><strong>Grade scale:</strong> 9–1</span>
+      <span class="pill"><strong>Target:</strong> Grade 9 🏆</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="num">6</div><div class="label">Topics</div></div>
+      <div class="stat"><div class="num">160</div><div class="label">Total marks</div></div>
+      <div class="stat"><div class="num">100%</div><div class="label">External assessment</div></div>
+      <div class="stat"><div class="num">3</div><div class="label">Language choices*</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="topics">
+  <div class="container">
+    <h2 class="section-title">📚 The 6 topics</h2>
+    <p class="section-sub">Topic order follows the official IGCSE Computer Science specification. Each topic is independent — study in any order — but Topic 1 is the gentlest start.</p>
+
+    <div class="topic-grid">
+
+      <!-- TOPIC 1: Problem solving -->
+      <div class="topic-card t1 ready" data-topic="1">
+        <div>
+          <span class="topic-num">1</span>
+          <span class="topic-emoji">🧠</span>
+        </div>
+        <div class="topic-title">Problem solving</div>
+        <div class="topic-code">Topic 1 · Both papers · Algorithms &amp; decomposition</div>
+        <p class="topic-desc">Algorithms, flowcharts, pseudocode and trace tables. Standard algorithms — bubble sort, merge sort, linear search, binary search. Decomposition and abstraction. The foundation skill the whole qualification rests on.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">1.1 Algorithms</span>
+          <span class="topic-tag">1.2 Decomp.</span>
+          <span class="topic-tag">flowcharts</span>
+          <span class="topic-tag">trace tables</span>
+        </div>
+        <a href="topic-1-problem-solving.html" class="topic-btn">Open topic →</a>
+      </div>
+
+      <!-- TOPIC 2: Programming -->
+      <div class="topic-card t2 ready" data-topic="2">
+        <div>
+          <span class="topic-num">2</span>
+          <span class="topic-emoji">🐍</span>
+        </div>
+        <div class="topic-title">Programming</div>
+        <div class="topic-code">Topic 2 · Drives Paper 2 (80 marks)</div>
+        <p class="topic-desc">The biggest topic — Paper 2 is built on it. Constructs (sequence, selection, iteration), data types &amp; structures (arrays, records, strings), I/O and file handling, operators, validation, and subprograms with parameters. Full Python self-study app included.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">2.1 Develop</span>
+          <span class="topic-tag">2.2 Constructs</span>
+          <span class="topic-tag">2.3 Data types</span>
+          <span class="topic-tag">2.4 I/O</span>
+          <span class="topic-tag">2.5 Operators</span>
+          <span class="topic-tag">2.6 Subprograms</span>
+        </div>
+        <a href="topic-2-programming.html" class="topic-btn">Open Python app →</a>
+      </div>
+
+      <!-- TOPIC 3: Data -->
+      <div class="topic-card t3 ready" data-topic="3">
+        <div>
+          <span class="topic-num">3</span>
+          <span class="topic-emoji">🔢</span>
+        </div>
+        <div class="topic-title">Data</div>
+        <div class="topic-code">Topic 3 · Paper 1 · Binary, encoding, encryption</div>
+        <p class="topic-desc">Binary, denary and hexadecimal — converting between all three. Signed integers (sign &amp; magnitude, two's complement). Binary arithmetic and overflow. ASCII &amp; Unicode. Bitmap images, sound sampling, RLE compression. Caesar, Vigenère, Pigpen, Rail Fence ciphers.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">3.1 Binary</span>
+          <span class="topic-tag">3.2 Representation</span>
+          <span class="topic-tag">3.3 Storage</span>
+          <span class="topic-tag">3.4 Encryption</span>
+        </div>
+        <a href="topic-3-data.html" class="topic-btn">Open topic →</a>
+      </div>
+
+      <!-- TOPIC 4: Computers -->
+      <div class="topic-card t4 ready" data-topic="4">
+        <div>
+          <span class="topic-num">4</span>
+          <span class="topic-emoji">💻</span>
+        </div>
+        <div class="topic-title">Computers</div>
+        <div class="topic-code">Topic 4 · Paper 1 · Hardware, software, logic</div>
+        <p class="topic-desc">The input-process-output model and Von Neumann architecture. CPU components (CU, ALU, registers, clock, buses) and the fetch-decode-execute cycle. RAM, ROM, cache, virtual memory. Storage types (magnetic, optical, solid state). Truth tables &amp; logic statements. OS &amp; utility software. Compilers vs interpreters vs assemblers.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">4.1 Modelling</span>
+          <span class="topic-tag">4.2 Hardware</span>
+          <span class="topic-tag">4.3 Logic</span>
+          <span class="topic-tag">4.4 Software</span>
+          <span class="topic-tag">4.5 Languages</span>
+        </div>
+        <a href="topic-4-computers.html" class="topic-btn">Open topic →</a>
+      </div>
+
+      <!-- TOPIC 5: Communication & the internet -->
+      <div class="topic-card t5 ready" data-topic="5">
+        <div>
+          <span class="topic-num">5</span>
+          <span class="topic-emoji">🌐</span>
+        </div>
+        <div class="topic-title">Communication &amp; the internet</div>
+        <div class="topic-code">Topic 5 · Paper 1 · Networks, security, web</div>
+        <p class="topic-desc">LAN/WAN/PAN, client-server vs peer-to-peer, wired vs wireless. Protocols (Ethernet, Wi-Fi, TCP/IP, HTTP, HTTPS, FTP, POP3, SMTP, IMAP). 4-layer TCP/IP model. Topologies (bus, ring, star, mesh). Cyber attacks (phishing, pharming, social engineering) and defences. Internet structure, DNS, IPv4 &amp; IPv6.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">5.1 Networks</span>
+          <span class="topic-tag">5.2 Security</span>
+          <span class="topic-tag">5.3 Internet/WWW</span>
+        </div>
+        <a href="topic-5-communication-internet.html" class="topic-btn">Open topic →</a>
+      </div>
+
+      <!-- TOPIC 6: The bigger picture -->
+      <div class="topic-card t6 ready" data-topic="6">
+        <div>
+          <span class="topic-num">6</span>
+          <span class="topic-emoji">⚖️</span>
+        </div>
+        <div class="topic-title">The bigger picture</div>
+        <div class="topic-code">Topic 6 · Paper 1 · Impact &amp; emerging trends</div>
+        <p class="topic-desc">Environmental impact of technology (health, energy, resources). Ethical issues (privacy, inclusion, professionalism). Legal impact (intellectual property, patents, licensing, cyber-security law). Emerging trends — quantum computing, DNA computing, artificial intelligence, nanotechnology.</p>
+        <div class="topic-tags">
+          <span class="topic-tag">6.1 Environment</span>
+          <span class="topic-tag">6.1 Ethics</span>
+          <span class="topic-tag">6.1 Law</span>
+          <span class="topic-tag">6.1 Trends</span>
+        </div>
+        <a href="topic-6-bigger-picture.html" class="topic-btn">Open topic →</a>
+      </div>
+
+    </div>
+
+    <div class="exam-band">
+      <h3>🎯 How the exam works</h3>
+      <div class="papers-grid">
+        <div class="paper-card">
+          <h4>Paper 1 — Principles of Computer Science</h4>
+          <div class="meta">2 hours · 80 marks · 50% of grade</div>
+          <ul>
+            <li>Written paper, externally marked</li>
+            <li>Multiple-choice, short open-response, open-response &amp; extended open-response questions</li>
+            <li>Assesses <strong>all six topics</strong> at the principles level</li>
+            <li>All questions are mandatory</li>
+          </ul>
+        </div>
+        <div class="paper-card p2">
+          <h4>Paper 2 — Application of Computational Thinking</h4>
+          <div class="meta">3 hours · 80 marks · 50% of grade</div>
+          <ul>
+            <li>Practical on-screen examination, externally marked</li>
+            <li>Choice of language: <strong>Python, C# or Java*</strong></li>
+            <li>Mix of multiple-choice, written and task-based questions</li>
+            <li>A pseudocode reference document is available during the assessment</li>
+            <li>No internet access permitted during the test</li>
+          </ul>
+        </div>
+      </div>
+      <p style="font-size:0.78rem;color:var(--text-dim);margin-top:14px;">*This hub teaches Python only — by far the most popular choice and well-supported in past papers.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="past-papers.html">Past Papers</a>
+      <a href="about.html">About</a>
+    </div>
+    <div>© Pooja Arora · IGCSE Computer Science Teacher · All rights reserved</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function get(k, def){ try { const v = localStorage.getItem(k); return v===null ? def : JSON.parse(v); } catch(e){ return def; } }
+  const s = document.getElementById('hud-streak'); if (s) s.textContent = get('igcse_py_streak', 0);
+  const x = document.getElementById('hud-xp'); if (x) x.textContent = get('igcse_py_xp', 0);
+})();
+</script>
+</body>
+</html>

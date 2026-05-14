@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Papers · IGCSE Edexcel 4CP0 Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f8fc; --surface: #ffffff; --surface2: #eef1f8; --border: #d8deec;
+  --t1: #0b78c2; --t2: #d97706; --t3: #7a4fd1; --t4: #0d9488; --t5: #c2185b; --t6: #1f9854;
+  --text: #1f2638; --text-dim: #5a6378; --accent: #0b78c2; --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; line-height: 1.5; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+a { color: inherit; text-decoration: none; }
+
+/* topbar */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 0; position: sticky; top: 0; z-index: 50; }
+.topbar-inner { max-width: 1180px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: 'Permanent Marker', cursive; font-size: 1.4rem; color: var(--accent); }
+.brand-icon { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--t1), var(--t6)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; font-family: 'Nunito', sans-serif; }
+.topbar-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.topbar-nav a { padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; color: var(--text-dim); transition: all 0.15s; }
+.topbar-nav a:hover { background: var(--surface2); color: var(--accent); }
+.topbar-nav a.active { background: var(--accent); color: white; }
+.hud { display: flex; gap: 8px; flex-wrap: wrap; }
+.hud-chip { background: var(--surface2); border: 1.5px solid var(--border); padding: 5px 12px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.hud-chip.streak { color: var(--t2); border-color: rgba(217,119,6,0.3); }
+.hud-chip.xp { color: var(--t1); border-color: rgba(11,120,194,0.3); }
+
+/* hero */
+.hero { padding: 50px 0 30px; }
+.hero h1 { font-family: 'Permanent Marker', cursive; font-size: clamp(2rem, 5vw, 3rem); background: linear-gradient(135deg, var(--t1), var(--t3) 50%, var(--t6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+.hero p.lead { font-size: 1.08rem; color: var(--text-dim); max-width: 720px; }
+
+.section { padding: 24px 0 28px; }
+.section h2 { font-family: 'Permanent Marker', cursive; font-size: 1.6rem; color: var(--accent); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; }
+.section .sub { color: var(--text-dim); margin-bottom: 22px; font-size: 0.95rem; }
+
+.card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 16px; }
+.card p { font-size: 0.96rem; line-height: 1.7; margin-bottom: 8px; }
+.card ul { padding-left: 22px; line-height: 1.8; }
+
+/* timeline grid */
+.year-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 14px; }
+.year-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 18px 20px; transition: all 0.2s; }
+.year-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(31,38,56,0.06); border-color: var(--accent); }
+.year-card .year-label { font-family: 'Permanent Marker', cursive; font-size: 1.6rem; color: var(--accent); }
+.year-card .session { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 10px; }
+.year-card .paper { font-weight: 700; margin: 4px 0; font-size: 0.92rem; }
+.year-card .paper.p1 { color: var(--t1); }
+.year-card .paper.p2 { color: var(--t6); }
+.year-card .focus { font-size: 0.85rem; color: var(--text-dim); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); line-height: 1.5; }
+
+/* exam structure */
+.exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+@media (max-width: 700px) { .exam-grid { grid-template-columns: 1fr; } }
+.exam-card { background: var(--surface); border: 1.5px solid var(--border); border-left: 4px solid var(--t1); border-radius: 12px; padding: 20px; }
+.exam-card.p2 { border-left-color: var(--t6); }
+.exam-card h3 { font-weight: 800; font-size: 1.1rem; margin-bottom: 4px; }
+.exam-card .meta { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text-dim); margin-bottom: 10px; }
+.exam-card ul { padding-left: 20px; font-size: 0.92rem; line-height: 1.8; }
+.exam-card li strong { color: var(--text); }
+
+/* plan table */
+.plan-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92rem; }
+.plan-table th, .plan-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.plan-table th { background: var(--surface2); font-weight: 800; }
+.plan-table tr:hover td { background: var(--surface2); }
+.plan-table .week { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 700; }
+
+.tip-box { border-left: 4px solid var(--t2); background: rgba(217,119,6,0.08); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 18px 0; font-size: 0.92rem; line-height: 1.6; }
+.tip-box strong { color: var(--t2); }
+
+.where-card { background: linear-gradient(135deg, rgba(11,120,194,0.06), rgba(122,79,209,0.06)); border-color: var(--accent); }
+.where-card h3 { font-weight: 800; font-size: 1.1rem; margin-bottom: 8px; color: var(--accent); }
+.where-card ul { padding-left: 22px; line-height: 1.9; }
+.where-card li strong { font-weight: 700; }
+
+footer { background: var(--surface); border-top: 1px solid var(--border); padding: 28px 0; margin-top: 50px; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+footer .foot-links { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+footer .foot-links a { color: var(--accent); font-weight: 700; }
+footer .foot-links a:hover { text-decoration: underline; }
+
+@media (max-width: 600px) {
+  .topbar-inner { flex-direction: column; align-items: stretch; }
+  .topbar-nav { justify-content: center; }
+  .hud { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon">CS</span>
+      <span>Edexcel 4CP0</span>
+    </a>
+    <div class="topbar-nav">
+      <a href="index.html">Home</a>
+      <a href="index.html#topics">Topics</a>
+      <a href="past-papers.html" class="active">Past Papers</a>
+      <a href="about.html">About</a>
+    </div>
+    <div class="hud">
+      <div class="hud-chip streak">🔥 <span id="hud-streak">0</span>d</div>
+      <div class="hud-chip xp">⭐ <span id="hud-xp">0</span> XP</div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Past Papers &amp; Practice</h1>
+    <p class="lead">A guide to every past series of the 4CP0 specification, what each paper tests, and a six-week plan for working through them properly.</p>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- EXAM STRUCTURE -->
+  <section class="section">
+    <h2>📋 The two papers — at a glance</h2>
+    <p class="sub">First, know what you're walking into. Both papers are 50% of your final grade.</p>
+    <div class="exam-grid">
+      <div class="exam-card">
+        <h3>Paper 1 — Principles of Computer Science</h3>
+        <div class="meta">4CP0/01 · 2 hours · 80 marks · 50%</div>
+        <ul>
+          <li><strong>Format:</strong> written exam (pen and paper, no computer)</li>
+          <li><strong>Coverage:</strong> All 6 topics (Topic 2 = programming theory; the practical of Topic 2 is on Paper 2)</li>
+          <li><strong>Question types:</strong> short-answer (1–3 marks), structured (4–8 marks), extended-response (6–10 marks)</li>
+          <li><strong>Common high-mark areas:</strong> trace tables, binary arithmetic, CPU cycles, network protocols, ethical evaluation</li>
+          <li><strong>Calculators:</strong> NOT allowed</li>
+        </ul>
+      </div>
+      <div class="exam-card p2">
+        <h3>Paper 2 — Application of Computational Thinking</h3>
+        <div class="meta">4CP0/02 · 3 hours · 80 marks · 50%</div>
+        <ul>
+          <li><strong>Format:</strong> on-screen practical exam (Python 3)</li>
+          <li><strong>Coverage:</strong> Primarily Topic 2 (programming) — but draws on Topic 1 (algorithms) and Topic 3 (data/encryption)</li>
+          <li><strong>Question types:</strong> 4–8 progressively harder tasks; you write code from scratch and save it</li>
+          <li><strong>Common high-mark areas:</strong> validation loops, file I/O, 2D lists, functions with parameters &amp; return, ord/chr ciphers</li>
+          <li><strong>Resources:</strong> blank Python IDE + on-screen reference sheet only</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>🎯 Mark-scheme insight:</strong> Across both papers, around <strong>40%</strong> of marks come from techniques you can drill once and re-use — trace tables, binary conversions, the fetch-decode-execute steps, the <code>line.strip().split(",")</code> pattern, and validation loops. Master these patterns and you start every paper with a 30+ mark cushion.
+    </div>
+  </section>
+
+  <!-- PAST SERIES -->
+  <section class="section">
+    <h2>📅 Available past series</h2>
+    <p class="sub">The 4CP0 specification was first examined in June 2019. Here are the main published series — for each, study what came up so you can predict what's likely next.</p>
+
+    <div class="year-grid">
+
+      <div class="year-card">
+        <div class="year-label">2024</div>
+        <div class="session">June series</div>
+        <div class="paper p1">📄 Paper 1 — 4CP0/01</div>
+        <div class="paper p2">💻 Paper 2 — 4CP0/02</div>
+        <div class="focus"><strong>Notable:</strong> P1 included a binary arithmetic 3-marker and an ethics extended-response (10 marks). P2 had a 2D list of student records + a file-write/total task — exactly the patterns in our Code Lab Task 7 and Task 8.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">2023</div>
+        <div class="session">June series</div>
+        <div class="paper p1">📄 Paper 1 — 4CP0/01</div>
+        <div class="paper p2">💻 Paper 2 — 4CP0/02</div>
+        <div class="focus"><strong>Notable:</strong> P1 emphasised CPU cycle and storage comparison. P2 featured a linear-search function returning -1 on miss — Code Lab Task 10 mirrors this exactly.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">2022</div>
+        <div class="session">June series</div>
+        <div class="paper p1">📄 Paper 1 — 4CP0/01</div>
+        <div class="paper p2">💻 Paper 2 — 4CP0/02</div>
+        <div class="focus"><strong>Notable:</strong> P2 had a major CSV-file-reading question (orders.txt with name, subject, quantity). Almost identical to Code Lab Task 8 and Exam Question 6.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">2021</div>
+        <div class="session">Nov series</div>
+        <div class="paper p1">📄 Paper 1 — 4CP0/01</div>
+        <div class="paper p2">💻 Paper 2 — 4CP0/02</div>
+        <div class="focus"><strong>Notable:</strong> P1 featured a fix-the-errors question very similar to our Exam Question 2. Worth attempting before re-reading Topic 1.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">2020</div>
+        <div class="session">No exams (Covid)</div>
+        <div class="paper" style="color:var(--text-dim);">Teacher-assessed grades</div>
+        <div class="focus"><strong>No papers from this series.</strong> If your school has internal practice papers from this year, treat them like specimen material.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">2019</div>
+        <div class="session">June series</div>
+        <div class="paper p1">📄 Paper 1 — 4CP0/01</div>
+        <div class="paper p2">💻 Paper 2 — 4CP0/02</div>
+        <div class="focus"><strong>Notable:</strong> The very first 4CP0 exam. Slightly easier than recent years but still worth doing. Heavy on definitions — good for vocabulary practice.</div>
+      </div>
+
+      <div class="year-card">
+        <div class="year-label">Specimen</div>
+        <div class="session">Pre-2019 sample</div>
+        <div class="paper p1">📄 Paper 1 — Specimen</div>
+        <div class="paper p2">💻 Paper 2 — Specimen</div>
+        <div class="focus"><strong>Notable:</strong> Pearson's official sample assessment material. Start here if you've never seen the format. Easier than real papers but uses the same question styles.</div>
+      </div>
+
+    </div>
+
+    <div class="card where-card" style="margin-top:24px;">
+      <h3>🔍 Where to find the actual papers</h3>
+      <p>Ask your teacher first — schools usually have a folder of past papers and mark schemes. If you're studying independently:</p>
+      <ul>
+        <li><strong>Your school's exam-revision portal</strong> — most schools have a shared drive with Edexcel materials.</li>
+        <li><strong>Pearson's qualification pages</strong> — the official source for specifications, specimen materials, and approved sample assessments.</li>
+        <li><strong>Third-party revision sites</strong> — many host archived past papers and mark schemes for IGCSE Computer Science Edexcel.</li>
+      </ul>
+      <p style="margin-top:10px;font-size:0.88rem;color:var(--text-dim);">Always check you have the right paper code <strong>(4CP0/01 or 4CP0/02)</strong> — the older 4CP0 spec uses a similar number but different content.</p>
+    </div>
+  </section>
+
+  <!-- 6-WEEK PLAN -->
+  <section class="section">
+    <h2>📆 The six-week practice plan</h2>
+    <p class="sub">If you have six weeks until your exam, this is the optimal order to attack past papers. Each week mixes new content with revisited mistakes.</p>
+
+    <div class="card">
+      <table class="plan-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Focus</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="week">Week 1</td>
+            <td><strong>Specimen + 2019</strong> — gentle start</td>
+            <td>Sit Paper 1 (specimen) untimed. Mark strictly. Identify your weakest topic. Spend the rest of the week revising that one topic on this hub.</td>
+          </tr>
+          <tr>
+            <td class="week">Week 2</td>
+            <td><strong>2021 Nov + 2022 June</strong></td>
+            <td>Sit each Paper 1 in 2 hours timed. Sit each Paper 2 in 3h timed (use the Code Lab for the practical). Mark and log every lost mark with a reason.</td>
+          </tr>
+          <tr>
+            <td class="week">Week 3</td>
+            <td><strong>Topic deep-dives</strong></td>
+            <td>Re-do the weakest 2 topics from your error log. Hit every quiz question on those topics until you score 90%+.</td>
+          </tr>
+          <tr>
+            <td class="week">Week 4</td>
+            <td><strong>2023 June + 2024 June</strong></td>
+            <td>Sit both papers timed. By now your error log should show patterns — vocabulary, trace tables, or specific question types. Pin them down.</td>
+          </tr>
+          <tr>
+            <td class="week">Week 5</td>
+            <td><strong>Targeted Paper-2 practice</strong></td>
+            <td>Spend the week in the Python Code Lab. Aim to solve all 10 tasks unaided. Time yourself on 2–3 of them — Paper 2 is brutal on time.</td>
+          </tr>
+          <tr>
+            <td class="week">Week 6</td>
+            <td><strong>Mock + review</strong></td>
+            <td>Sit one full mock under exam conditions (any year you haven't redone). Mark immediately. The last 3 days: revisit ONLY topics you got wrong. No new material.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip-box">
+      <strong>🧠 The error-log habit:</strong> Every wrong answer goes in a notebook with three columns: <strong>(1) the question</strong>, <strong>(2) your mistake</strong>, <strong>(3) the correct approach in one sentence</strong>. Review the notebook once a week. This single habit raises grades more than any extra hour of new revision.
+    </div>
+  </section>
+
+  <!-- TIME MANAGEMENT -->
+  <section class="section">
+    <h2>⏱ Time management in the actual exam</h2>
+    <div class="card">
+      <p><strong>Paper 1 — 80 marks in 120 minutes</strong> means roughly <strong>1.5 minutes per mark</strong>. So a 4-mark question gets ~6 minutes, a 10-mark extended response gets ~15 minutes.</p>
+      <ul>
+        <li>Don't get stuck. If a question takes 50% longer than its mark allowance, skip it and come back.</li>
+        <li>Leave 5 minutes at the end to re-check binary arithmetic and trace tables (the highest-error questions).</li>
+        <li>For extended responses, plan with a 3-bullet outline FIRST — examiners give marks for structure.</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Paper 2 — 80 marks in 180 minutes</strong> means about <strong>2.25 minutes per mark</strong>, more generous BUT every task requires typing AND testing AND saving.</p>
+      <ul>
+        <li>READ the whole paper for 5 minutes BEFORE coding. The later tasks often build on earlier ones.</li>
+        <li>Save constantly. Every task saves to its own file with a specific filename — losing that = losing all the marks.</li>
+        <li>Comment your code as you write it. If something doesn't work, examiners can still award marks for the logic visible in your comments.</li>
+        <li>Don't aim for one perfect task. Aim for 6 partially-working tasks rather than 1 perfect one.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="past-papers.html">Past Papers</a>
+      <a href="about.html">About</a>
+    </div>
+    <div>IGCSE Edexcel 4CP0 Computer Science · Self-study hub · Built for Grade 9 students</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function get(k, def){ try { const v = localStorage.getItem(k); return v===null ? def : JSON.parse(v); } catch(e){ return def; } }
+  const s = document.getElementById('hud-streak'); if (s) s.textContent = get('igcse_py_streak', 0);
+  const x = document.getElementById('hud-xp'); if (x) x.textContent = get('igcse_py_xp', 0);
+})();
+</script>
+</body>
+</html>

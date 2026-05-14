@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4: Computers – IGCSE Computer Science Edexcel 4CP01</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--paper); font-family: 'Patrick Hand', cursive;
+    color: var(--ink); overflow-x: hidden; min-height: 100vh;
+  }
+  /* Lined paper background */
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  @media(max-width:600px){ body::after { display:none; } }
+
+  .page-wrap {
+    max-width: 960px; margin: 0 auto;
+    padding: 20px 30px 80px 90px;
+    position: relative; z-index: 1;
+  }
+  @media(max-width:600px){ .page-wrap { padding: 20px 16px 80px 16px; } }
+
+  /* ── HEADER ── */
+  .unit-badge {
+    display: inline-block; background: var(--blue); color: white;
+    font-family: 'Permanent Marker', cursive; font-size: 0.85rem;
+    padding: 4px 16px; border-radius: 20px; border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 var(--ink); margin-bottom: 16px;
+    transform: rotate(-1deg);
+  }
+
+  .hero { text-align: center; padding: 32px 0 10px; position: relative; }
+
+  .hero-label {
+    font-family: 'Caveat', cursive; font-size: 1.1rem;
+    color: var(--blue); letter-spacing: 2px; margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .hero-title {
+    font-family: 'Permanent Marker', cursive; font-size: 3.4rem;
+    color: var(--ink); text-shadow: 4px 4px 0 var(--teal);
+    letter-spacing: 2px; display: inline-block; position: relative;
+    transform: rotate(-1deg); line-height: 1.1;
+  }
+  .hero-title::after {
+    content: ''; position: absolute; bottom: -10px; left: 0; right: 0;
+    height: 5px; background: var(--coral); border-radius: 3px;
+  }
+  @media(max-width:500px){ .hero-title { font-size: 2.2rem; } }
+
+  .hero-sub {
+    font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--purple);
+    margin-top: 22px; display: block;
+  }
+  .hero-desc {
+    font-family: 'Kalam', cursive; font-size: 0.95rem; color: #555;
+    margin-top: 8px; max-width: 520px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* ── PROGRESS TRACKER ── */
+  .progress-wrap {
+    background: white; border: 3px solid var(--ink); border-radius: 14px;
+    padding: 18px 22px; margin: 28px 0; box-shadow: 5px 5px 0 var(--ink);
+  }
+  .progress-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1.1rem;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+  }
+  .progress-bar-outer {
+    height: 18px; background: #e0e0e0; border: 2px solid var(--ink);
+    border-radius: 20px; overflow: hidden; margin-bottom: 8px;
+  }
+  .progress-bar-inner {
+    height: 100%; background: linear-gradient(90deg, var(--teal), var(--blue));
+    border-radius: 20px; transition: width 0.6s ease;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 8px;
+  }
+  .progress-pct {
+    font-family: 'Permanent Marker', cursive; font-size: 0.75rem; color: white;
+  }
+  .progress-topics {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+  }
+  .prog-dot {
+    width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid var(--ink);
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center;
+    justify-content: center; font-size: 0.7rem; font-family: 'Permanent Marker', cursive;
+    background: white;
+  }
+  .prog-dot:hover { transform: scale(1.15); }
+  .prog-dot.done { background: var(--teal); border-color: #059669; color: white; }
+
+  /* ── TOPIC CARDS GRID ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 32px;
+  }
+
+  .topic-card {
+    border: 3px solid var(--ink); border-radius: 14px; overflow: hidden;
+    box-shadow: 6px 6px 0 var(--ink); transition: all 0.2s;
+    background: white; text-decoration: none; display: block;
+    position: relative;
+  }
+  .topic-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--ink);
+  }
+  .topic-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+
+  .card-header {
+    padding: 16px 18px 14px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .card-emoji {
+    font-size: 2.4rem; flex-shrink: 0; line-height: 1;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.15));
+  }
+  .card-header-text { flex: 1; }
+  .card-num {
+    font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700;
+    opacity: 0.75; letter-spacing: 1px; text-transform: uppercase; display: block;
+    margin-bottom: 2px;
+  }
+  .card-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1.25rem;
+    line-height: 1.2; display: block;
+  }
+
+  .card-body {
+    padding: 0 18px 14px;
+    font-family: 'Kalam', cursive; font-size: 0.87rem;
+    color: #444; line-height: 1.55;
+    border-top: 2px solid rgba(0,0,0,0.07);
+    padding-top: 12px; margin-top: 0;
+  }
+
+  .card-tags {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    padding: 0 18px 14px;
+  }
+  .card-tag {
+    font-family: 'Caveat', cursive; font-size: 0.78rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; border: 1.5px solid;
+    white-space: nowrap;
+  }
+
+  .card-footer {
+    padding: 10px 18px; border-top: 2px solid var(--ink);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .card-cta {
+    font-family: 'Permanent Marker', cursive; font-size: 0.95rem;
+  }
+  .card-arrow {
+    font-size: 1.3rem; transition: transform 0.2s;
+  }
+  .topic-card:hover .card-arrow { transform: translateX(5px); }
+
+  /* topic-specific header gradients */
+  .t16 .card-header { background: linear-gradient(135deg, #e3f2fd, #b3e5fc); }
+  .t17 .card-header { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+  .t18 .card-header { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+  .t19 .card-header { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+  .t20 .card-header { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+
+  .t16 .card-footer { background: var(--light-blue); }
+  .t17 .card-footer { background: var(--light-coral); }
+  .t18 .card-footer { background: var(--light-purple); }
+  .t19 .card-footer { background: var(--light-green); }
+  .t20 .card-footer { background: var(--light-yellow); }
+
+  /* ── QUICK STATS STRIP ── */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px; margin: 28px 0;
+  }
+  .stat-box {
+    background: white; border: 2.5px solid var(--ink); border-radius: 10px;
+    padding: 12px 14px; box-shadow: 3px 3px 0 var(--ink); text-align: center;
+  }
+  .stat-num {
+    font-family: 'Permanent Marker', cursive; font-size: 2rem;
+    display: block; line-height: 1;
+  }
+  .stat-label {
+    font-family: 'Kalam', cursive; font-size: 0.8rem; color: #666;
+    margin-top: 2px; display: block;
+  }
+
+  /* ── EXAM TIPS PANEL ── */
+  .tips-wrap {
+    background: var(--light-yellow); border: 3px solid var(--ink);
+    border-left: 7px solid var(--orange); border-radius: 12px;
+    padding: 18px 22px; margin: 32px 0; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .tips-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1.2rem;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .tip-item {
+    display: flex; align-items: flex-start; gap: 10px; margin: 8px 0;
+    font-family: 'Kalam', cursive; font-size: 0.92rem; line-height: 1.5;
+  }
+  .tip-dot {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--orange);
+    color: white; font-family: 'Permanent Marker', cursive; font-size: 0.72rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── HOW TO USE SECTION ── */
+  .how-to {
+    background: white; border: 3px solid var(--ink); border-radius: 12px;
+    padding: 18px 22px; margin: 24px 0; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .how-to-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1.1rem; margin-bottom: 12px;
+  }
+  .how-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+  .how-item {
+    background: #fafafa; border: 2px solid #e0e0e0; border-radius: 8px;
+    padding: 10px 12px; text-align: center;
+  }
+  .how-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+  .how-label {
+    font-family: 'Permanent Marker', cursive; font-size: 0.85rem;
+    color: var(--blue); display: block; margin-bottom: 3px;
+  }
+  .how-desc {
+    font-family: 'Kalam', cursive; font-size: 0.78rem; color: #555;
+    line-height: 1.4;
+  }
+
+  /* ── LEARNING OBJECTIVES PANEL ── */
+  .lo-wrap {
+    border: 3px solid var(--ink); border-radius: 12px; overflow: hidden;
+    margin: 24px 0; box-shadow: 4px 4px 0 var(--ink);
+  }
+  .lo-header {
+    background: var(--ink); color: white; padding: 12px 20px;
+    font-family: 'Permanent Marker', cursive; font-size: 1.15rem;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .lo-body { display: none; background: white; padding: 16px 20px; }
+  .lo-topic { margin-bottom: 16px; }
+  .lo-topic-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1rem;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+  }
+  .lo-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 5px 0;
+    font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.5;
+  }
+  .lo-tick {
+    width: 18px; height: 18px; border: 2px solid currentColor; border-radius: 3px;
+    flex-shrink: 0; margin-top: 1px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; font-size: 0.7rem;
+    transition: all 0.15s;
+  }
+  .lo-tick.checked { background: var(--teal); border-color: #059669; color: white; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 30px 0 10px;
+    font-family: 'Kalam', cursive; font-size: 0.85rem; color: #888;
+  }
+  .footer strong { color: var(--ink); }
+
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .topic-card { animation: fadeIn 0.4s ease both; }
+  .topic-card:nth-child(1){ animation-delay: 0.05s; }
+  .topic-card:nth-child(2){ animation-delay: 0.1s; }
+  .topic-card:nth-child(3){ animation-delay: 0.15s; }
+  .topic-card:nth-child(4){ animation-delay: 0.2s; }
+  .topic-card:nth-child(5){ animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#7b2d8b;font-weight:700;font-size:1.05rem;text-decoration:none;font-family:'Caveat',cursive;">
+      ← Back to all topics
+    </a>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ── HEADER ── -->
+  <div style="text-align:center; padding-top: 30px;">
+    <div class="unit-badge">🖥 Edexcel IGCSE · 4CP01 · Unit 4</div>
+    <div class="hero">
+      <div class="hero-label">Complete Revision Pack</div>
+      <h1 class="hero-title">COMPUTERS</h1>
+      <span class="hero-sub">Topic 4 · All Five Topics · Full Interactive Revision</span>
+      <p class="hero-desc">Mind maps · Detailed notes · 100 quiz questions · Interactive activities · Exam questions with mark schemes</p>
+    </div>
+  </div>
+
+  <!-- ── STATS STRIP ── -->
+  <div class="stats-strip">
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--blue);">5</span>
+      <span class="stat-label">Topics covered</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--teal);">100</span>
+      <span class="stat-label">Quiz questions</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--coral);">40+</span>
+      <span class="stat-label">Exam questions</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--orange);">25+</span>
+      <span class="stat-label">Activities</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--purple);">10+</span>
+      <span class="stat-label">Diagrams (zoomable)</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" style="color:var(--green);">5</span>
+      <span class="stat-label">Tabs per topic</span>
+    </div>
+  </div>
+
+  <!-- ── HOW TO USE ── -->
+  <div class="how-to">
+    <div class="how-to-title">🗂 How to Use This Pack</div>
+    <div class="how-grid">
+      <div class="how-item">
+        <span class="how-icon">🗺</span>
+        <span class="how-label">Mind Map</span>
+        <span class="how-desc">Start here for a visual overview of all key concepts in the topic</span>
+      </div>
+      <div class="how-item">
+        <span class="how-icon">📖</span>
+        <span class="how-label">Topic Notes</span>
+        <span class="how-desc">Detailed collapsible notes with diagrams, definitions and exam tips</span>
+      </div>
+      <div class="how-item">
+        <span class="how-icon">⚡</span>
+        <span class="how-label">Quick Quiz</span>
+        <span class="how-desc">20 multiple choice questions with instant feedback per topic</span>
+      </div>
+      <div class="how-item">
+        <span class="how-icon">✏️</span>
+        <span class="how-label">Activities</span>
+        <span class="how-desc">Interactive drag-drop, match, fill-in-blanks, true/false and more</span>
+      </div>
+      <div class="how-item">
+        <span class="how-icon">📝</span>
+        <span class="how-label">Exam Questions</span>
+        <span class="how-desc">Past-paper style questions with full mark schemes to check your answers</span>
+      </div>
+      <div class="how-item">
+        <span class="how-icon">🔍</span>
+        <span class="how-label">Zoom Diagrams</span>
+        <span class="how-desc">Click any diagram to zoom in and download it as an SVG file</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROGRESS TRACKER ── -->
+  <div class="progress-wrap">
+    <div class="progress-title">📈 My Progress Tracker <span style="font-family:'Kalam',cursive;font-size:0.85rem;font-weight:normal;color:#888;">(click dots to mark topics as done)</span></div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="prog-bar" style="width:0%">
+        <span class="progress-pct" id="prog-pct"></span>
+      </div>
+    </div>
+    <div class="progress-topics" id="prog-dots"></div>
+    <div style="margin-top:10px;font-family:'Kalam',cursive;font-size:0.85rem;color:#666;" id="prog-msg">Click a topic dot to mark it as revised ✓</div>
+  </div>
+
+  <!-- ── TOPIC CARDS ── -->
+  <div style="font-family:'Permanent Marker',cursive;font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+    📚 Choose a Topic
+    <span style="font-family:'Kalam',cursive;font-size:0.9rem;font-weight:normal;color:#888;">↓ click any card to open that topic</span>
+  </div>
+
+  <div class="topics-grid">
+
+    <!-- Topic 16 -->
+    <a href="topic-4-1-machines.html" class="topic-card t16">
+      <div class="card-header">
+        <span class="card-emoji">🖥</span>
+        <div class="card-header-text">
+          <span class="card-num" style="color:var(--blue);">Topic 16</span>
+          <span class="card-title" style="color:var(--blue);">Machines &amp; Computational Models</span>
+        </div>
+      </div>
+      <div class="card-body">
+        How computers follow the <strong>Input–Process–Output</strong> model. The three computational models: <strong>sequential</strong>, <strong>parallel</strong> and <strong>multi-agent</strong>. What makes each one unique and when each is used.
+      </div>
+      <div class="card-tags">
+        <span class="card-tag" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">IPO Model</span>
+        <span class="card-tag" style="color:var(--green);border-color:var(--green);background:var(--light-green);">Sequential</span>
+        <span class="card-tag" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Parallel</span>
+        <span class="card-tag" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Multi-Agent</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-cta" style="color:var(--blue);">Open Topic →</span>
+        <span class="card-arrow">🚀</span>
+      </div>
+    </a>
+
+    <!-- Topic 17 -->
+    <a href="topic-4-2-hardware.html" class="topic-card t17">
+      <div class="card-header">
+        <span class="card-emoji">💻</span>
+        <div class="card-header-text">
+          <span class="card-num" style="color:var(--coral);">Topic 17</span>
+          <span class="card-title" style="color:var(--coral);">Hardware</span>
+        </div>
+      </div>
+      <div class="card-body">
+        Inside the computer: <strong>CPU components</strong> (CU, ALU, registers, clock), <strong>memory types</strong> (RAM, ROM, cache, virtual memory), the <strong>fetch–decode–execute cycle</strong>, <strong>buses</strong>, secondary storage and embedded systems.
+      </div>
+      <div class="card-tags">
+        <span class="card-tag" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">CPU & FDE</span>
+        <span class="card-tag" style="color:#059669;border-color:var(--teal);background:var(--light-teal);">RAM/ROM/Cache</span>
+        <span class="card-tag" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">Storage</span>
+        <span class="card-tag" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Cloud</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-cta" style="color:var(--coral);">Open Topic →</span>
+        <span class="card-arrow">🚀</span>
+      </div>
+    </a>
+
+    <!-- Topic 18 -->
+    <a href="topic-4-3-logic.html" class="topic-card t18">
+      <div class="card-header">
+        <span class="card-emoji">🔣</span>
+        <div class="card-header-text">
+          <span class="card-num" style="color:var(--purple);">Topic 18</span>
+          <span class="card-title" style="color:var(--purple);">Logic</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>Boolean operators</strong>: AND, OR, NOT. Constructing and interpreting <strong>truth tables</strong>. Operator precedence (brackets → NOT → AND → OR). Writing <strong>logic statements</strong> for real-world scenarios.
+      </div>
+      <div class="card-tags">
+        <span class="card-tag" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">AND</span>
+        <span class="card-tag" style="color:var(--green);border-color:var(--green);background:var(--light-green);">OR</span>
+        <span class="card-tag" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">NOT</span>
+        <span class="card-tag" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Truth Tables</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-cta" style="color:var(--purple);">Open Topic →</span>
+        <span class="card-arrow">🚀</span>
+      </div>
+    </a>
+
+    <!-- Topic 19 -->
+    <a href="topic-4-4-software.html" class="topic-card t19">
+      <div class="card-header">
+        <span class="card-emoji">💿</span>
+        <div class="card-header-text">
+          <span class="card-num" style="color:var(--green);">Topic 19</span>
+          <span class="card-title" style="color:var(--green);">Software</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>System vs application software</strong>. Operating system functions: scheduling, paging, authentication, GUI vs CLI. <strong>Utility software</strong>: antivirus, firewall, defragmenter, compression, backup. Computer <strong>simulation &amp; modelling</strong>.
+      </div>
+      <div class="card-tags">
+        <span class="card-tag" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Operating System</span>
+        <span class="card-tag" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">Utility</span>
+        <span class="card-tag" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Modelling</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-cta" style="color:var(--green);">Open Topic →</span>
+        <span class="card-arrow">🚀</span>
+      </div>
+    </a>
+
+    <!-- Topic 20 -->
+    <a href="topic-4-5-programming-languages.html" class="topic-card t20">
+      <div class="card-header">
+        <span class="card-emoji">⌨️</span>
+        <div class="card-header-text">
+          <span class="card-num" style="color:var(--orange);">Topic 20</span>
+          <span class="card-title" style="color:var(--orange);">Programming Languages</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <strong>Machine code</strong>, <strong>assembly language</strong> and <strong>high-level languages</strong>. Mnemonics, instruction sets and assemblers. <strong>Compiler vs interpreter</strong>: how each translates code, advantages, disadvantages and when to use each.
+      </div>
+      <div class="card-tags">
+        <span class="card-tag" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Machine Code</span>
+        <span class="card-tag" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">Assembly</span>
+        <span class="card-tag" style="color:#059669;border-color:var(--teal);background:var(--light-teal);">Compiler</span>
+        <span class="card-tag" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Interpreter</span>
+      </div>
+      <div class="card-footer">
+        <span class="card-cta" style="color:var(--orange);">Open Topic →</span>
+        <span class="card-arrow">🚀</span>
+      </div>
+    </a>
+
+  </div><!-- end topics grid -->
+
+  <!-- ── EXAM TIPS ── -->
+  <div class="tips-wrap">
+    <div class="tips-title">✏️ Top Exam Tips for Unit 4</div>
+    <div class="tip-item"><div class="tip-dot">1</div><div><strong>FDE Cycle (Topic 17):</strong> Always name the specific bus at each step — address bus, data bus, control bus. Mention the Program Counter and the instruction register. These are the mark-scoring words.</div></div>
+    <div class="tip-item"><div class="tip-dot">2</div><div><strong>Cloud Storage (Topic 17):</strong> This is often a 6-mark question. Give 3 advantages AND 3 disadvantages, each with a developed explanation of WHY it matters. Don't just say "accessible anywhere" — say why that's useful.</div></div>
+    <div class="tip-item"><div class="tip-dot">3</div><div><strong>Truth Tables (Topic 18):</strong> Always add intermediate columns for complex expressions. Show your working — you earn marks for correct intermediate columns even if the final output has an error.</div></div>
+    <div class="tip-item"><div class="tip-dot">4</div><div><strong>OS Functions (Topic 19):</strong> For "state four functions of an OS" — pick from: hardware management, file management, scheduling, paging/virtual memory, user interface, authentication. One per mark — don't write paragraphs.</div></div>
+    <div class="tip-item"><div class="tip-dot">5</div><div><strong>Compiler vs Interpreter (Topic 20):</strong> The three key differences: whole program vs line by line · object code produced vs not · faster at runtime vs slower. Always explain WHY — e.g. "slower because the interpreter translates the same code every time the program runs."</div></div>
+    <div class="tip-item"><div class="tip-dot">6</div><div><strong>Storage Comparison (Topic 17):</strong> Magnetic = spinning platters + seek time. Optical = laser + pits/lands. Solid-state = NAND flash + electron pools. Defragmentation is ONLY for HDDs — SSDs need no defragmenting.</div></div>
+  </div>
+
+  <!-- ── LEARNING OBJECTIVES ── -->
+  <div class="lo-wrap">
+    <div class="lo-header" onclick="toggleLO()">
+      🎯 Full Learning Objectives Checklist
+      <span id="lo-tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+    </div>
+    <div class="lo-body" id="lo-body">
+
+      <div class="lo-topic">
+        <div class="lo-topic-title" style="color:var(--blue);">🖥 Topic 16 — Machines &amp; Computational Models</div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Understand the Input–Process–Output (IPO) model and how all computers follow it</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe the sequential computational model and its characteristics</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain the parallel computational model and what it requires (OS + software)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe the multi-agent computational model: autonomous agents, negotiation, coordination</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Distinguish between parallel and multi-agent models (one task split vs separate independent tasks)</div></div>
+      </div>
+
+      <div class="lo-topic">
+        <div class="lo-topic-title" style="color:var(--coral);">💻 Topic 17 — Hardware</div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Understand the von Neumann stored-program architecture</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe the function of CPU components: CU, ALU, registers, clock, buses</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain the fetch–decode–execute cycle in detail (naming specific buses and registers)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Compare RAM, ROM, cache and virtual memory (volatile, non-volatile, speed, purpose)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain firmware and the boot process (POST, BIOS/UEFI, loading the OS)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe factors affecting CPU performance: clock speed, cores, cache size</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain how data is stored on magnetic, optical and solid-state secondary storage</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Discuss cloud storage advantages and disadvantages (⭐ 6-mark topic)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Understand embedded systems and the Internet of Things (IoT)</div></div>
+      </div>
+
+      <div class="lo-topic">
+        <div class="lo-topic-title" style="color:var(--purple);">🔣 Topic 18 — Logic</div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Construct and interpret truth tables for AND, OR and NOT</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Build truth tables for combined expressions using intermediate columns</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Apply operator precedence correctly: brackets → NOT → AND → OR</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Write logic statements (IF...THEN conditions) for given real-world scenarios</div></div>
+      </div>
+
+      <div class="lo-topic">
+        <div class="lo-topic-title" style="color:var(--green);">💿 Topic 19 — Software</div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Distinguish between application software, system software and utility software</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>State and explain the key functions of an operating system</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain scheduling (CPU time-slicing) and paging (virtual memory)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Compare GUI and CLI interfaces (advantages and disadvantages of each)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe utility software: antivirus, spyware, firewall, defragmenter, compression, backup</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Understand computer simulation and modelling: advantages, limitations, examples</div></div>
+      </div>
+
+      <div class="lo-topic">
+        <div class="lo-topic-title" style="color:var(--orange);">⌨️ Topic 20 — Programming Languages</div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain machine code, assembly language and the role of mnemonics</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Understand the role of an assembler (1:1 mnemonic to machine code)</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Describe high-level languages and why they need translators</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Compare compilers and interpreters: translation method, output, speed, error handling, distribution</div></div>
+        <div class="lo-item"><div class="lo-tick" onclick="toggleTick(this)"></div><div>Explain when to use a compiler (distribution) vs interpreter (development/debugging)</div></div>
+      </div>
+
+      <div style="margin-top:14px;font-family:'Kalam',cursive;font-size:0.85rem;color:#888;text-align:right;">
+        <span id="lo-progress-text">0 objectives checked</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <p>📚 <strong>IGCSE Computer Science · Edexcel 4CP01 · Unit 4: Computers</strong></p>
+    <p style="margin-top:4px;">Topics 16–20 · Interactive Revision Pack</p>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+// ── PROGRESS TRACKER ──
+const topicNames = ['T16 Machines', 'T17 Hardware', 'T18 Logic', 'T19 Software', 'T20 Prog. Langs'];
+const topicColors = ['var(--blue)', 'var(--coral)', 'var(--purple)', 'var(--green)', 'var(--orange)'];
+let doneTopics = JSON.parse(localStorage.getItem('unit4_done') || '[]');
+
+function buildProgDots() {
+  const wrap = document.getElementById('prog-dots');
+  wrap.innerHTML = '';
+  topicNames.forEach((name, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'prog-dot' + (doneTopics.includes(i) ? ' done' : '');
+    dot.title = name;
+    dot.style.borderColor = topicColors[i];
+    dot.innerHTML = doneTopics.includes(i) ? '✓' : (i + 16);
+    dot.style.color = doneTopics.includes(i) ? 'white' : topicColors[i];
+    dot.onclick = () => {
+      if (doneTopics.includes(i)) doneTopics = doneTopics.filter(x => x !== i);
+      else doneTopics.push(i);
+      localStorage.setItem('unit4_done', JSON.stringify(doneTopics));
+      buildProgDots();
+      updateProgressBar();
+    };
+    // label below
+    const label = document.createElement('div');
+    label.style.cssText = 'font-family:"Kalam",cursive;font-size:0.7rem;color:#888;text-align:center;margin-top:3px;max-width:60px;line-height:1.2;';
+    label.textContent = name;
+    const group = document.createElement('div');
+    group.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:0;';
+    group.appendChild(dot);
+    group.appendChild(label);
+    wrap.appendChild(group);
+  });
+}
+
+function updateProgressBar() {
+  const pct = Math.round((doneTopics.length / topicNames.length) * 100);
+  const bar = document.getElementById('prog-bar');
+  bar.style.width = pct + '%';
+  document.getElementById('prog-pct').textContent = pct > 10 ? pct + '%' : '';
+  const msgs = ['Click a topic dot to mark it as revised ✓',
+    '🌱 Getting started — keep going!',
+    '📚 Making progress — you\'ve got this!',
+    '🔥 Over halfway there — keep revising!',
+    '🚀 Almost done — nearly exam-ready!',
+    '🌟 All topics revised — you\'re ready!'];
+  document.getElementById('prog-msg').textContent = msgs[doneTopics.length] || msgs[0];
+}
+
+buildProgDots();
+updateProgressBar();
+
+// ── LEARNING OBJECTIVES ──
+function toggleLO() {
+  const body = document.getElementById('lo-body');
+  const tog = document.getElementById('lo-tog');
+  const open = body.style.display !== 'block';
+  body.style.display = open ? 'block' : 'none';
+  tog.textContent = open ? '▲ collapse' : '▼ expand';
+}
+
+let loChecked = JSON.parse(localStorage.getItem('unit4_lo') || '[]');
+
+function toggleTick(el) {
+  const allTicks = Array.from(document.querySelectorAll('.lo-tick'));
+  const idx = allTicks.indexOf(el);
+  el.classList.toggle('checked');
+  el.textContent = el.classList.contains('checked') ? '✓' : '';
+  // save state
+  if (el.classList.contains('checked')) { if (!loChecked.includes(idx)) loChecked.push(idx); }
+  else loChecked = loChecked.filter(x => x !== idx);
+  localStorage.setItem('unit4_lo', JSON.stringify(loChecked));
+  updateLOProgress();
+}
+
+function restoreTickState() {
+  const allTicks = Array.from(document.querySelectorAll('.lo-tick'));
+  loChecked.forEach(idx => {
+    if (allTicks[idx]) { allTicks[idx].classList.add('checked'); allTicks[idx].textContent = '✓'; }
+  });
+  updateLOProgress();
+}
+
+function updateLOProgress() {
+  const total = document.querySelectorAll('.lo-tick').length;
+  const checked = document.querySelectorAll('.lo-tick.checked').length;
+  document.getElementById('lo-progress-text').textContent = `${checked} / ${total} objectives checked`;
+}
+
+// Restore after a short delay to allow DOM to settle
+setTimeout(restoreTickState, 100);
+</script>
+</body>
+</html>

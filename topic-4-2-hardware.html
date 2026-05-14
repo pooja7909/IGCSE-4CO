@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 17: Hardware – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 20px 30px 60px 90px; position: relative; z-index: 1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+
+  /* HERO */
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero-title {
+    font-family: 'Permanent Marker', cursive; font-size: 2.8rem; color: var(--ink);
+    text-shadow: 3px 3px 0 var(--teal); letter-spacing: 2px; transform: rotate(-1.5deg);
+    display: inline-block; position: relative;
+  }
+  .hero-title::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px; background: var(--blue); border-radius: 2px; }
+  .hero-sub { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--blue); margin-top: 18px; }
+
+  /* TABS */
+  .tabs-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 20px; justify-content: center; }
+  .tab-btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 8px 18px; border: 3px solid var(--ink); border-radius: 6px;
+    background: white; cursor: pointer; transition: all 0.2s; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .tab-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab-btn.active { background: var(--ink); color: white; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background: var(--blue); }
+  .tab-btn[data-tab="notes"].active { background: var(--green); }
+  .tab-btn[data-tab="quiz"].active { background: #059669; }
+  .tab-btn[data-tab="activities"].active { background: var(--orange); }
+  .tab-btn[data-tab="exam"].active { background: var(--purple); }
+
+  /* EXAM QUESTIONS */
+  .eq-wrap { margin-bottom: 26px; border: 2.5px solid var(--ink); border-radius: 10px; background: white; box-shadow: 4px 4px 0 var(--ink); overflow: hidden; }
+  .eq-hdr { padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);} .eq-hdr.c2{background:var(--light-blue);} .eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;} .eq-hdr.c5{background:var(--light-yellow);} .eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);} .eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; }
+  .eq-marks { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; background: var(--ink); color: white; padding: 2px 10px; border-radius: 20px; }
+  .eq-bdy { padding: 14px 16px; }
+  .eq-txt { font-size: 1.02rem; line-height: 1.6; margin-bottom: 12px; }
+  .eq-ctx { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 10px 14px; margin-bottom: 12px; font-size: 0.93rem; line-height: 1.5; border-radius: 0 6px 6px 0; font-style: italic; font-family: 'Kalam', cursive; }
+  .ans-ta { width: 100%; border: 1.5px solid #b0bec5; border-radius: 6px; background: transparent; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; padding: 8px; outline: none; resize: vertical; min-height: 80px; }
+  .show-ms { font-family: 'Caveat', cursive; font-size: 1rem; padding: 6px 16px; border: 2px solid var(--purple); border-radius: 20px; background: white; color: var(--purple); cursor: pointer; margin-top: 10px; transition: all 0.15s; }
+  .show-ms:hover { background: var(--purple); color: white; }
+  .ms { display: none; margin-top: 10px; background: var(--light-purple); border: 2px solid var(--purple); border-radius: 8px; padding: 12px 16px; font-size: 0.93rem; line-height: 1.6; }
+  .ms.show { display: block; animation: fadeIn 0.3s ease; }
+  .ms ul { padding-left: 20px; margin-top: 6px; }
+  .ms li { margin: 4px 0; }
+  .ms-lbl { font-family: 'Permanent Marker', cursive; font-size: 1rem; color: var(--purple); margin-bottom: 6px; }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+  /* SHARED */
+  .tip-box {
+    background: var(--light-yellow); border: 2px solid var(--yellow); border-left: 5px solid var(--orange);
+    border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-family: 'Kalam', cursive; font-size: 0.95rem;
+  }
+  .btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 9px 22px; border: 2.5px solid var(--ink); border-radius: 8px;
+    cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s;
+  }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-teal { background: var(--teal); color: var(--ink); border-color: #059669; box-shadow: 3px 3px 0 #059669; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 4px; font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700; border: 1.5px solid; margin-right: 4px; }
+  .tag-hard { color: var(--coral); border-color: var(--coral); background: var(--light-coral); }
+  .tag-med { color: var(--orange); border-color: var(--orange); background: #fff3e0; }
+  .tag-easy { color: #059669; border-color: var(--teal); background: var(--light-teal); }
+
+  /* IMPORTANCE BANNER */
+  .imp-banner { margin-bottom: 20px; border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .imp-header {
+    background: var(--blue); color: white; padding: 10px 18px;
+    font-family: 'Permanent Marker', cursive; font-size: 1.2rem;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .imp-body { display: none; background: white; }
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); }
+  .imp-cell { padding: 14px 16px; border-right: 2px solid #eee; border-bottom: 2px solid #eee; }
+  .imp-cell-title { font-family: 'Permanent Marker', cursive; font-size: 0.95rem; margin-bottom: 6px; }
+  .imp-cell p { font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.5; }
+  .imp-footer { background: #fff9c4; border-top: 2px solid var(--ink); padding: 10px 16px; font-family: 'Kalam', cursive; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+
+  /* MINDMAP */
+  .ig-wrap { background: #fffdf5; border: 3px solid var(--ink); border-radius: 12px; padding: 28px; box-shadow: 6px 6px 0 var(--ink); }
+  .ig-title { font-family: 'Permanent Marker', cursive; font-size: 2rem; text-align: center; margin-bottom: 20px; }
+  .ig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width:600px){ .ig-grid{grid-template-columns:1fr;} }
+  .ig-sec { border: 2.5px solid var(--ink); border-radius: 10px; padding: 16px; background: white; position: relative; }
+  .ig-label { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; position: absolute; top: -13px; left: 14px; background: white; padding: 0 8px; }
+  .ig-item { display: flex; align-items: flex-start; gap: 9px; margin: 7px 0; font-family: 'Kalam', cursive; font-size: 0.92rem; line-height: 1.4; }
+  .ig-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .highlight-box { background: var(--light-teal); border: 2.5px solid var(--ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-family: 'Kalam', cursive; font-size: 1rem; text-align: center; transform: rotate(-0.3deg); }
+  .step-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 10px; padding: 16px; }
+  .step-card { text-align: center; padding: 12px 8px; border: 2px solid; border-radius: 8px; }
+  .step-emoji { font-size: 1.5rem; }
+  .step-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; margin: 4px 0 2px; }
+  .step-txt { font-family: 'Kalam', cursive; font-size: 0.8rem; }
+
+  /* NOTES */
+  .notes-sec { margin-bottom: 14px; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .notes-hdr { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .notes-hdr:hover { opacity: 0.9; }
+  .notes-hdr-left { display: flex; align-items: center; gap: 12px; }
+  .notes-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .notes-title { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; color: white; }
+  .notes-tog { font-family: 'Caveat', cursive; font-size: 1.2rem; color: white; transition: transform 0.3s; }
+  .notes-bdy { display: none; padding: 18px 20px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.65; }
+  .notes-bdy.open { display: block; animation: fadeIn 0.25s ease; }
+  .def-box { border: 2px solid; border-radius: 8px; padding: 12px 14px 10px; margin: 12px 0; position: relative; padding-top: 22px; font-size: 0.92rem; line-height: 1.55; }
+  .def-label { position: absolute; top: -11px; left: 12px; color: white; font-family: 'Caveat', cursive; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+  .notes-tip { background: #fff9c4; border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 12px 0 4px; font-size: 0.9rem; font-family: 'Kalam', cursive; }
+  .notes-eg { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; font-style: italic; font-family: 'Kalam', cursive; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:580px){ .g2{grid-template-columns:1fr;} .g3{grid-template-columns:1fr;} }
+  .nl { display: flex; align-items: flex-start; gap: 9px; margin: 6px 0; font-size: 0.92rem; line-height: 1.5; }
+  .nd { width: 24px; height: 24px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .subh { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+  .subh::after { content: ''; flex: 1; height: 2px; background: currentColor; opacity: 0.2; }
+  .n-card { border: 2.5px solid; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+  .n-card-hdr { padding: 8px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; }
+  .n-card-bdy { padding: 12px 14px; background: white; font-size: 0.92rem; line-height: 1.55; }
+  .hl-b { color: var(--blue); font-weight: 700; } .hl-t { color: #059669; font-weight: 700; }
+  .hl-c { color: var(--coral); font-weight: 700; } .hl-p { color: var(--purple); font-weight: 700; }
+  .hl-o { color: var(--orange); font-weight: 700; } .hl-g { color: var(--green); font-weight: 700; }
+
+  /* QUIZ */
+  .q-prog-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .q-prog-bar { flex: 1; height: 14px; background: #e0e0e0; border: 2px solid var(--ink); border-radius: 20px; overflow: hidden; }
+  .q-prog-fill { height: 100%; background: var(--teal); border-radius: 20px; transition: width 0.4s; }
+  .q-score { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; background: var(--yellow); border: 2px solid var(--ink); padding: 4px 12px; border-radius: 20px; }
+  .q-card { border: 3px solid var(--ink); border-radius: 12px; padding: 22px; background: white; box-shadow: 5px 5px 0 var(--ink); }
+  .q-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; color: var(--teal); margin-bottom: 8px; }
+  .q-text { font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 600; margin-bottom: 16px; line-height: 1.4; }
+  .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media(max-width:480px){ .q-opts{grid-template-columns:1fr;} }
+  .q-opt { padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.98rem; cursor: pointer; transition: all 0.15s; text-align: left; box-shadow: 2px 2px 0 var(--ink); }
+  .q-opt:hover:not(:disabled) { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .q-opt.correct { background: var(--teal) !important; color: white; border-color: #059669; box-shadow: none; }
+  .q-opt.wrong { background: var(--coral) !important; color: white; border-color: #c0392b; box-shadow: none; animation: shake 0.3s; }
+  .q-opt:disabled { cursor: default; }
+  .q-fb { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600; border: 2px solid; display: none; }
+  .q-fb.show { display: block; }
+  .q-fb.fb-ok { background: #e0faf1; border-color: var(--teal); color: #059669; }
+  .q-fb.fb-no { background: var(--light-coral); border-color: var(--coral); color: var(--coral); }
+  .q-result { text-align: center; padding: 30px; }
+  .q-result h2 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin-bottom: 10px; }
+  .big-score { font-family: 'Permanent Marker', cursive; font-size: 4rem; color: var(--teal); }
+
+  /* ACTIVITIES */
+  .act-card { border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; margin-bottom: 22px; box-shadow: 5px 5px 0 var(--ink); }
+  .act-hdr { padding: 13px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid var(--ink); }
+  .act-icon { font-size: 1.8rem; }
+  .act-title { font-family: 'Permanent Marker', cursive; font-size: 1.25rem; }
+  .act-bdy { background: white; padding: 18px; font-size: 0.95rem; line-height: 1.6; }
+
+  /* chip-drag activities */
+  .chip-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; padding: 12px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; min-height: 48px; }
+  .chip { padding: 6px 14px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Patrick Hand', cursive; font-size: 0.9rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .chip:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .chip.chip-sel { background: var(--yellow); border-color: var(--orange); box-shadow: none; }
+  .chip.chip-used { opacity: 0.35; pointer-events: none; }
+  .chip.chip-ok { background: var(--light-teal); border-color: #059669; }
+  .chip.chip-bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+
+  /* drop zones */
+  .drop-zone-wrap { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; margin: 12px 0; }
+  .drop-col { border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .drop-col-hdr { padding: 9px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; text-align: center; }
+  .drop-zone { min-height: 80px; padding: 8px; background: white; display: flex; flex-direction: column; gap: 6px; }
+  .drop-zone.dragover { background: var(--light-yellow); }
+
+  /* match activity */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:500px){ .match-grid{grid-template-columns:1fr;} }
+  .match-item { padding: 10px 13px; border: 2.5px solid var(--ink); border-radius: 8px; font-family: 'Patrick Hand', cursive; font-size: 0.88rem; cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; min-height: 46px; display: flex; align-items: center; }
+  .match-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .match-item.sel { background: var(--yellow); border-color: var(--orange); }
+  .match-item.ok { background: #e0faf1; border-color: var(--teal); pointer-events: none; }
+  .match-item.bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+
+  /* sort activity */
+  .sort-list { display: flex; flex-direction: column; gap: 7px; }
+  .sort-item { padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.92rem; cursor: grab; display: flex; align-items: center; gap: 10px; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .sort-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .sort-item.dragging { opacity: 0.3; }
+  .sort-grip { color: #bbb; font-size: 1.1rem; }
+
+  /* fill blanks */
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .word { padding: 5px 13px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; }
+  .word:hover:not(.used) { background: var(--light-yellow); }
+  .word.sel { background: var(--yellow); border-color: var(--orange); }
+  .word.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+  .fill-para { line-height: 2.6; font-size: 0.95rem; padding: 14px; background: #fafafa; border: 2px solid #ddd; border-radius: 8px; }
+  .blank { display: inline-block; min-width: 90px; border-bottom: 2.5px solid var(--blue); padding: 2px 8px; font-family: 'Caveat', cursive; font-size: 0.98rem; font-weight: 700; text-align: center; margin: 0 3px; cursor: pointer; transition: all 0.15s; border-radius: 4px 4px 0 0; }
+  .blank:hover { background: rgba(255,209,102,0.25); }
+  .blank.filled { color: var(--blue); }
+  .blank.sel-b { background: rgba(255,209,102,0.4); border-color: var(--orange); }
+  .blank.ok { background: var(--light-teal); color: #059669; border-color: #059669; }
+  .blank.bad { background: var(--light-coral); color: var(--coral); border-color: var(--coral); }
+
+  /* tf activity */
+  .tf-card { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: white; }
+  .tf-q { font-family: 'Kalam', cursive; font-size: 0.97rem; margin-bottom: 10px; line-height: 1.5; }
+  .tf-btns { display: flex; gap: 10px; }
+  .tf-btn { font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; padding: 6px 20px; border: 2px solid var(--ink); border-radius: 20px; cursor: pointer; transition: all 0.15s; background: white; }
+  .tf-btn:hover { background: var(--light-yellow); }
+  .tf-btn.correct { background: var(--teal); color: white; border-color: #059669; }
+  .tf-btn.wrong { background: var(--coral); color: white; border-color: #c0392b; }
+  .tf-btn:disabled { cursor: default; }
+  .tf-exp { display: none; margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-family: 'Kalam', cursive; font-size: 0.88rem; }
+  .tf-exp.show { display: block; }
+
+  /* comparison table */
+  .cmp-tbl { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  .cmp-tbl th { background: var(--ink); color: white; font-family: 'Permanent Marker', cursive; padding: 10px 13px; text-align: left; }
+  .cmp-tbl td { padding: 9px 13px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  .cmp-tbl tr:nth-child(even) td { background: #f9f9f9; }
+
+  /* ── SVG ZOOM WRAPPER ── */
+  .svg-wrap {
+    position: relative; display: inline-block; width: 100%;
+    cursor: zoom-in; border: 2px dashed transparent; border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .svg-wrap:hover { border-color: var(--blue); }
+  .svg-wrap:hover .svg-hint { opacity: 1; }
+  .svg-hint {
+    position: absolute; bottom: 6px; right: 8px;
+    background: var(--blue); color: white;
+    font-family: 'Caveat', cursive; font-size: 0.82rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px; opacity: 0;
+    transition: opacity 0.2s; pointer-events: none;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+  }
+
+  /* ── ZOOM MODAL ── */
+  #svg-modal {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(10,10,30,0.82); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  #svg-modal.open { display: flex; animation: fadeIn 0.2s ease; }
+  #svg-modal-inner {
+    background: #fffdf5; border: 3px solid var(--ink); border-radius: 14px;
+    box-shadow: 8px 8px 0 var(--ink); max-width: 95vw; max-height: 90vh;
+    overflow: auto; position: relative; padding: 16px;
+  }
+  #svg-modal-content { display: block; min-width: 300px; }
+  #svg-modal-content svg { width: 100% !important; max-width: none !important; height: auto; }
+  #modal-toolbar {
+    display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center;
+  }
+  #modal-title {
+    font-family: 'Permanent Marker', cursive; font-size: 1rem; flex: 1;
+    color: var(--ink);
+  }
+  .modal-btn {
+    font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700;
+    padding: 6px 16px; border: 2.5px solid var(--ink); border-radius: 8px;
+    cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink);
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .modal-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); background: var(--light-yellow); }
+  .modal-btn.close-btn { background: var(--coral); color: white; border-color: #c0392b; }
+  .modal-btn.close-btn:hover { background: #c0392b; }
+  .modal-btn.dl-btn { background: var(--teal); color: var(--ink); border-color: #059669; }
+  .zoom-controls { display: flex; gap: 6px; align-items: center; }
+  .zoom-lbl { font-family: 'Caveat', cursive; font-size: 0.95rem; min-width: 44px; text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#7b2d8b;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-4-computers.html" style="color:#ef476f;text-decoration:none;">📑 Topic 4 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- BACK BUTTON -->
+  <a href="topic-4-computers.html" style="
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Permanent Marker', cursive; font-size: 1rem; color: #1a1a2e;
+    text-decoration: none; border: 2.5px solid #1a1a2e; border-radius: 8px;
+    padding: 8px 18px; background: #fff9c4; box-shadow: 3px 3px 0 #1a1a2e;
+    margin: 20px 0 10px; transform: rotate(-0.5deg); transition: transform 0.15s, box-shadow 0.15s;
+  " onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'"
+     onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">
+    ← Back to Cover Page
+  </a>
+
+  <div class="hero">
+    <h1 class="hero-title">💻 Hardware — 17</h1>
+    <p class="hero-sub">IGCSE Computer Science · Edexcel 4CP01 · Unit 4 Computers</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">🗺 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="activities">✏️ Activities</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+  </div>
+
+  <!-- ════════════ MIND MAP TAB ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        💻 Why Does Hardware Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🧠 The Brain of the Computer</div><p>The CPU is at the heart of every computer. Understanding how the fetch–decode–execute cycle works explains HOW computers run programs — the most fundamental concept in hardware.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🗃️ Memory Hierarchy</div><p>RAM, ROM, cache and virtual memory all play different roles. Knowing why each type exists — and the trade-offs of speed, cost and volatility — is key to understanding performance.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">⚡ CPU Performance</div><p>Clock speed, number of cores and cache size all affect how fast a CPU runs. These are commonly examined — you must explain HOW each factor improves performance.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">💾 Secondary Storage</div><p>Magnetic, optical and solid-state storage each work differently and suit different use cases. Comparing their advantages and disadvantages is a classic exam question.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">☁️ Cloud & Embedded</div><p>Cloud storage and embedded systems are increasingly important in the modern world — from IoT devices to smart appliances, and from Google Drive to school networks.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">🏗️ Von Neumann Model</div><p>The von Neumann architecture — stored program computer with CPU, RAM, buses and I/O — is the foundation of all modern computers. It features heavily in exam questions.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key focus:</strong> The fetch–decode–execute cycle, memory types (RAM vs ROM vs cache vs virtual), CPU performance factors, and storage types (magnetic vs optical vs solid-state) are the most examined areas.</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">🖥 Topic 17: Hardware — Overview</div>
+
+      <div class="highlight-box">
+        🔑 Von Neumann Architecture: CPU + RAM + Buses + I/O devices connected together. Program stored in memory with the data.
+      </div>
+
+      <div class="ig-grid">
+
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">🧠 CPU Components</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">CU</div><div><strong>Control Unit</strong> — organises all actions; controls fetch–decode–execute</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">AL</div><div><strong>ALU</strong> — performs calculations and logic operations</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">R</div><div><strong>Registers</strong> — fast storage inside CPU (Accumulator, Program Counter, Current Instruction)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">⏱</div><div><strong>Clock</strong> — synchronises all CPU actions; measured in GHz</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">B</div><div><strong>Buses</strong> — Address, Data, and Control bus connect CPU to memory and I/O</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:#059669;">
+          <span class="ig-label" style="color:#059669;">💾 Memory Types</span>
+          <div class="ig-item"><div class="ig-dot" style="background:#059669;border-color:#059669;color:white;">R</div><div><strong>RAM</strong> — volatile, temporary store for running programs & data</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:#059669;border-color:#059669;color:white;">RO</div><div><strong>ROM</strong> — non-volatile, stores firmware (BIOS/UEFI); read-only</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:#059669;border-color:#059669;color:white;">C</div><div><strong>Cache</strong> — small, very fast memory between CPU and RAM; L1, L2, L3 levels</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:#059669;border-color:#059669;color:white;">V</div><div><strong>Virtual Memory</strong> — section of hard disk used as extra RAM when RAM is full</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--coral);">
+          <span class="ig-label" style="color:var(--coral);">🔄 Fetch–Decode–Execute</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">1</div><div><strong>Fetch</strong> — CU puts address on address bus; instruction copied from RAM to CPU register via data bus</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">2</div><div><strong>Decode</strong> — CU analyses the instruction; signals sent to relevant CPU parts</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">3</div><div><strong>Execute</strong> — instruction carried out (e.g. ALU calculates; data stored back to memory)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--coral);border-color:var(--coral);color:white;">∞</div><div>Cycle repeats continuously until power off</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--purple);">
+          <span class="ig-label" style="color:var(--purple);">⚡ CPU Performance Factors</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">⏱</div><div><strong>Clock Speed</strong> — faster clock = more instructions per second; measured in GHz</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">🔢</div><div><strong>Processor Cores</strong> — more cores = parallel processing and multitasking</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">💾</div><div><strong>Cache Size</strong> — larger cache = fewer cache misses; CPU waits less for data</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--orange);">
+          <span class="ig-label" style="color:var(--orange);">🗄️ Secondary Storage Types</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">🧲</div><div><strong>Magnetic</strong> — HDD; platters + read heads; north/south poles = 1s/0s; large capacity, cheaper</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">💿</div><div><strong>Optical</strong> — CD/DVD/Blu-Ray; laser reads pits & lands (reflective = 1, non-reflective = 0)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">⚡</div><div><strong>Solid-State</strong> — SSD/USB; NAND flash; trapped electrons = 0s, empty = 1s; fastest, no moving parts</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">☁</div><div><strong>Cloud</strong> — remote servers via Internet; accessible anywhere; examples: Google Drive, Dropbox</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">🤖 Embedded Systems</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">📌</div><div>Designed for one specific job (e.g. washing machine, traffic lights, car ECU)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">💡</div><div>Cheap, low-power, limited memory; program stored in ROM/firmware</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">🌐</div><div><strong>IoT</strong> — Internet of Things: embedded devices connected via Internet to communicate remotely</div></div>
+        </div>
+
+      </div><!-- end ig-grid -->
+
+      <!-- FDE cycle diagram -->
+      <div style="margin-top:22px;">
+        <div style="font-family:'Permanent Marker',cursive;font-size:1.1rem;text-align:center;margin-bottom:12px;">🔄 The Fetch–Decode–Execute Cycle</div>
+        <div style="text-align:center;">
+          <div class="svg-wrap" onclick="openModal(this,'Fetch–Decode–Execute Cycle')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 560 100" style="max-width:560px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="var(--ink)"/></marker></defs>
+            <!-- RAM -->
+            <rect x="5" y="25" width="90" height="50" rx="8" fill="var(--light-blue)" stroke="var(--blue)" stroke-width="2"/>
+            <text x="50" y="47" font-size="10" text-anchor="middle" fill="var(--blue)" font-family="sans-serif" font-weight="bold">RAM</text>
+            <text x="50" y="60" font-size="9" text-anchor="middle" fill="#555" font-family="sans-serif">(instruction)</text>
+            <!-- arrow RAM to Fetch -->
+            <line x1="95" y1="50" x2="125" y2="50" stroke="var(--ink)" stroke-width="2" marker-end="url(#arr)"/>
+            <!-- Fetch -->
+            <rect x="125" y="20" width="90" height="60" rx="8" fill="var(--light-coral)" stroke="var(--coral)" stroke-width="2"/>
+            <text x="170" y="46" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">FETCH</text>
+            <text x="170" y="60" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Address bus →</text>
+            <text x="170" y="72" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Data bus ←</text>
+            <!-- arrow Fetch to Decode -->
+            <line x1="215" y1="50" x2="245" y2="50" stroke="var(--ink)" stroke-width="2" marker-end="url(#arr)"/>
+            <!-- Decode -->
+            <rect x="245" y="20" width="90" height="60" rx="8" fill="#fff3e0" stroke="var(--orange)" stroke-width="2"/>
+            <text x="290" y="46" font-size="10" text-anchor="middle" fill="var(--orange)" font-family="sans-serif" font-weight="bold">DECODE</text>
+            <text x="290" y="60" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Control Unit</text>
+            <text x="290" y="72" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">analyses</text>
+            <!-- arrow Decode to Execute -->
+            <line x1="335" y1="50" x2="365" y2="50" stroke="var(--ink)" stroke-width="2" marker-end="url(#arr)"/>
+            <!-- Execute -->
+            <rect x="365" y="20" width="90" height="60" rx="8" fill="var(--light-teal)" stroke="#059669" stroke-width="2"/>
+            <text x="410" y="46" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">EXECUTE</text>
+            <text x="410" y="60" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">ALU / store</text>
+            <text x="410" y="72" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">result</text>
+            <!-- loop arrow back -->
+            <path d="M455,50 Q510,50 510,90 Q510,98 290,98 Q70,98 70,90 Q70,80 95,75" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr)"/>
+            <text x="290" y="96" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">repeats until power off</text>
+          </svg>
+          </div><!-- end svg-wrap -->
+        </div>
+      </div>
+
+    </div><!-- end ig-wrap -->
+  </div><!-- end mindmap tab -->
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <!-- 17.1 Von Neumann / Stored Programs -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,var(--blue),#0a4f70);">
+        <div class="notes-hdr-left"><span class="notes-num">17.1</span><span class="notes-title">Stored Programs & The Von Neumann Model</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>Early computers like a calculator could only do one job — they had to be physically rewired to do something different. The idea of a <strong class="hl-b">general-purpose computer</strong> was developed in the 1930s–40s through the work of <strong>Alan Turing</strong> and <strong>John von Neumann</strong>.</p>
+
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Von Neumann architecture</strong> — a computer system design in which the <strong>program is stored in memory with the data</strong>. Also called a stored-program computer.<br><br>
+          <strong class="hl-b">CPU (Central Processing Unit)</strong> — the hardware device that carries out all the processing in a computer.<br><br>
+          <strong class="hl-b">RAM (Random-Access Memory)</strong> — the main memory; a temporary store for data and instructions (programs).<br><br>
+          <strong class="hl-b">Bus</strong> — a group of connections (wires) between devices in a computer.</p>
+        </div>
+
+        <div style="margin:16px auto;text-align:center;">
+          <div class="svg-wrap" onclick="openModal(this,'Von Neumann Architecture — CPU, Memory & Bus')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 420 80" style="max-width:420px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="15" width="100" height="50" rx="8" fill="var(--light-blue)" stroke="var(--blue)" stroke-width="2"/>
+            <text x="70" y="44" font-size="13" text-anchor="middle" fill="var(--blue)" font-family="sans-serif" font-weight="bold">CPU</text>
+            <rect x="155" y="15" width="110" height="50" rx="8" fill="var(--light-green)" stroke="var(--green)" stroke-width="2"/>
+            <text x="210" y="44" font-size="13" text-anchor="middle" fill="var(--green)" font-family="sans-serif" font-weight="bold">Memory</text>
+            <rect x="295" y="15" width="105" height="50" rx="8" fill="#fff3e0" stroke="var(--orange)" stroke-width="2"/>
+            <text x="348" y="40" font-size="12" text-anchor="middle" fill="var(--orange)" font-family="sans-serif" font-weight="bold">Input &amp;</text>
+            <text x="348" y="55" font-size="12" text-anchor="middle" fill="var(--orange)" font-family="sans-serif" font-weight="bold">Output</text>
+            <rect x="20" y="68" width="380" height="12" rx="4" fill="var(--coral)" opacity="0.8"/>
+            <text x="210" y="78" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">BUS</text>
+          </svg>
+          </div><!-- end svg-wrap -->
+          <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;">Figure 4.5 — CPU, Memory and I/O devices connected by the Bus</p>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Key idea:</strong> In von Neumann architecture, instructions are <strong>stored in memory alongside the data</strong>. The CPU fetches these instructions from memory, decodes them and executes them. This is why you can install different programs on the same computer without rewiring it.</div>
+      </div>
+    </div>
+
+    <!-- 17.2 RAM, ROM, Cache, Virtual Memory -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,#059669,#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">17.2</span><span class="notes-title">Main Memory: RAM, ROM, Cache & Virtual Memory</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+
+        <h4 class="subh" style="color:var(--blue);">🔵 RAM — Random Access Memory</h4>
+        <p>RAM is the <strong class="hl-b">temporary store</strong> the CPU uses for data and instructions currently being processed. It is <strong class="hl-c">volatile</strong> — contents are lost when power is turned off. RAM is typically measured in GB.</p>
+        <p style="margin-top:8px;">The CPU uses the bus to <strong>read</strong> (retrieve data from a memory address) and <strong>write</strong> (send data to a memory address) to RAM. Each memory location has a unique <strong>memory address</strong> — like a row of letter boxes, each holding 1 byte.</p>
+
+        <h4 class="subh" style="color:#059669;">🟢 ROM — Read-Only Memory</h4>
+        <p>ROM is <strong class="hl-t">non-volatile</strong> — its contents are <strong>NOT lost when power is off</strong>. It stores <strong>firmware</strong>: small programs permanently built into the hardware. The contents cannot be altered by ordinary programs.</p>
+
+        <div class="def-box" style="border-color:#059669;margin:10px 0;">
+          <span class="def-label" style="background:#059669;">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-t">Firmware</strong> — software that is permanently stored in ROM (or flash memory) and controls the basic hardware functions of a device. It is rarely updated and is tied directly to the hardware it controls.<br><br>
+          <strong class="hl-t">Booting (the boot process)</strong> — the sequence of steps a computer performs when it is powered on, before the operating system loads.<br><br>
+          <strong class="hl-t">BIOS</strong> (Basic Input/Output System) — the traditional firmware stored in ROM that runs on startup. Replaced in modern computers by UEFI.<br><br>
+          <strong class="hl-t">UEFI</strong> (Unified Extensible Firmware Interface) — the modern replacement for BIOS; faster, supports larger storage, more secure.</p>
+        </div>
+
+        <h4 class="subh" style="color:#059669;">🥾 The Boot Process — Step by Step</h4>
+        <div class="n-card" style="border-color:#059669;">
+          <div class="n-card-hdr" style="background:#059669;">What happens when you press the power button?</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:#059669;">1</span><div><strong>Power on</strong> — electricity flows to the CPU. RAM is empty. The CPU has no instructions yet.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">2</span><div><strong>Firmware runs from ROM</strong> — the CPU automatically reads the BIOS/UEFI stored in ROM. This is the only memory with contents at this point.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">3</span><div><strong>POST (Power-On Self-Test)</strong> — the firmware checks that essential hardware components (RAM, keyboard, storage) are present and working correctly.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">4</span><div><strong>Locate the OS</strong> — the firmware looks for the operating system on the hard disk (or SSD). It checks a special area called the <em>boot sector</em>.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">5</span><div><strong>Load the OS into RAM</strong> — the OS (e.g. Windows, Linux) is copied from secondary storage into RAM so the CPU can run it.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">6</span><div><strong>OS takes control</strong> — the operating system loads the desktop and the computer is ready to use.</div></div>
+          </div>
+        </div>
+        <div class="notes-eg">💡 <strong>Why is firmware in ROM?</strong> Because ROM is non-volatile — even if RAM is wiped or the hard disk fails, the firmware is still there. Without it, the CPU would have nothing to read when it first powers on and the computer could never start.</div>
+
+        <div class="g2" style="margin-top:14px;">
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--blue);margin-bottom:6px;">💙 RAM</div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Volatile — data lost when power off</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Temporary store for running programs &amp; data</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Can be read and written to by CPU</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Measured in GB; much faster than HDD</div></div>
+          </div>
+          <div style="background:var(--light-green);border:2px solid var(--green);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--green);margin-bottom:6px;">💚 ROM</div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Non-volatile — data kept when power off</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Stores firmware (BIOS/UEFI)</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Read-only — cannot be altered by programs</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Runs POST and locates OS on boot</div></div>
+          </div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> "Why is the BIOS stored in ROM?" Answer: Because ROM is non-volatile — the firmware must still be present even after the power has been off. RAM would lose the firmware when power was removed so it cannot be used to store the BIOS.</div>
+
+        <h4 class="subh" style="color:var(--orange);">🟠 Cache Memory</h4>
+        <p>Cache is a <strong class="hl-o">small amount of very fast, expensive memory</strong> located between the CPU and RAM. In the 1980s CPUs and RAM ran at the same speed, but CPUs became much faster than RAM — creating a <strong>bottleneck</strong>. Cache solves this by storing <strong>frequently used data and instructions</strong> so the CPU can access them at its own fast speed without waiting for RAM.</p>
+        <div class="notes-eg">🔍 <strong>Cache miss:</strong> If the CPU needs data not already in the cache, it must wait for the cache to reload from RAM — this is called a <strong>cache miss</strong>.</div>
+        <p style="margin-top:8px;">There are <strong>three levels</strong> of cache: <strong>L1</strong> (fastest, smallest, inside each core), <strong>L2</strong> (medium, per core), <strong>L3</strong> (largest, shared by all cores). The CPU checks L1 first, then L2, then L3. A <strong>larger cache</strong> = fewer cache misses = faster processing.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'Cache Memory — CPU ↔ Cache ↔ RAM')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 500 90" style="max-width:500px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="ca" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="var(--orange)"/></marker></defs>
+            <rect x="10" y="20" width="90" height="50" rx="8" fill="var(--light-blue)" stroke="var(--blue)" stroke-width="2"/>
+            <text x="55" y="49" font-size="12" text-anchor="middle" fill="var(--blue)" font-family="sans-serif" font-weight="bold">CPU</text>
+            <text x="55" y="62" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">fast</text>
+            <line x1="100" y1="45" x2="130" y2="45" stroke="var(--orange)" stroke-width="2" marker-end="url(#ca)"/>
+            <line x1="130" y1="45" x2="100" y2="45" stroke="var(--orange)" stroke-width="2" marker-end="url(#ca)"/>
+            <text x="115" y="38" font-size="8" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">high speed</text>
+            <rect x="130" y="15" width="120" height="60" rx="8" fill="#fff3e0" stroke="var(--orange)" stroke-width="2"/>
+            <text x="190" y="42" font-size="12" text-anchor="middle" fill="var(--orange)" font-family="sans-serif" font-weight="bold">CACHE</text>
+            <text x="190" y="56" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">L1 → L2 → L3</text>
+            <line x1="250" y1="45" x2="280" y2="45" stroke="var(--orange)" stroke-width="2" marker-end="url(#ca)"/>
+            <line x1="280" y1="45" x2="250" y2="45" stroke="var(--orange)" stroke-width="2" marker-end="url(#ca)"/>
+            <text x="265" y="38" font-size="8" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">low speed</text>
+            <rect x="280" y="20" width="90" height="50" rx="8" fill="var(--light-green)" stroke="var(--green)" stroke-width="2"/>
+            <text x="325" y="49" font-size="12" text-anchor="middle" fill="var(--green)" font-family="sans-serif" font-weight="bold">RAM</text>
+            <text x="325" y="62" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">slow</text>
+          </svg>
+          </div><!-- end svg-wrap -->
+        </div>
+
+        <h4 class="subh" style="color:var(--purple);">🟣 Virtual Memory</h4>
+        <p>When a computer is running the OS and several applications at the same time, <strong>RAM can become full</strong>. Instead of closing programs, the OS uses a clever trick: it borrows space on the <strong>hard disk</strong> to act as extra (pretend) memory. This pretend memory is called <strong class="hl-p">virtual memory</strong>.</p>
+
+        <div class="n-card" style="border-color:var(--purple);margin:12px 0;">
+          <div class="n-card-hdr" style="background:var(--purple);">🔄 How Virtual Memory Works — Step by Step</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:var(--purple);">1</span><div>A process running needs to store data but <strong>RAM is full</strong> — there is no free space.</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">2</span><div>The OS <strong>memory manager</strong> identifies the data in RAM that has been <strong>least recently used</strong>.</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">3</span><div>That data is <strong>swapped out</strong> — copied from RAM to a reserved area on the hard disk called the <strong>swap file</strong> (or page file).</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">4</span><div>The freed RAM space is now used for the new data the running process needs.</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">5</span><div>If the swapped-out data is needed again, it is <strong>swapped back in</strong> from the hard disk to RAM — but something else must be swapped out first.</div></div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin:14px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'Virtual Memory — RAM ↔ Hard Disk Swap')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 580 160" style="max-width:580px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="vm" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#7b2d8b"/></marker></defs>
+            <!-- RAM box -->
+            <rect x="10" y="20" width="200" height="120" rx="10" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2.5"/>
+            <text x="110" y="42" font-size="12" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">RAM (Main Memory)</text>
+            <rect x="22" y="52" width="80" height="26" rx="5" fill="#ce93d8" stroke="#7b2d8b" stroke-width="1.5"/>
+            <text x="62" y="69" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Program A</text>
+            <rect x="22" y="84" width="80" height="26" rx="5" fill="#ce93d8" stroke="#7b2d8b" stroke-width="1.5"/>
+            <text x="62" y="101" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Program B</text>
+            <rect x="110" y="52" width="90" height="26" rx="5" fill="#ce93d8" stroke="#7b2d8b" stroke-width="1.5"/>
+            <text x="155" y="69" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Program C</text>
+            <rect x="110" y="84" width="90" height="26" rx="5" fill="#e0e0e0" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="155" y="101" font-size="9" text-anchor="middle" fill="#aaa" font-family="sans-serif">(empty)</text>
+            <text x="110" y="132" font-size="8.5" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif">RAM is FULL!</text>
+
+            <!-- arrows swap out / in -->
+            <path d="M210,70 Q270,50 330,70" stroke="#7b2d8b" stroke-width="2" fill="none" marker-end="url(#vm)"/>
+            <text x="270" y="48" font-size="9" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">SWAP OUT</text>
+            <text x="270" y="58" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">(least used → disk)</text>
+
+            <path d="M330,110 Q270,130 210,110" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#vm)" stroke-dasharray="5,3"/>
+            <text x="270" y="145" font-size="9" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">SWAP IN</text>
+            <text x="270" y="155" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">(when needed again)</text>
+
+            <!-- Hard disk swap area -->
+            <rect x="330" y="20" width="230" height="120" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="445" y="42" font-size="12" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Hard Disk — Swap Area</text>
+            <text x="445" y="56" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">(Virtual Memory / Page File)</text>
+            <rect x="345" y="65" width="100" height="26" rx="5" fill="#ffcc80" stroke="#f77f00" stroke-width="1.5"/>
+            <text x="395" y="82" font-size="9" text-anchor="middle" fill="#7a3c00" font-family="sans-serif" font-weight="bold">Swapped Data 1</text>
+            <rect x="455" y="65" width="95" height="26" rx="5" fill="#ffcc80" stroke="#f77f00" stroke-width="1.5"/>
+            <text x="503" y="82" font-size="9" text-anchor="middle" fill="#7a3c00" font-family="sans-serif" font-weight="bold">Swapped Data 2</text>
+            <rect x="345" y="97" width="205" height="26" rx="5" fill="#e0e0e0" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="447" y="114" font-size="9" text-anchor="middle" fill="#aaa" font-family="sans-serif">(more swap space available)</text>
+            <text x="445" y="132" font-size="8" text-anchor="middle" fill="#f77f00" font-family="sans-serif">⚠ Much SLOWER than RAM</text>
+          </svg>
+          </div>
+        </div>
+
+        <div class="g2">
+          <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--purple);margin-bottom:4px;">✅ Advantage</div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">✓</span><div>Allows more programs to run simultaneously than physical RAM alone</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">✓</span><div>Prevents programs from crashing due to "out of memory" errors</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">✓</span><div>The size of the swap area can be set by the user</div></div>
+          </div>
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--coral);margin-bottom:4px;">❌ Disadvantages</div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Hard disk is <strong>much slower</strong> than RAM — significant drop in performance</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div><strong>Disk thrashing</strong>: if virtual memory is overused, the OS constantly swaps data back and forth, slowing everything down</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Hard disk technology not designed for frequent small reads/writes</div></div>
+          </div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> The key chain: <em>RAM full → OS swaps least-used data to hard disk swap area → frees RAM for new data → but HDD is much slower than RAM → performance drops → disk thrashing</em>. "More RAM → less virtual memory needed → better performance."</div>
+      </div>
+    </div>
+
+    <!-- 17.3 CPU & FDE Cycle -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,var(--coral),#922b21);">
+        <div class="notes-hdr-left"><span class="notes-num">17.3</span><span class="notes-title">CPU Components & The Fetch–Decode–Execute Cycle</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+
+        <div class="def-box" style="border-color:var(--coral);">
+          <span class="def-label" style="background:var(--coral);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-c">ALU (Arithmetic/Logic Unit)</strong> — the part of the CPU that performs calculations and logic operations.<br><br>
+          <strong class="hl-c">Register</strong> — a storage location inside the CPU used to hold an instruction, address, or item of data. Very fast to access.<br><br>
+          <strong class="hl-c">Control Unit (CU)</strong> — the part of the CPU that organises the actions of all other parts; controls the FDE cycle.<br><br>
+          <strong class="hl-c">Clock</strong> — an electronic device that 'ticks' at regular intervals, synchronising all CPU actions. Measured in GHz (1 GHz = 1000 million ticks/second).<br><br>
+          <strong class="hl-c">Bus width</strong> — the number of wires in a bus. Determines how many binary digits (1s and 0s) can be communicated at once.</p>
+        </div>
+
+        <!-- FULL CPU ARCHITECTURE DIAGRAM -->
+        <h4 class="subh" style="color:var(--coral);">🖥️ Full CPU Architecture Diagram</h4>
+        <div style="text-align:center;margin:14px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'CPU Architecture — Full System Diagram')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 680 370" style="max-width:680px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="cpuarr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a1a2e"/></marker>
+              <marker id="busr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#ef476f"/></marker>
+            </defs>
+
+            <!-- ── CPU BOX ── -->
+            <rect x="10" y="10" width="310" height="240" rx="12" fill="#fce4ec" stroke="#ef476f" stroke-width="3"/>
+            <text x="165" y="34" font-size="14" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">CPU</text>
+
+            <!-- Control Unit -->
+            <rect x="26" y="44" width="125" height="55" rx="8" fill="#ef476f" stroke="#c0392b" stroke-width="2"/>
+            <text x="88" y="67" font-size="11" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Control Unit</text>
+            <text x="88" y="82" font-size="8.5" text-anchor="middle" fill="white" font-family="sans-serif">(CU)</text>
+            <text x="88" y="93" font-size="7.5" text-anchor="middle" fill="#ffcdd2" font-family="sans-serif">organises all actions</text>
+
+            <!-- ALU -->
+            <rect x="165" y="44" width="140" height="55" rx="8" fill="#118ab2" stroke="#0a5c7a" stroke-width="2"/>
+            <text x="235" y="67" font-size="11" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">ALU</text>
+            <text x="235" y="82" font-size="8.5" text-anchor="middle" fill="white" font-family="sans-serif">(Arithmetic/Logic Unit)</text>
+            <text x="235" y="93" font-size="7.5" text-anchor="middle" fill="#b3e5fc" font-family="sans-serif">calculations &amp; logic ops</text>
+
+            <!-- Clock -->
+            <rect x="26" y="113" width="80" height="48" rx="8" fill="#7b2d8b" stroke="#4a1080" stroke-width="2"/>
+            <text x="66" y="133" font-size="10" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Clock</text>
+            <text x="66" y="147" font-size="7.5" text-anchor="middle" fill="#e1bee7" font-family="sans-serif">ticks in GHz</text>
+            <text x="66" y="156" font-size="7.5" text-anchor="middle" fill="#e1bee7" font-family="sans-serif">synchronises CPU</text>
+
+            <!-- Registers group -->
+            <rect x="120" y="113" width="185" height="100" rx="8" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+            <text x="213" y="130" font-size="10" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Registers</text>
+            <!-- Accumulator -->
+            <rect x="130" y="138" width="78" height="28" rx="5" fill="#ffcc80" stroke="#f77f00" stroke-width="1.5"/>
+            <text x="169" y="150" font-size="8.5" text-anchor="middle" fill="#7a3c00" font-family="sans-serif" font-weight="bold">Accumulator</text>
+            <text x="169" y="161" font-size="7" text-anchor="middle" fill="#7a3c00" font-family="sans-serif">holds ALU results</text>
+            <!-- Program Counter -->
+            <rect x="217" y="138" width="78" height="28" rx="5" fill="#ffcc80" stroke="#f77f00" stroke-width="1.5"/>
+            <text x="256" y="150" font-size="8.5" text-anchor="middle" fill="#7a3c00" font-family="sans-serif" font-weight="bold">Prog. Counter</text>
+            <text x="256" y="161" font-size="7" text-anchor="middle" fill="#7a3c00" font-family="sans-serif">next instruction addr</text>
+            <!-- Current Instruction -->
+            <rect x="130" y="174" width="165" height="28" rx="5" fill="#ffcc80" stroke="#f77f00" stroke-width="1.5"/>
+            <text x="213" y="186" font-size="8.5" text-anchor="middle" fill="#7a3c00" font-family="sans-serif" font-weight="bold">Current Instruction Register</text>
+            <text x="213" y="197" font-size="7" text-anchor="middle" fill="#7a3c00" font-family="sans-serif">instruction being executed</text>
+
+            <!-- Cache inside CPU area -->
+            <rect x="26" y="170" width="80" height="40" rx="8" fill="#d4edda" stroke="#059669" stroke-width="2"/>
+            <text x="66" y="186" font-size="9.5" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">Cache</text>
+            <text x="66" y="198" font-size="7.5" text-anchor="middle" fill="#059669" font-family="sans-serif">L1/L2 (fast)</text>
+
+            <!-- ── THREE BUSES ── -->
+            <!-- Address Bus label -->
+            <rect x="10" y="265" width="310" height="22" rx="5" fill="#118ab2" opacity="0.9"/>
+            <text x="165" y="280" font-size="9.5" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">ADDRESS BUS  (CPU → Memory: memory addresses, one direction)</text>
+            <!-- Data Bus -->
+            <rect x="10" y="291" width="310" height="22" rx="5" fill="#059669" opacity="0.9"/>
+            <text x="165" y="306" font-size="9.5" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">DATA BUS  (bidirectional: data values read/written)</text>
+            <!-- Control Bus -->
+            <rect x="10" y="317" width="310" height="22" rx="5" fill="#ef476f" opacity="0.9"/>
+            <text x="165" y="332" font-size="9.5" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">CONTROL BUS  (CU signals: read, write, clock, interrupt)</text>
+
+            <!-- Vertical connectors CPU → buses -->
+            <line x1="165" y1="250" x2="165" y2="265" stroke="#1a1a2e" stroke-width="2"/>
+
+            <!-- ── RAM ── -->
+            <rect x="350" y="44" width="140" height="80" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="420" y="68" font-size="12" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">RAM</text>
+            <text x="420" y="84" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">volatile, temporary</text>
+            <text x="420" y="97" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">programs + data</text>
+            <text x="420" y="110" font-size="8" text-anchor="middle" fill="#118ab2" font-family="sans-serif">addresses 0,1,2,3…</text>
+            <!-- RAM → bus connector -->
+            <line x1="350" y1="276" x2="420" y2="276" stroke="#118ab2" stroke-width="2"/>
+            <line x1="420" y1="124" x2="420" y2="276" stroke="#118ab2" stroke-width="2"/>
+
+            <!-- ── ROM ── -->
+            <rect x="350" y="144" width="140" height="60" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2.5"/>
+            <text x="420" y="166" font-size="12" text-anchor="middle" fill="#2d6a4f" font-family="sans-serif" font-weight="bold">ROM</text>
+            <text x="420" y="182" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">non-volatile, firmware</text>
+            <text x="420" y="196" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">BIOS/UEFI, boot</text>
+
+            <!-- ── INPUT DEVICES ── -->
+            <rect x="510" y="20" width="155" height="70" rx="10" fill="#fff9c4" stroke="#f77f00" stroke-width="2"/>
+            <text x="588" y="44" font-size="11" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Input Devices</text>
+            <text x="588" y="60" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Keyboard · Mouse</text>
+            <text x="588" y="73" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Scanner · Camera · Mic</text>
+            <!-- Input → bus -->
+            <line x1="588" y1="90" x2="588" y2="276" stroke="#f77f00" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="510" y1="276" x2="588" y2="276" stroke="#f77f00" stroke-width="1.5"/>
+
+            <!-- ── OUTPUT DEVICES ── -->
+            <rect x="510" y="110" width="155" height="70" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+            <text x="588" y="134" font-size="11" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">Output Devices</text>
+            <text x="588" y="150" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Monitor · Printer</text>
+            <text x="588" y="163" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Speaker · Screen</text>
+
+            <!-- ── HARD DISK (Secondary Storage) ── -->
+            <rect x="510" y="200" width="155" height="65" rx="10" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+            <text x="588" y="223" font-size="11" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">Hard Disk</text>
+            <text x="588" y="238" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">secondary storage</text>
+            <text x="588" y="251" font-size="8.5" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif">+ virtual memory swap</text>
+            <!-- HDD → bus -->
+            <line x1="510" y1="232" x2="490" y2="232" stroke="#7b2d8b" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="490" y1="232" x2="490" y2="276" stroke="#7b2d8b" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <line x1="490" y1="276" x2="510" y2="276" stroke="#7b2d8b" stroke-width="1.5"/>
+
+            <!-- Bus spine right side -->
+            <rect x="320" y="265" width="350" height="22" rx="5" fill="#118ab2" opacity="0.9"/>
+            <text x="495" y="280" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">ADDRESS BUS</text>
+            <rect x="320" y="291" width="350" height="22" rx="5" fill="#059669" opacity="0.9"/>
+            <text x="495" y="306" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">DATA BUS</text>
+            <rect x="320" y="317" width="350" height="22" rx="5" fill="#ef476f" opacity="0.9"/>
+            <text x="495" y="332" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">CONTROL BUS</text>
+
+            <!-- Connector lines right components to buses -->
+            <line x1="420" y1="204" x2="420" y2="265" stroke="#1a1a2e" stroke-width="1.5"/>
+            <line x1="420" y1="204" x2="490" y2="204" stroke="#1a1a2e" stroke-width="1" stroke-dasharray="4,2"/>
+
+            <!-- Legend -->
+            <text x="340" y="358" font-size="8" fill="#555" font-family="sans-serif">📘 Address bus: one-way (CPU→RAM)  📗 Data bus: two-way  📕 Control bus: CU signals</text>
+          </svg>
+          </div>
+          <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">Figure 4.10 — Full CPU system architecture (click to zoom)</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--coral);">🗄️ Key Registers</h4>
+        <div class="g3">
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:10px;text-align:center;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--coral);">Accumulator</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Holds results of calculations by the ALU. All I/O passes through it.</p>
+          </div>
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:10px;text-align:center;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--blue);">Program Counter</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Holds the memory address of the <strong>next instruction</strong> to be fetched.</p>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:10px;text-align:center;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--orange);">Current Instruction</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Holds the instruction <strong>currently being executed</strong>.</p>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🚌 The Three Buses — Diagram</h4>
+        <div style="text-align:center;margin:14px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'The Three Buses — Address, Data & Control')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 620 200" style="max-width:620px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="ba" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#118ab2"/></marker>
+              <marker id="bd" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#059669"/></marker>
+              <marker id="bdl" markerWidth="7" markerHeight="7" refX="2" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#059669"/></marker>
+              <marker id="bc" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#ef476f"/></marker>
+            </defs>
+
+            <!-- CPU -->
+            <rect x="20" y="60" width="110" height="80" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2.5"/>
+            <text x="75" y="95" font-size="13" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">CPU</text>
+            <text x="75" y="110" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">Control Unit</text>
+            <text x="75" y="122" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">ALU · Registers</text>
+
+            <!-- RAM -->
+            <rect x="260" y="20" width="120" height="60" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="320" y="46" font-size="12" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">RAM</text>
+            <text x="320" y="62" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">main memory</text>
+            <text x="320" y="74" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">addresses 0,1,2…</text>
+
+            <!-- ROM -->
+            <rect x="260" y="120" width="120" height="60" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2.5"/>
+            <text x="320" y="146" font-size="12" text-anchor="middle" fill="#2d6a4f" font-family="sans-serif" font-weight="bold">ROM</text>
+            <text x="320" y="162" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">firmware / BIOS</text>
+            <text x="320" y="174" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">non-volatile</text>
+
+            <!-- I/O -->
+            <rect x="470" y="60" width="130" height="80" rx="10" fill="#fff9c4" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="535" y="90" font-size="11" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">I/O Devices</text>
+            <text x="535" y="106" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Keyboard/Mouse</text>
+            <text x="535" y="118" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">Monitor/Printer</text>
+            <text x="535" y="130" font-size="8" text-anchor="middle" fill="#888" font-family="sans-serif">Hard Disk</text>
+
+            <!-- ADDRESS BUS: CPU → RAM (one way) -->
+            <line x1="130" y1="82" x2="258" y2="46" stroke="#118ab2" stroke-width="3" marker-end="url(#ba)"/>
+            <rect x="155" y="48" width="90" height="18" rx="4" fill="#e3f2fd" stroke="#118ab2" stroke-width="1"/>
+            <text x="200" y="61" font-size="8.5" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">ADDRESS BUS →</text>
+            <text x="200" y="71" font-size="7" text-anchor="middle" fill="#555" font-family="sans-serif">memory addresses (one-way)</text>
+
+            <!-- DATA BUS: both ways CPU ↔ RAM -->
+            <line x1="130" y1="100" x2="258" y2="100" stroke="#059669" stroke-width="3" marker-end="url(#bd)"/>
+            <line x1="258" y1="108" x2="130" y2="108" stroke="#059669" stroke-width="3" marker-end="url(#bdl)"/>
+            <text x="194" y="97" font-size="8.5" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">DATA BUS ↔</text>
+            <text x="194" y="120" font-size="7" text-anchor="middle" fill="#555" font-family="sans-serif">data values (two-way)</text>
+
+            <!-- CONTROL BUS: CPU → RAM -->
+            <line x1="130" y1="120" x2="258" y2="155" stroke="#ef476f" stroke-width="3" marker-end="url(#bc)"/>
+            <rect x="145" y="133" width="100" height="18" rx="4" fill="#fce4ec" stroke="#ef476f" stroke-width="1"/>
+            <text x="195" y="146" font-size="8.5" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">CONTROL BUS →</text>
+            <text x="195" y="158" font-size="7" text-anchor="middle" fill="#555" font-family="sans-serif">read/write/timing signals</text>
+
+            <!-- CPU → I/O (data) -->
+            <line x1="380" y1="100" x2="468" y2="100" stroke="#059669" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#bd)"/>
+            <line x1="468" y1="108" x2="380" y2="108" stroke="#059669" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#bdl)"/>
+            <text x="424" y="96" font-size="7.5" text-anchor="middle" fill="#059669" font-family="sans-serif">data to/from I/O</text>
+          </svg>
+          </div>
+          <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">The three buses connecting CPU, RAM, ROM and I/O devices</p>
+        </div>
+
+        <div class="g3">
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--blue);">Address Bus</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Carries memory addresses from CPU to RAM (one direction only). Tells RAM <em>which location</em> to read from/write to.</p>
+          </div>
+          <div style="background:var(--light-green);border:2px solid var(--green);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--green);">Data Bus</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Carries data values between CPU and memory (bidirectional). Transfers the actual 1s and 0s being read or written.</p>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--orange);">Control Bus</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.83rem;margin-top:4px;">Carries control signals from the CU (e.g. read, write, clock, interrupt). Coordinates timing of all operations.</p>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--coral);">🔄 Fetch–Decode–Execute in Detail</h4>
+        <div class="n-card" style="border-color:var(--coral);">
+          <div class="n-card-hdr" style="background:var(--coral);">Step 1 — FETCH</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:var(--coral);">1</span><div>CU places the address of the next instruction (from Program Counter) on the <strong>address bus</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">2</span><div>CU sends a <strong>read signal</strong> on the control bus to RAM</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">3</span><div>RAM finds the data at that address and puts it on the <strong>data bus</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">4</span><div>CPU copies the instruction from the data bus into a <strong>register</strong></div></div>
+          </div>
+        </div>
+        <div class="n-card" style="border-color:var(--orange);">
+          <div class="n-card-hdr" style="background:var(--orange);">Step 2 — DECODE</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:var(--orange);">1</span><div>The <strong>Control Unit analyses</strong> the contents of the register</div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">2</span><div>Sends signals to the relevant parts of the CPU telling them what to do (e.g. "add these numbers", "store this value")</div></div>
+          </div>
+        </div>
+        <div class="n-card" style="border-color:#059669;">
+          <div class="n-card-hdr" style="background:#059669;">Step 3 — EXECUTE</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:#059669);">1</span><div>The instruction is <strong>carried out</strong> by the CPU (e.g. ALU performs a calculation; result stored in accumulator; data written back to memory)</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">→</span><div>The cycle then <strong>repeats</strong> continuously until the power is turned off</div></div>
+          </div>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> For FDE questions, always mention the <strong>specific bus used at each step</strong> (address bus for fetch, data bus to carry instruction, control bus for read/write signals) and the <strong>registers</strong> involved. These are the mark-scoring details.</div>
+      </div>
+    </div>
+
+    <!-- 17.4 CPU Performance -->
+    <div class="notes-sec" id="ns4">
+      <div class="notes-hdr" onclick="toggleSection('ns4')" style="background:linear-gradient(135deg,var(--purple),#4a1080);">
+        <div class="notes-hdr-left"><span class="notes-num">17.4</span><span class="notes-title">Factors Affecting CPU Performance</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>There are three main factors that affect how fast a CPU performs:</p>
+
+        <div class="g3" style="margin-top:14px;">
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--blue);margin-bottom:6px;">⏱ Clock Speed</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.5;">Rate at which instructions are processed. Faster clock = more instructions per second. Modern CPUs: ~3 GHz.<br><br><strong>Limits:</strong> Transistors have a maximum operating rate; high speed generates excessive heat (even liquid nitrogen needed at 9 GHz).</p>
+          </div>
+          <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--purple);margin-bottom:6px;">🔢 Processor Cores</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.5;">More cores = more tasks simultaneously. Dual-core (2), Quad-core (4), Octa-core (8).<br><br><strong>Limits:</strong> Not all programs can use multiple cores — sequential tasks cannot be parallelised, so a second core gives no benefit.</p>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--orange);margin-bottom:6px;">💾 Cache Size</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.5;">Larger cache = more frequently used data stored close to CPU = fewer cache misses = CPU waits less for RAM.<br><br>L1 (fastest/smallest) → L2 → L3 (slowest/largest, shared).</p>
+          </div>
+        </div>
+
+        <table class="cmp-tbl" style="margin-top:14px;">
+          <tr><th>Cores</th><th>Name</th><th>Benefit</th></tr>
+          <tr><td>1</td><td>Single-core</td><td>Basic sequential processing</td></tr>
+          <tr><td>2</td><td>Dual-core</td><td>Parallel processing / multitasking</td></tr>
+          <tr><td>4</td><td>Quad-core</td><td>Better multitasking performance</td></tr>
+          <tr><td>8</td><td>Octa-core</td><td>High-performance computing tasks</td></tr>
+          <tr><td>10</td><td>Deca-core</td><td>Server/workstation level performance</td></tr>
+        </table>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> For "how does X improve CPU performance?", the chain is: <em>more cores → can run tasks in parallel → more instructions processed simultaneously → faster overall performance</em>. Always complete the causal chain — don't just say "it's faster".</div>
+      </div>
+    </div>
+
+    <!-- 17.5 Secondary Storage -->
+    <div class="notes-sec" id="ns5">
+      <div class="notes-hdr" onclick="toggleSection('ns5')" style="background:linear-gradient(135deg,var(--orange),#7a3c00);">
+        <div class="notes-hdr-left"><span class="notes-num">17.5</span><span class="notes-title">Secondary Storage: Magnetic, Optical & Solid-State</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p><strong class="hl-o">Secondary storage</strong> is any permanent (non-volatile) storage that keeps data when the power is off. It is slower, cheaper, and has much larger capacity than RAM (typically in terabytes).</p>
+
+        <div style="background:var(--light-yellow);border:2px solid var(--yellow);border-radius:8px;padding:12px;margin:10px 0;font-family:'Kalam',cursive;font-size:0.9rem;">
+          💡 All secondary storage records data as binary 1s and 0s — but each type uses a different <em>physical mechanism</em> to do so.
+        </div>
+
+        <div class="g3" style="margin-top:10px;">
+          <div class="n-card" style="border-color:#555;">
+            <div class="n-card-hdr" style="background:#555;">🧲 Magnetic (HDD)</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.55;">
+              <strong>How it works:</strong> Spinning <strong>platters</strong> with magnetic coating. North/south poles represent 1s and 0s. A read head floats above the spinning disk (110 km/h) to read/write.<br><br>
+              <strong>Seek time</strong> = arm moves to right track; <strong>Latency</strong> = right sector rotates under head.<br><br>
+              ✅ Large capacity · Cheap per GB<br>
+              ❌ Slow · Fragile (moving parts) · Can be noisy
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">💿 Optical (CD/DVD/Blu-Ray)</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.55;">
+              <strong>How it works:</strong> Laser reads <strong>pits</strong> (less reflective) and <strong>lands</strong> (more reflective) along a spiral track. Differences in reflection = 1s and 0s.<br><br>
+              Writing: laser heats material to create non-reflective pits.<br><br>
+              ✅ Portable · Cheap per disc<br>
+              ❌ Scratches cause data loss · Slower · Lower capacity than HDD
+            </div>
+          </div>
+          <div class="n-card" style="border-color:#059669;">
+            <div class="n-card-hdr" style="background:#059669;">⚡ Solid-State (SSD/USB)</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.55;">
+              <strong>How it works:</strong> NAND flash chips with transistors. <strong>Trapped electrons</strong> = 0, <strong>empty pool</strong> = 1. No moving parts.<br><br>
+              Flash drives can only be rewritten ~1 million times before failing.<br><br>
+              ✅ Fastest · Silent · Durable · Small size<br>
+              ❌ More expensive per GB · Limited write cycles
+            </div>
+          </div>
+        </div>
+
+        <table class="cmp-tbl" style="margin-top:14px;">
+          <tr><th>Feature</th><th>Magnetic (HDD)</th><th>Optical (DVD)</th><th>Solid-State (SSD)</th></tr>
+          <tr><td>Speed</td><td>Medium</td><td>Slow</td><td>Fast</td></tr>
+          <tr><td>Capacity</td><td>Very large (TB)</td><td>Small (4.7GB DVD)</td><td>Large (GB-TB)</td></tr>
+          <tr><td>Cost per GB</td><td>Cheapest</td><td>Cheap</td><td>Most expensive</td></tr>
+          <tr><td>Moving parts?</td><td>Yes</td><td>Yes (disc spins)</td><td>No</td></tr>
+          <tr><td>Volatile?</td><td>No</td><td>No</td><td>No</td></tr>
+        </table>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> When asked to recommend storage for a scenario, always justify your choice by linking a feature to a benefit. E.g. "An SSD is best for a laptop because it has no moving parts, making it durable when carried around, and it is fast to access."</div>
+      </div>
+    </div>
+
+    <!-- 17.6 Cloud Storage -->
+    <div class="notes-sec" id="ns6">
+      <div class="notes-hdr" onclick="toggleSection('ns6')" style="background:linear-gradient(135deg,var(--blue),#4a90c4);">
+        <div class="notes-hdr-left"><span class="notes-num">17.6</span><span class="notes-title">Cloud Storage & Virtualisation ⭐ 6-Mark Topic</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+
+        <div style="background:#e3f2fd;border:3px solid var(--blue);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-family:'Kalam',cursive;font-size:0.92rem;">
+          ⭐ <strong>This is frequently a 6-mark exam question.</strong> You must give detailed, developed points — not just one-word answers. Each advantage/disadvantage should include a <em>reason why it matters</em>.
+        </div>
+
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Cloud storage</strong> — secondary storage, often belonging to a third party, that is accessed via a network (usually the Internet). Files stored 'in the cloud' can be accessed from anywhere via an Internet connection.<br><br>
+          <strong class="hl-b">Virtualisation</strong> — any process that hides the true physical nature of a computing resource, usually to simplify the way it is accessed. Cloud storage <em>appears</em> to be a single hard drive, but may actually be spread across hundreds of servers in data centres around the world.<br><br>
+          <strong class="hl-b">File server</strong> — a computer on a network that stores files for other computers to access.<br><br>
+          <strong class="hl-b">NAS (Network-Attached Storage)</strong> — a hard disk connected directly to a network, accessible by all users on that network.</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">☁️ How Cloud Storage Works</h4>
+        <p>Cloud storage is provided by companies who own large <strong>data centres</strong> filled with thousands of hard drives and servers. When you save a file to Google Drive or Dropbox, it is uploaded via the Internet to one of these servers. The file might be stored on <strong>multiple servers in different locations</strong> to ensure it is never lost. You can access it from any device with an Internet connection — it appears as if you have a single, large hard drive, even though the actual storage is distributed across the world (this is virtualisation).</p>
+
+        <div style="border:3px solid var(--blue);border-radius:12px;overflow:hidden;margin:14px 0;box-shadow:3px 3px 0 var(--ink);">
+          <div style="background:var(--blue);color:white;padding:10px 16px;font-family:'Permanent Marker',cursive;font-size:1rem;">✅ Advantages of Cloud Storage — Exam-Quality Points</div>
+          <div style="background:white;padding:14px 16px;">
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:#059669;">1</span><div><strong>Access from anywhere, on any device</strong> — Files can be accessed from any device with an Internet connection (laptop, phone, tablet). This means you are not tied to one computer and can work remotely. For example, a student can access their homework from school and home.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:#059669;">2</span><div><strong>Automatic backup by the provider</strong> — The cloud storage company automatically backs up your data across multiple servers. If one server fails, your data is still safe. You do not have to remember to back up manually, reducing the risk of data loss.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:#059669;">3</span><div><strong>Easy to share and collaborate</strong> — Files can be shared with others by sending a link. Multiple users can work on the same document simultaneously (e.g. Google Docs), which improves collaboration without emailing files back and forth.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:#059669;">4</span><div><strong>No need to buy or maintain hardware</strong> — The storage is provided by a third party. You do not need to purchase physical hard drives or maintain servers. This reduces cost and technical responsibility, especially for businesses.</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">5</span><div><strong>Scalable storage</strong> — Cloud storage can easily be increased by paying for a higher plan, without having to physically install new hardware.</div></div>
+          </div>
+        </div>
+
+        <div style="border:3px solid var(--coral);border-radius:12px;overflow:hidden;margin:14px 0;box-shadow:3px 3px 0 var(--ink);">
+          <div style="background:var(--coral);color:white;padding:10px 16px;font-family:'Permanent Marker',cursive;font-size:1rem;">❌ Disadvantages of Cloud Storage — Exam-Quality Points</div>
+          <div style="background:white;padding:14px 16px;">
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:var(--coral);">1</span><div><strong>Requires an Internet connection</strong> — If the Internet connection is lost or slow, you cannot access or upload your files. This is a serious problem in areas with poor connectivity or during Internet outages. Local storage is always accessible regardless of Internet availability.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:var(--coral);">2</span><div><strong>Security and privacy risks</strong> — Your data is stored on servers owned by a third-party company. There is a risk of <strong>data breaches</strong> — hackers could potentially access sensitive personal or business files. You are trusting another company with your private data.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:var(--coral);">3</span><div><strong>Ongoing subscription cost</strong> — Most cloud services require a monthly or annual subscription fee for significant storage. Over time, this can cost more than buying a physical hard drive, especially for large amounts of data.</div></div>
+            <div class="nl" style="margin-bottom:10px;"><span class="nd" style="background:var(--coral);">4</span><div><strong>Dependency on the provider</strong> — If the cloud provider experiences downtime, goes out of business, or changes its terms, you may lose access to your data. You are dependent on a third party continuing to operate correctly.</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">5</span><div><strong>Slower transfer speeds than local storage</strong> — Uploading or downloading large files is limited by your Internet speed, which is far slower than transferring data to/from a local hard drive or SSD.</div></div>
+          </div>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>6-mark exam technique:</strong> Give <strong>3 advantages AND 3 disadvantages</strong>, each with a developed explanation. Don't just say "you can access it anywhere" — say <strong>WHY that is useful</strong>: "…meaning you are not tied to one device and can work from any location." Each point should be 1–2 sentences to score 2 marks per point. Avoid repeating the same idea in different words.</div>
+
+        <div style="background:var(--light-yellow);border:2px solid var(--yellow);border-radius:8px;padding:12px;margin-top:12px;font-family:'Kalam',cursive;font-size:0.88rem;">
+          <strong>📌 Real-world examples to use in the exam:</strong> Google Drive · Dropbox · Microsoft OneDrive · iCloud · Amazon S3. The school network home drive is a local example of file server storage (not cloud — it is on-premises).
+        </div>
+      </div>
+    </div>
+
+    <!-- 17.7 Embedded Systems -->
+    <div class="notes-sec" id="ns7">
+      <div class="notes-hdr" onclick="toggleSection('ns7')" style="background:linear-gradient(135deg,var(--green),#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">17.7</span><span class="notes-title">Embedded Systems & the Internet of Things</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>An <strong class="hl-g">embedded computer system</strong> is designed to do <strong>one specific job</strong>. It is usually part of a larger system (e.g. washing machine, traffic lights, car engine management). Unlike a PC, embedded computers are:</p>
+
+        <div class="g2" style="margin:12px 0;">
+          <div style="background:var(--light-green);border:2px solid var(--green);border-radius:8px;padding:12px;">
+            <div class="nl"><span class="nd" style="background:var(--green);">📌</span><div>Designed for a single, specific task</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">💡</span><div>Cheap and low-power</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">🔧</span><div>Limited memory; simple technology</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">💾</span><div>Program stored in ROM or flash memory (rarely updated)</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">📡</span><div>Often use sensors to get input from the environment</div></div>
+          </div>
+          <div style="background:white;border:2.5px solid var(--ink);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;margin-bottom:8px;">🔍 Examples of Embedded Systems</div>
+            <div style="font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.7;">
+              🚗 Car engine management system<br>
+              🚦 Traffic light controller<br>
+              🧺 Washing machine controller<br>
+              🎮 Games console<br>
+              📡 Satellite TV box<br>
+              🍞 Toaster / microwave<br>
+              💳 Chip-and-PIN credit card reader
+            </div>
+          </div>
+        </div>
+
+        <div class="def-box" style="border-color:var(--green);">
+          <span class="def-label" style="background:var(--green);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-g">Internet of Things (IoT)</strong> — the interconnection of digital devices embedded in everyday objects, enabling them to send and receive data via the Internet.<br><br>
+          Examples: smart thermostat controlled from your phone, electricity meter sending readings to supplier automatically, printer ordering new toner when low, smart fridge tracking food expiry.</p>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> For embedded system questions, identify the <strong>input sensors</strong>, <strong>processing</strong>, and <strong>output effectors</strong>. E.g. Car ECU: inputs = engine temperature sensors, speed sensors → processing = adjusts fuel injection → output = engine control signals.</div>
+      </div>
+    </div>
+
+  </div><!-- end notes -->
+
+  <!-- ════════════ QUIZ TAB ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span>/<span id="qtotal">20</span></div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card">
+        <div class="q-num" id="qnum">Question 1 of 20</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="q-opts" id="qopts"></div>
+        <div class="q-fb" id="qfb"></div>
+        <div style="text-align:right;margin-top:14px;">
+          <button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div><!-- end quiz -->
+
+  <!-- ════════════ ACTIVITIES TAB ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Match the Component -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🔗</span>
+        <span class="act-title">Activity 1 — Match the CPU Component to its Function</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Click a component on the left, then click its matching function on the right.</p>
+        <div class="match-grid" id="match-area-1"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkMatch1()">✓ Check</button>
+          <button class="btn" onclick="resetMatch1()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="match-res-1" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Sort memory by speed -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-green);">
+        <span class="act-icon">⚡</span>
+        <span class="act-title">Activity 2 — Sort Memory by Speed (Fastest → Slowest)</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Drag and drop to arrange memory types from <strong>fastest</strong> (top) to <strong>slowest</strong> (bottom).</p>
+        <div class="sort-list" id="speed-sort"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkSpeedSort()">✓ Check Order</button>
+          <button class="btn" onclick="revealSpeedSort()" style="background:white;">👁 Reveal</button>
+          <button class="btn" onclick="shuffleSpeedSort()" style="background:white;">🔀 Shuffle</button>
+        </div>
+        <div id="speed-sort-result" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Classify Storage -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:#fff3e0;">
+        <span class="act-icon">🗂️</span>
+        <span class="act-title">Activity 3 — Classify the Storage Device</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a storage device, then click the correct category column to place it.</p>
+        <div class="chip-bank" id="storage-chips"></div>
+        <div class="drop-zone-wrap" id="storage-drops">
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:#555;">🧲 Magnetic</div>
+            <div class="drop-zone" id="sdrop-mag" onclick="dropStorageChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--blue);">💿 Optical</div>
+            <div class="drop-zone" id="sdrop-opt" onclick="dropStorageChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:#059669;">⚡ Solid-State</div>
+            <div class="drop-zone" id="sdrop-ssd" onclick="dropStorageChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--blue);">☁️ Cloud</div>
+            <div class="drop-zone" id="sdrop-cloud" onclick="dropStorageChip(this)"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkStorageClass()">✓ Check</button>
+          <button class="btn" onclick="resetStorageClass()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="storage-class-res" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 4: Fill in the Blanks -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">📝</span>
+        <span class="act-title">Activity 4 — Fill in the Blanks</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a word from the bank, then click a blank to fill it in.</p>
+        <div class="word-bank" id="word-bank"></div>
+        <div class="fill-para" id="fill-para"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="checkFill()">✓ Check</button>
+          <button class="btn" onclick="revealFill()" style="background:white;">👁 Reveal</button>
+          <button class="btn" onclick="resetFill()" style="background:white;">↺ Reset</button>
+          <span id="fill-score" style="font-family:'Permanent Marker',cursive;font-size:1.3rem;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 5: True / False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <span class="act-icon">✅</span>
+        <span class="act-title">Activity 5 — True or False?</span>
+      </div>
+      <div class="act-bdy">
+        <div id="tf-area"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities -->
+
+  <!-- ════════════ EXAM QUESTIONS TAB ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <div class="tip-box" style="margin-bottom:18px;">📋 <strong>Exam technique:</strong> Hardware questions often ask you to <em>describe</em> a process (FDE cycle), <em>compare</em> two types (RAM vs ROM), or <em>justify</em> a choice of storage. Always use technical vocabulary and give enough detail for the marks available.</div>
+
+    <!-- Q1 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c1">
+        <span class="eq-num">Question 1 <span class="tag tag-easy">Easy</span></span>
+        <span class="eq-marks">4 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">State what is meant by each of the following terms: (a) RAM, (b) ROM, (c) volatile, (d) non-volatile.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>(a) RAM — Random-Access Memory; temporary/volatile store for data and instructions (programs) currently in use by the CPU. [1]</li>
+            <li>(b) ROM — Read-Only Memory; non-volatile memory that stores firmware; cannot be altered; not lost when power is off. [1]</li>
+            <li>(c) Volatile — memory that loses its contents when the power is turned off. [1]</li>
+            <li>(d) Non-volatile — memory that retains its contents when the power is turned off. [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c2">
+        <span class="eq-num">Question 2 <span class="tag tag-med">Medium</span></span>
+        <span class="eq-marks">6 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Describe the fetch–decode–execute cycle. In your answer, refer to the roles of the address bus, data bus, control bus and the Control Unit.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="8"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme (6 marks)</div>
+          <p><strong>Fetch (up to 2):</strong></p>
+          <ul>
+            <li>The Control Unit places the address of the next instruction onto the address bus [1]</li>
+            <li>A read signal is sent along the control bus to RAM [1]</li>
+            <li>The instruction is copied from RAM onto the data bus and into a CPU register [1]</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>Decode (up to 2):</strong></p>
+          <ul>
+            <li>The Control Unit analyses the contents of the register [1]</li>
+            <li>Sends signals to relevant parts of the CPU indicating what action is required [1]</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>Execute (1):</strong></p>
+          <ul>
+            <li>The instruction is carried out (e.g. ALU performs a calculation; result stored back to memory) [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c3">
+        <span class="eq-num">Question 3 <span class="tag tag-med">Medium</span></span>
+        <span class="eq-marks">4 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Explain how cache memory improves the performance of a CPU. Include the terms 'cache miss' and 'bottleneck' in your answer.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>RAM is much slower than the CPU, creating a bottleneck that limits processing speed [1]</li>
+            <li>Cache is a small, very fast memory located close to (or within) the CPU [1]</li>
+            <li>Frequently used data and instructions are stored in cache, so the CPU can access them at its own speed without waiting for RAM [1]</li>
+            <li>A cache miss occurs when required data is not in the cache; the CPU must wait for it to be loaded from RAM, slowing performance [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c4">
+        <span class="eq-num">Question 4 <span class="tag tag-med">Medium</span></span>
+        <span class="eq-marks">6 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Compare magnetic hard disk drives (HDDs) with solid-state drives (SSDs) as methods of secondary storage. Refer to how data is stored, speed, capacity, and durability in your answer.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="8"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>HDD uses magnetised spinning platters; north/south poles represent 1s and 0s. SSD uses NAND flash chips; trapped electrons represent 0s, empty pools represent 1s. [2]</li>
+            <li>SSDs are significantly faster to access data than HDDs, as there are no moving parts and no seek time/latency. [1]</li>
+            <li>HDDs typically offer larger capacity per £ (cheaper per GB); SSDs are more expensive per GB but capacities are increasing. [1]</li>
+            <li>SSDs are more durable as they have no moving parts — better for portable devices. HDDs are fragile; the read head can crash into the platter if knocked. [1]</li>
+            <li>HDDs are generally cheaper, making them suitable for bulk/backup storage; SSDs better for speed-critical applications (e.g. OS drive). [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c5">
+        <span class="eq-num">Question 5 <span class="tag tag-hard">Hard</span></span>
+        <span class="eq-marks">6 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A school is upgrading its computers. The IT manager is deciding between increasing the clock speed of the processors, adding more processor cores, or increasing the size of the cache memory.</div>
+        <p class="eq-txt">Explain how each of the three factors affects CPU performance. Identify one limitation of each approach.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="10"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme (2 marks per factor)</div>
+          <p><strong>Clock speed:</strong></p>
+          <ul>
+            <li>Faster clock speed means more instructions processed per second, increasing performance [1]</li>
+            <li>Limitation: generates excessive heat; transistors have a maximum operating rate; requires expensive cooling solutions [1]</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>Processor cores:</strong></p>
+          <ul>
+            <li>More cores allow multiple tasks to run simultaneously (parallel processing / multitasking), improving overall performance [1]</li>
+            <li>Limitation: not all software can distribute tasks across multiple cores; sequential programs see no benefit from extra cores [1]</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>Cache size:</strong></p>
+          <ul>
+            <li>Larger cache means more frequently used data is stored close to the CPU; fewer cache misses; CPU waits less for data from RAM [1]</li>
+            <li>Limitation: cache is very expensive; there are physical limits to how much cache can fit on a processor chip [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c6">
+        <span class="eq-num">Question 6 <span class="tag tag-hard">Hard</span></span>
+        <span class="eq-marks">5 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A company stores all of its business files using cloud storage provided by a third-party company.</div>
+        <p class="eq-txt">State three advantages and two disadvantages of using cloud storage rather than a local hard drive for this company's files.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>Advantages (any 3):</strong></p>
+          <ul>
+            <li>Files can be accessed from any device with an Internet connection / from anywhere [1]</li>
+            <li>Data is automatically backed up by the provider, reducing risk of data loss [1]</li>
+            <li>No need to purchase/maintain physical storage hardware [1]</li>
+            <li>Easy to share files with employees in different locations [1]</li>
+          </ul>
+          <p style="margin-top:6px;"><strong>Disadvantages (any 2):</strong></p>
+          <ul>
+            <li>Requires an Internet connection — data is inaccessible during outages [1]</li>
+            <li>Security risk — sensitive business data is stored on third-party servers; risk of data breach [1]</li>
+            <li>Ongoing subscription/cost; dependency on the provider continuing the service [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c7">
+        <span class="eq-num">Question 7 <span class="tag tag-med">Medium</span></span>
+        <span class="eq-marks">4 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Describe what is meant by 'virtual memory' and explain one advantage and one disadvantage of using it.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Virtual memory is a section of the hard disk used as an extension of RAM when RAM is full [1]</li>
+            <li>The OS swaps data not currently needed out of RAM onto the hard disk, and swaps it back when required [1]</li>
+            <li>Advantage: allows more programs to run simultaneously than physical RAM alone would allow [1]</li>
+            <li>Disadvantage: the hard disk is much slower than RAM, leading to a significant drop in performance / disk thrashing (constant swapping back and forth) [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c8">
+        <span class="eq-num">Question 8 <span class="tag tag-easy">Easy</span></span>
+        <span class="eq-marks">3 marks</span>
+      </div>
+      <div class="eq-bdy">
+        <p class="eq-txt">A modern car contains an engine management system. (a) State what type of computer system this is. (b) Give two characteristics of this type of system. (c) State one example of an input to this system.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="4"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms">
+          <div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>(a) Embedded computer system [1]</li>
+            <li>(b) Any two: designed for one specific task / cheap, low-power / program stored in ROM/firmware / rarely or never updated / uses sensors [1 each, max 1]</li>
+            <li>(c) Any valid input: engine temperature sensor / speed sensor / oxygen sensor / throttle position sensor [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end exam -->
+
+</div><!-- end page-wrap -->
+
+<!-- ════════════ SVG ZOOM MODAL ════════════ -->
+<div id="svg-modal" onclick="handleModalClick(event)">
+  <div id="svg-modal-inner">
+    <div id="modal-toolbar">
+      <span id="modal-title">Diagram</span>
+      <div class="zoom-controls">
+        <button class="modal-btn" onclick="modalZoom(-0.2)">➖</button>
+        <span class="zoom-lbl" id="zoom-lbl">100%</span>
+        <button class="modal-btn" onclick="modalZoom(+0.2)">➕</button>
+        <button class="modal-btn" onclick="modalResetZoom()">↺ Fit</button>
+      </div>
+      <button class="modal-btn dl-btn" onclick="downloadSVG()">⬇ Download</button>
+      <button class="modal-btn close-btn" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div id="svg-modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ══════════════════
+// TABS
+// ══════════════════
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ══════════════════
+// NOTES TOGGLE
+// ══════════════════
+function toggleSection(id){
+  const bdy=document.querySelector('#'+id+' .notes-bdy');
+  const tog=document.querySelector('#'+id+' .notes-tog');
+  bdy.classList.toggle('open');
+  tog.textContent=bdy.classList.contains('open')?'▲':'▼';
+}
+
+// ══════════════════
+// MARK SCHEME TOGGLE
+// ══════════════════
+function toggleMS(btn){
+  const ms=btn.nextElementSibling;
+  ms.classList.toggle('show');
+  btn.textContent=ms.classList.contains('show')?'🙈 Hide Mark Scheme':'📋 Show Mark Scheme';
+}
+
+// ══════════════════
+// QUIZ
+// ══════════════════
+const quizData=[
+  {q:'What does CPU stand for?',opts:['Central Processing Unit','Computer Programming Utility','Control Processing Unit','Central Program Uploader'],ans:0,fb:'CPU = Central Processing Unit — the hardware device that carries out all the processing in a computer.'},
+  {q:'Which type of main memory is volatile?',opts:['ROM','Cache','RAM','Flash memory'],ans:2,fb:'RAM (Random-Access Memory) is volatile — its contents are lost when the power is turned off.'},
+  {q:'What does the address bus carry?',opts:['Data values to be read/written','Control signals (read/write)','Memory addresses from CPU to RAM','Power signals'],ans:2,fb:'The address bus carries memory addresses — it tells RAM which location to read from or write to.'},
+  {q:'Which register holds the memory address of the NEXT instruction to be fetched?',opts:['Accumulator','Current Instruction Register','Program Counter','Control Register'],ans:2,fb:'The Program Counter holds the address of the next instruction to fetch from memory.'},
+  {q:'What is a "cache miss"?',opts:['When the cache is full and deletes data','When data the CPU needs is NOT found in cache','When the CPU sends wrong data to cache','When cache and RAM have different values'],ans:1,fb:'A cache miss occurs when the CPU needs data that is not currently in the cache — it must wait for the cache to load it from RAM.'},
+  {q:'ROM stores which type of program?',opts:['User applications','The operating system','Firmware (e.g. BIOS/UEFI)','Temporary data'],ans:2,fb:'ROM stores firmware — small programs like BIOS/UEFI that run when the computer first powers on.'},
+  {q:'Which storage type uses spinning platters with a magnetic coating?',opts:['Solid-state drive (SSD)','Optical disc (DVD)','Hard disk drive (HDD)','Flash memory'],ans:2,fb:'Magnetic hard disks use spinning platters with a magnetic coating — north/south poles represent 1s and 0s.'},
+  {q:'What is "disk thrashing"?',opts:['Deleting data from a hard disk','The OS constantly swapping data between RAM and virtual memory','Defragmenting a hard drive','A hard disk running at high speed'],ans:1,fb:'Disk thrashing happens when the system relies too heavily on virtual memory — the OS constantly swaps data between RAM and the hard disk, greatly slowing performance.'},
+  {q:'A "dual-core" processor has how many cores?',opts:['1','2','4','8'],ans:1,fb:'Dual-core means 2 cores. Quad = 4, Octa = 8, Deca = 10.'},
+  {q:'How does solid-state storage represent 1s and 0s?',opts:['North/south magnetic poles','Pits and lands on a disc surface','Trapped electrons (0) and empty pools (1)','Light and dark areas on a chip'],ans:2,fb:'Solid-state (NAND flash) uses pools of trapped electrons — trapped electrons = 0, empty pool = 1.'},
+  {q:'Which part of the CPU performs arithmetic and logic operations?',opts:['Control Unit','Program Counter','ALU (Arithmetic/Logic Unit)','Clock'],ans:2,fb:'The ALU (Arithmetic/Logic Unit) performs all calculations and logical comparisons inside the CPU.'},
+  {q:'What is the role of the control bus?',opts:['Carries data values between CPU and memory','Carries memory addresses','Carries control signals (e.g. read/write, timing)','Synchronises the clock'],ans:2,fb:'The control bus carries control signals from the Control Unit — for example, whether to read or write data, and timing signals.'},
+  {q:'Why does increasing clock speed improve CPU performance?',opts:['It increases the number of cores','More clock ticks = more instructions processed per second','It reduces cache misses','It increases RAM speed'],ans:1,fb:'A higher clock speed means the clock ticks more frequently — a new instruction starts processing on each tick, so more instructions complete per second.'},
+  {q:'What is the "Internet of Things" (IoT)?',opts:['A type of cloud storage service','The interconnection of digital devices embedded in everyday objects','A programming language for embedded systems','A type of optical storage'],ans:1,fb:'IoT = the interconnection of digital devices embedded in everyday objects, allowing them to send/receive data via the Internet (e.g. smart meters, smart thermostats).'},
+  {q:'Which level of cache is fastest?',opts:['L3','L2','L1','L4'],ans:2,fb:'L1 cache is the fastest and smallest, located within each core. L1 is checked first, then L2, then L3.'},
+  {q:'What is meant by "von Neumann architecture"?',opts:['A CPU with multiple cores','A computer system where the program is stored in memory with the data','A type of parallel processor','A method of cloud storage'],ans:1,fb:'Von Neumann architecture = a stored-program computer. The key idea is that instructions (the program) are stored in memory alongside the data.'},
+  {q:'An embedded system is BEST described as:',opts:['A computer that uses cloud storage','A computer designed to do one specific job','A computer with multiple processors','A computer without a keyboard'],ans:1,fb:'Embedded systems are designed for one specific task (e.g. washing machine controller, traffic light). They are typically cheap, low-power, and store their program in ROM.'},
+  {q:'Why does more RAM reduce the need for virtual memory?',opts:['RAM is faster than the hard disk','More physical RAM means the OS is less likely to run out and need to use the hard disk as extra memory','RAM stores firmware','More RAM increases clock speed'],ans:1,fb:'Virtual memory is used when RAM is full. More physical RAM = less likely to run out = less virtual memory needed = better performance.'},
+  {q:'Which storage type uses a LASER to read and write data?',opts:['Hard disk drive','Solid-state drive','USB flash drive','DVD/Blu-Ray disc'],ans:3,fb:'Optical storage (CD, DVD, Blu-Ray) uses a laser — it reads differences in reflectivity (pits and lands) and writes by heating the surface to create non-reflective pits.'},
+  {q:'What is the role of the ACCUMULATOR register?',opts:['Holds the address of the next instruction','Holds the current instruction being executed','Holds the results of ALU calculations; all I/O passes through it','Counts clock cycles'],ans:2,fb:'The Accumulator holds the results of calculations performed by the ALU. All input and output from the CPU passes through the accumulator.'},
+];
+
+let qIdx=0, qScore=0;
+function renderQ(){
+  if(qIdx>=quizData.length){
+    document.getElementById('quiz-area').innerHTML=`<div class="q-result">
+      <h2>Quiz Complete! 🎉</h2>
+      <div class="big-score">${qScore}/${quizData.length}</div>
+      <p style="font-family:'Caveat',cursive;font-size:1.3rem;margin:16px 0;">${qScore===quizData.length?'Perfect score! Outstanding! 🌟':qScore>=16?'Excellent work! 💪':qScore>=12?'Good effort! Keep revising. 📖':'Keep practising — review the Topic Notes! 📚'}</p>
+      <button class="btn btn-teal" onclick="restartQuiz()">🔄 Try Again</button>
+    </div>`;return;
+  }
+  const d=quizData[qIdx];
+  document.getElementById('qnum').textContent=`Question ${qIdx+1} of ${quizData.length}`;
+  document.getElementById('qtext').textContent=d.q;
+  document.getElementById('qtotal').textContent=quizData.length;
+  const opts=document.getElementById('qopts');
+  opts.innerHTML='';
+  d.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='q-opt'; b.textContent=o;
+    b.onclick=()=>answerQ(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('qfb').className='q-fb';
+  document.getElementById('qfb').textContent='';
+  document.getElementById('qnext').style.display='none';
+  document.getElementById('qprog').style.width=(qIdx/quizData.length*100)+'%';
+}
+function answerQ(i){
+  const d=quizData[qIdx];
+  const opts=document.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.disabled=true);
+  opts[d.ans].classList.add('correct');
+  const fb=document.getElementById('qfb');
+  if(i===d.ans){
+    qScore++;
+    document.getElementById('qscore').textContent=qScore;
+    opts[i].classList.add('correct');
+    fb.className='q-fb show fb-ok';
+    fb.textContent='✓ Correct! '+d.fb;
+  } else {
+    opts[i].classList.add('wrong');
+    fb.className='q-fb show fb-no';
+    fb.textContent='✗ Not quite. '+d.fb;
+  }
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){ qIdx++; renderQ(); }
+function restartQuiz(){ qIdx=0; qScore=0; document.getElementById('qscore').textContent=0;
+  document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num" id="qnum"></div><div class="q-text" id="qtext"></div><div class="q-opts" id="qopts"></div><div class="q-fb" id="qfb"></div><div style="text-align:right;margin-top:14px;"><button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button></div></div>`;
+  renderQ();
+}
+renderQ();
+
+// ══════════════════
+// ACTIVITY 1: MATCH
+// ══════════════════
+const matchPairs1=[
+  {term:'Control Unit (CU)',def:'Organises all CPU actions; controls the FDE cycle'},
+  {term:'ALU',def:'Performs arithmetic and logic operations'},
+  {term:'Program Counter',def:'Holds the memory address of the next instruction'},
+  {term:'Accumulator',def:'Holds results of ALU calculations; I/O passes through it'},
+  {term:'Clock',def:'Synchronises CPU actions; measured in GHz'},
+  {term:'Address Bus',def:'Carries memory addresses from CPU to RAM'},
+];
+let match1Sel=null;
+function buildMatch1(){
+  const area=document.getElementById('match-area-1');
+  area.innerHTML='';
+  const terms=matchPairs1.map(p=>p.term);
+  const defs=[...matchPairs1.map(p=>p.def)].sort(()=>Math.random()-0.5);
+  terms.forEach(t=>{
+    const el=document.createElement('div');
+    el.className='match-item'; el.textContent=t; el.dataset.term=t; el.dataset.side='term';
+    el.onclick=()=>selectMatch1(el);
+    area.appendChild(el);
+  });
+  defs.forEach(d=>{
+    const el=document.createElement('div');
+    el.className='match-item'; el.textContent=d; el.dataset.def=d; el.dataset.side='def';
+    el.onclick=()=>selectMatch1(el);
+    area.appendChild(el);
+  });
+}
+function selectMatch1(el){
+  if(el.classList.contains('ok'))return;
+  if(!match1Sel){
+    if(match1Sel)match1Sel.classList.remove('sel');
+    el.classList.add('sel'); match1Sel=el;
+  } else {
+    if(match1Sel===el){el.classList.remove('sel');match1Sel=null;return;}
+    if(match1Sel.dataset.side===el.dataset.side){
+      match1Sel.classList.remove('sel'); el.classList.add('sel'); match1Sel=el; return;
+    }
+    const termEl=match1Sel.dataset.side==='term'?match1Sel:el;
+    const defEl=match1Sel.dataset.side==='def'?match1Sel:el;
+    const correct=matchPairs1.find(p=>p.term===termEl.dataset.term&&p.def===defEl.dataset.def);
+    if(correct){termEl.classList.remove('sel','bad');defEl.classList.remove('sel','bad');termEl.classList.add('ok');defEl.classList.add('ok');}
+    else{termEl.classList.add('bad');defEl.classList.add('bad');setTimeout(()=>{termEl.classList.remove('bad','sel');defEl.classList.remove('bad','sel');},600);}
+    match1Sel=null;
+  }
+}
+function checkMatch1(){
+  const ok=document.querySelectorAll('#match-area-1 .ok').length/2;
+  const res=document.getElementById('match-res-1');
+  res.textContent=ok===matchPairs1.length?`✓ All ${matchPairs1.length} matched correctly! 🎉`:`${ok}/${matchPairs1.length} correct so far. Keep going!`;
+  res.style.color=ok===matchPairs1.length?'var(--teal)':'var(--orange)';
+}
+function resetMatch1(){match1Sel=null;buildMatch1();document.getElementById('match-res-1').textContent='';}
+buildMatch1();
+
+// ══════════════════
+// ACTIVITY 2: SORT BY SPEED
+// ══════════════════
+const speedOrder=['CPU Registers (inside CPU)','L1 Cache','L2 Cache','L3 Cache','RAM (main memory)','Virtual Memory (on HDD/SSD)','Hard Disk Drive (HDD)'];
+let speedArr=[...speedOrder];
+function buildSpeedSort(){
+  const list=document.getElementById('speed-sort');list.innerHTML='';
+  speedArr.forEach((step,i)=>{
+    const item=document.createElement('div');item.className='sort-item';item.draggable=true;
+    item.innerHTML=`<span class="sort-grip">⠿</span><span>${step}</span>`;
+    item.dataset.idx=i;
+    item.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(i));item.classList.add('dragging');});
+    item.addEventListener('dragend',()=>item.classList.remove('dragging'));
+    item.addEventListener('dragover',e=>e.preventDefault());
+    item.addEventListener('drop',e=>{
+      e.preventDefault();
+      const from=parseInt(e.dataTransfer.getData('text/plain')),to=i;
+      if(from===to)return;
+      [speedArr[from],speedArr[to]]=[speedArr[to],speedArr[from]];
+      buildSpeedSort();
+    });
+    list.appendChild(item);
+  });
+}
+function checkSpeedSort(){
+  const wrong=speedArr.filter((s,i)=>s!==speedOrder[i]).length;
+  const res=document.getElementById('speed-sort-result');
+  res.style.color=wrong===0?'var(--teal)':'var(--coral)';
+  res.textContent=wrong===0?'✓ Perfect! Registers → L1 → L2 → L3 → RAM → Virtual Memory → HDD':wrong===1?'Almost! Just 1 out of place.':wrong<=3?`${wrong} items out of order — keep adjusting!`:`${wrong} out of place — try again!`;
+}
+function revealSpeedSort(){speedArr=[...speedOrder];buildSpeedSort();document.getElementById('speed-sort-result').style.color='var(--teal)';document.getElementById('speed-sort-result').textContent='✓ Correct order shown!';}
+function shuffleSpeedSort(){speedArr=[...speedOrder].sort(()=>Math.random()-0.5);buildSpeedSort();document.getElementById('speed-sort-result').textContent='';}
+shuffleSpeedSort();
+
+// ══════════════════
+// ACTIVITY 3: CLASSIFY STORAGE
+// ══════════════════
+const storageItems=[
+  {name:'Hard Disk Drive (HDD)',cat:'mag'},
+  {name:'Magnetic Tape',cat:'mag'},
+  {name:'DVD',cat:'opt'},
+  {name:'Blu-Ray Disc',cat:'opt'},
+  {name:'CD-ROM',cat:'opt'},
+  {name:'USB Flash Drive',cat:'ssd'},
+  {name:'SSD (Solid-State Drive)',cat:'ssd'},
+  {name:'SD Card',cat:'ssd'},
+  {name:'Google Drive',cat:'cloud'},
+  {name:'Dropbox',cat:'cloud'},
+];
+let storageSel=null;
+function buildStorageChips(){
+  const bank=document.getElementById('storage-chips');
+  bank.innerHTML='';
+  storageItems.forEach(item=>{
+    const c=document.createElement('div');
+    c.className='chip';c.textContent=item.name;c.dataset.cat=item.cat;c.dataset.name=item.name;
+    c.onclick=()=>{
+      document.querySelectorAll('#storage-chips .chip').forEach(x=>x.classList.remove('chip-sel'));
+      c.classList.add('chip-sel');storageSel=c;
+    };
+    bank.appendChild(c);
+  });
+}
+function dropStorageChip(zone){
+  if(!storageSel)return;
+  const chip=document.createElement('div');
+  chip.className='chip chip-used';chip.textContent=storageSel.dataset.name;
+  chip.dataset.cat=storageSel.dataset.cat;chip.dataset.expected=zone.id.replace('sdrop-','');
+  zone.appendChild(chip);
+  storageSel.classList.add('chip-used');storageSel.classList.remove('chip-sel');storageSel=null;
+}
+function checkStorageClass(){
+  let ok=0,total=0;
+  document.querySelectorAll('.drop-zone .chip').forEach(c=>{
+    total++;
+    const placed=c.dataset.expected;
+    const correct=c.dataset.cat;
+    if(placed===correct){c.classList.add('chip-ok');ok++;}
+    else{c.classList.add('chip-bad');}
+  });
+  const res=document.getElementById('storage-class-res');
+  res.textContent=total===0?'Place some items first!':ok===total?`✓ All ${total} correct! 🎉`:`${ok}/${total} correct.`;
+  res.style.color=ok===total&&total>0?'var(--teal)':'var(--coral)';
+}
+function resetStorageClass(){
+  storageSel=null;
+  ['sdrop-mag','sdrop-opt','sdrop-ssd','sdrop-cloud'].forEach(id=>{document.getElementById(id).innerHTML='';});
+  buildStorageChips();
+  document.getElementById('storage-class-res').textContent='';
+}
+buildStorageChips();
+
+// ══════════════════
+// ACTIVITY 4: FILL IN THE BLANKS
+// ══════════════════
+const fillTemplate=`The CPU is connected to main memory and I/O devices via groups of wires called a __B1__. The main memory used to store data and running programs is called __B2__, which is __B3__ — meaning its contents are lost when the power is turned off. Programs that must run when the computer is switched on are stored in __B4__, which is non-volatile and cannot be altered. Between the CPU and RAM, a small amount of very fast memory called __B5__ is used to reduce the bottleneck caused by RAM being much slower than the CPU. When RAM is full, the operating system uses __B6__ — a section of the hard disk used as extra memory. The part of the CPU that performs calculations is the __B7__, while all CPU actions are organised by the __B8__. The speed of the CPU is controlled by the __B9__, measured in GHz. Secondary storage that uses spinning magnetic disks is called a __B10__ drive.`;
+const fillAnswers={B1:'bus',B2:'RAM',B3:'volatile',B4:'ROM',B5:'cache',B6:'virtual memory',B7:'ALU',B8:'Control Unit',B9:'clock',B10:'hard disk'};
+let fillState={},fillSel=null;
+function buildFill(){
+  const wb=document.getElementById('word-bank');wb.innerHTML='';
+  const words=Object.values(fillAnswers).sort(()=>Math.random()-0.5);
+  words.forEach(w=>{
+    const d=document.createElement('div');d.className='word';d.textContent=w;d.dataset.word=w;
+    d.onclick=()=>{
+      if(d.classList.contains('used'))return;
+      document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));
+      d.classList.add('sel');fillSel=w;
+    };
+    wb.appendChild(d);
+  });
+  renderFill();
+}
+function renderFill(){
+  const wrap=document.getElementById('fill-para');
+  let html=fillTemplate;
+  Object.keys(fillAnswers).forEach(k=>{html=html.replace(`__${k}__`,`<span class="blank" data-b="${k}">${fillState[k]||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`);});
+  wrap.innerHTML=html;
+  wrap.querySelectorAll('.blank').forEach(b=>{
+    const k=b.dataset.b;
+    if(fillState[k])b.classList.add('filled');
+    if(fillSel===k)b.classList.add('sel-b');
+    b.onclick=()=>{
+      if(fillSel){fillState[k]=fillSel;fillSel=null;document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));renderFill();}
+      else{fillSel=k;wrap.querySelectorAll('.blank').forEach(x=>x.classList.remove('sel-b'));b.classList.add('sel-b');}
+    };
+  });
+  document.querySelectorAll('#word-bank .word').forEach(w=>{
+    w.classList.toggle('used',Object.values(fillState).includes(w.dataset.word));
+  });
+}
+function checkFill(){
+  let ok=0;
+  Object.keys(fillAnswers).forEach(k=>{
+    const b=document.querySelector(`#fill-para [data-b="${k}"]`);if(!b)return;
+    if(fillState[k]===fillAnswers[k]){b.classList.add('ok');b.classList.remove('bad');ok++;}
+    else if(fillState[k]){b.classList.add('bad');b.classList.remove('ok');}
+  });
+  const sc=document.getElementById('fill-score');
+  sc.textContent=`${ok}/10`;sc.style.color=ok===10?'var(--teal)':'var(--coral)';
+}
+function revealFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]=fillAnswers[k]);renderFill();checkFill();}
+function resetFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]='');fillSel=null;renderFill();document.getElementById('fill-score').textContent='';}
+buildFill();
+
+// ══════════════════
+// ACTIVITY 5: TRUE/FALSE
+// ══════════════════
+const tfItems=[
+  {q:'RAM is non-volatile — its contents are kept when the power is turned off.',ans:false,exp:'✗ False! RAM is VOLATILE — data is lost when the power goes off. It is only a temporary store while programs are running.'},
+  {q:'The Program Counter register holds the memory address of the next instruction to be fetched.',ans:true,exp:'✓ True! The Program Counter always contains the address of the next instruction — this is what the CU uses during the FETCH stage.'},
+  {q:'A larger cache memory reduces the number of cache misses and speeds up the CPU.',ans:true,exp:'✓ True! A larger cache holds more frequently used data closer to the CPU — more cache hits, fewer cache misses, less waiting for RAM.'},
+  {q:'Solid-state drives use spinning magnetic platters to store data.',ans:false,exp:'✗ False! That is a HARD DISK DRIVE (HDD). Solid-state drives use NAND flash chips with transistors and electron pools — no moving parts at all.'},
+  {q:'Virtual memory uses a section of the hard disk to act as extra RAM when RAM is full.',ans:true,exp:'✓ True! Virtual memory is a clever trick by the OS — when RAM fills up, it swaps least-recently-used data to the hard disk and swaps it back when needed.'},
+  {q:'Increasing clock speed always improves CPU performance with no downsides.',ans:false,exp:'✗ False! Increasing clock speed does improve processing rate, BUT it generates more heat and transistors have a maximum operating rate. Very high speeds (9 GHz) require liquid nitrogen cooling.'},
+  {q:'ROM stores firmware such as the BIOS or UEFI that runs when a computer starts up.',ans:true,exp:'✓ True! ROM is non-volatile and stores the firmware (BIOS/UEFI) that initialises hardware and loads the OS on startup.'},
+  {q:'An embedded system is a general-purpose computer that can run many different programs.',ans:false,exp:'✗ False! Embedded systems are designed for ONE specific task. They are distinct from general-purpose computers like PCs — they are cheap, low-power, and their program is rarely (or never) updated.'},
+];
+function buildTF(){
+  const area=document.getElementById('tf-area');area.innerHTML='';
+  tfItems.forEach((item,i)=>{
+    const div=document.createElement('div');div.className='tf-card';
+    div.innerHTML=`<div class="tf-q">${i+1}. ${item.q}</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="checkTF(this,${i},true)">TRUE</button>
+        <button class="tf-btn" onclick="checkTF(this,${i},false)">FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf-exp-${i}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkTF(btn,i,ans){
+  const item=tfItems[i];
+  const btns=btn.closest('.tf-card').querySelectorAll('.tf-btn');
+  btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById(`tf-exp-${i}`);
+  if(ans===item.ans){
+    btn.classList.add('correct');
+    exp.className='tf-exp show';exp.style.cssText='background:#e0faf1;border-left:4px solid var(--teal);';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if((b.textContent==='TRUE')===item.ans)b.classList.add('correct');});
+    exp.className='tf-exp show';exp.style.cssText='background:var(--light-coral);border-left:4px solid var(--coral);';
+  }
+  exp.textContent=item.exp;
+}
+buildTF();
+
+// ══════════════════
+// SVG ZOOM MODAL
+// ══════════════════
+let modalScale = 1;
+let currentSVGEl = null;
+
+function openModal(wrapEl, title) {
+  const svgEl = wrapEl.querySelector('svg');
+  if (!svgEl) return;
+  currentSVGEl = svgEl;
+  modalScale = 1;
+
+  // Clone SVG and resolve CSS variables for download compatibility
+  const clone = svgEl.cloneNode(true);
+  clone.removeAttribute('style');
+  clone.style.width = '100%';
+  clone.style.height = 'auto';
+  clone.style.display = 'block';
+
+  const content = document.getElementById('svg-modal-content');
+  content.innerHTML = '';
+  content.appendChild(clone);
+  content.style.transform = 'scale(1)';
+  content.style.transformOrigin = 'top center';
+
+  document.getElementById('modal-title').textContent = title || 'Diagram';
+  document.getElementById('zoom-lbl').textContent = '100%';
+
+  const modal = document.getElementById('svg-modal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('svg-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentSVGEl = null;
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('svg-modal')) closeModal();
+}
+
+function modalZoom(delta) {
+  modalScale = Math.max(0.4, Math.min(4, modalScale + delta));
+  const content = document.getElementById('svg-modal-content');
+  content.style.transform = `scale(${modalScale})`;
+  content.style.transformOrigin = 'top center';
+  document.getElementById('zoom-lbl').textContent = Math.round(modalScale * 100) + '%';
+}
+
+function modalResetZoom() {
+  modalScale = 1;
+  document.getElementById('svg-modal-content').style.transform = 'scale(1)';
+  document.getElementById('zoom-lbl').textContent = '100%';
+}
+
+function downloadSVG() {
+  const svgEl = document.getElementById('svg-modal-content').querySelector('svg');
+  if (!svgEl) return;
+
+  // Inline CSS variable values for standalone SVG
+  const varMap = {
+    '--ink': '#1a1a2e', '--paper': '#fdf8f0',
+    '--yellow': '#ffd166', '--coral': '#ef476f', '--teal': '#06d6a0',
+    '--blue': '#118ab2', '--purple': '#7b2d8b', '--orange': '#f77f00', '--green': '#2d6a4f',
+    '--light-yellow': '#fff9c4', '--light-coral': '#fce4ec', '--light-teal': '#e0f7f2',
+    '--light-blue': '#e3f2fd', '--light-purple': '#f3e5f5', '--light-green': '#d8f3dc',
+  };
+
+  let svgStr = svgEl.outerHTML;
+  Object.entries(varMap).forEach(([v, val]) => {
+    svgStr = svgStr.replaceAll(`var(${v})`, val);
+  });
+
+  // Add white background rect
+  const titleText = document.getElementById('modal-title').textContent;
+  const vb = svgEl.getAttribute('viewBox') || '0 0 560 120';
+  const parts = vb.split(' ');
+  const w = parseFloat(parts[2]) || 560;
+  const h = parseFloat(parts[3]) || 120;
+
+  svgStr = svgStr.replace('<svg', `<svg xmlns="http://www.w3.org/2000/svg"`);
+  svgStr = svgStr.replace(/>/, `><rect width="${w}" height="${h}" fill="#fffdf5"/>`);
+
+  const blob = new Blob([svgStr], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (titleText || 'diagram').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === '+' || e.key === '=') { if(document.getElementById('svg-modal').classList.contains('open')) modalZoom(0.2); }
+  if (e.key === '-') { if(document.getElementById('svg-modal').classList.contains('open')) modalZoom(-0.2); }
+});
+</script>
+</body>
+</html>

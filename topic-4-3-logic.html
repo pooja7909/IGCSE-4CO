@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 18: Logic – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before { content:''; position:fixed; top:0; left:0; right:0; bottom:0; background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px); pointer-events:none; z-index:0; }
+  body::after { content:''; position:fixed; top:0; left:70px; bottom:0; width:2px; background:rgba(239,71,111,0.3); pointer-events:none; z-index:0; }
+  .page-wrap { max-width:960px; margin:0 auto; padding:20px 30px 60px 90px; position:relative; z-index:1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+  .hero { text-align:center; padding:40px 0 20px; }
+  .hero-title { font-family:'Permanent Marker',cursive; font-size:2.8rem; color:var(--ink); text-shadow:3px 3px 0 var(--teal); letter-spacing:2px; transform:rotate(-1.5deg); display:inline-block; position:relative; }
+  .hero-title::after { content:''; position:absolute; bottom:-8px; left:0; right:0; height:4px; background:var(--blue); border-radius:2px; }
+  .hero-sub { font-family:'Caveat',cursive; font-size:1.4rem; color:var(--blue); margin-top:18px; }
+  .tabs-nav { display:flex; gap:8px; flex-wrap:wrap; margin:28px 0 20px; justify-content:center; }
+  .tab-btn { font-family:'Caveat',cursive; font-size:1.1rem; font-weight:700; padding:8px 18px; border:3px solid var(--ink); border-radius:6px; background:white; cursor:pointer; transition:all 0.2s; box-shadow:3px 3px 0 var(--ink); }
+  .tab-btn:hover { transform:translate(-1px,-1px); box-shadow:4px 4px 0 var(--ink); }
+  .tab-btn.active { background:var(--ink); color:white; transform:translate(2px,2px); box-shadow:1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active{background:var(--blue);}
+  .tab-btn[data-tab="notes"].active{background:var(--green);}
+  .tab-btn[data-tab="quiz"].active{background:#059669;}
+  .tab-btn[data-tab="activities"].active{background:var(--orange);}
+  .tab-btn[data-tab="exam"].active{background:var(--purple);}
+  .eq-wrap { margin-bottom:26px; border:2.5px solid var(--ink); border-radius:10px; background:white; box-shadow:4px 4px 0 var(--ink); overflow:hidden; }
+  .eq-hdr { padding:11px 16px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);}.eq-hdr.c2{background:var(--light-blue);}.eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;}.eq-hdr.c5{background:var(--light-yellow);}.eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);}.eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family:'Permanent Marker',cursive; font-size:1.05rem; }
+  .eq-marks { font-family:'Caveat',cursive; font-size:1.1rem; font-weight:700; background:var(--ink); color:white; padding:2px 10px; border-radius:20px; }
+  .eq-bdy { padding:14px 16px; }
+  .eq-txt { font-size:1.02rem; line-height:1.6; margin-bottom:12px; }
+  .eq-ctx { background:#f5f5f5; border-left:4px solid var(--blue); padding:10px 14px; margin-bottom:12px; font-size:0.93rem; line-height:1.5; border-radius:0 6px 6px 0; font-style:italic; font-family:'Kalam',cursive; }
+  .ans-ta { width:100%; border:1.5px solid #b0bec5; border-radius:6px; background:transparent; font-family:'Patrick Hand',cursive; font-size:0.95rem; padding:8px; outline:none; resize:vertical; min-height:80px; }
+  .show-ms { font-family:'Caveat',cursive; font-size:1rem; padding:6px 16px; border:2px solid var(--purple); border-radius:20px; background:white; color:var(--purple); cursor:pointer; margin-top:10px; transition:all 0.15s; }
+  .show-ms:hover{background:var(--purple);color:white;}
+  .ms { display:none; margin-top:10px; background:var(--light-purple); border:2px solid var(--purple); border-radius:8px; padding:12px 16px; font-size:0.93rem; line-height:1.6; }
+  .ms.show{display:block;animation:fadeIn 0.3s ease;}
+  .ms ul{padding-left:20px;margin-top:6px;}.ms li{margin:4px 0;}
+  .ms-lbl{font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--purple);margin-bottom:6px;}
+  .tab-panel{display:none;animation:fadeIn 0.3s ease;}
+  .tab-panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .tip-box{background:var(--light-yellow);border:2px solid var(--yellow);border-left:5px solid var(--orange);border-radius:6px;padding:12px 16px;margin:12px 0;font-family:'Kalam',cursive;font-size:0.95rem;}
+  .btn{font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;padding:9px 22px;border:2.5px solid var(--ink);border-radius:8px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);transition:all 0.15s;}
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+  .btn-primary{background:var(--ink);color:white;}
+  .btn-teal{background:var(--teal);color:var(--ink);border-color:#059669;box-shadow:3px 3px 0 #059669;}
+  .tag{display:inline-block;padding:2px 9px;border-radius:4px;font-family:'Caveat',cursive;font-size:0.85rem;font-weight:700;border:1.5px solid;margin-right:4px;}
+  .tag-hard{color:var(--coral);border-color:var(--coral);background:var(--light-coral);}
+  .tag-med{color:var(--orange);border-color:var(--orange);background:#fff3e0;}
+  .tag-easy{color:#059669;border-color:var(--teal);background:var(--light-teal);}
+  .imp-banner{margin-bottom:20px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 var(--ink);}
+  .imp-header{background:var(--blue);color:white;padding:10px 18px;font-family:'Permanent Marker',cursive;font-size:1.2rem;display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .imp-body{display:none;background:white;}
+  .imp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+  .imp-cell{padding:14px 16px;border-right:2px solid #eee;border-bottom:2px solid #eee;}
+  .imp-cell-title{font-family:'Permanent Marker',cursive;font-size:0.95rem;margin-bottom:6px;}
+  .imp-cell p{font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.5;}
+  .imp-footer{background:#fff9c4;border-top:2px solid var(--ink);padding:10px 16px;font-family:'Kalam',cursive;font-size:0.88rem;display:flex;align-items:center;gap:8px;}
+  .ig-wrap{background:#fffdf5;border:3px solid var(--ink);border-radius:12px;padding:28px;box-shadow:6px 6px 0 var(--ink);}
+  .ig-title{font-family:'Permanent Marker',cursive;font-size:2rem;text-align:center;margin-bottom:20px;}
+  .ig-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:600px){.ig-grid{grid-template-columns:1fr;}}
+  .ig-sec{border:2.5px solid var(--ink);border-radius:10px;padding:16px;background:white;position:relative;}
+  .ig-label{font-family:'Permanent Marker',cursive;font-size:1.05rem;position:absolute;top:-13px;left:14px;background:white;padding:0 8px;}
+  .ig-item{display:flex;align-items:flex-start;gap:9px;margin:7px 0;font-family:'Kalam',cursive;font-size:0.92rem;line-height:1.4;}
+  .ig-dot{width:20px;height:20px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-family:'Permanent Marker',cursive;flex-shrink:0;margin-top:1px;}
+  .highlight-box{background:var(--light-teal);border:2.5px solid var(--ink);border-radius:8px;padding:12px 16px;margin:16px 0;font-family:'Kalam',cursive;font-size:1rem;text-align:center;transform:rotate(-0.3deg);}
+  .notes-sec{margin-bottom:14px;border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 var(--ink);}
+  .notes-hdr{padding:12px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+  .notes-hdr:hover{opacity:0.9;}
+  .notes-hdr-left{display:flex;align-items:center;gap:12px;}
+  .notes-num{font-family:'Permanent Marker',cursive;font-size:0.9rem;background:rgba(255,255,255,0.2);color:white;padding:2px 10px;border-radius:20px;white-space:nowrap;}
+  .notes-title{font-family:'Permanent Marker',cursive;font-size:1.1rem;color:white;}
+  .notes-tog{font-family:'Caveat',cursive;font-size:1.2rem;color:white;transition:transform 0.3s;}
+  .notes-bdy{display:none;padding:18px 20px;background:white;font-family:'Patrick Hand',cursive;font-size:0.95rem;line-height:1.65;}
+  .notes-bdy.open{display:block;animation:fadeIn 0.25s ease;}
+  .def-box{border:2px solid;border-radius:8px;padding:12px 14px 10px;margin:12px 0;position:relative;padding-top:22px;font-size:0.92rem;line-height:1.55;}
+  .def-label{position:absolute;top:-11px;left:12px;color:white;font-family:'Caveat',cursive;font-size:0.8rem;font-weight:700;padding:2px 10px;border-radius:20px;}
+  .notes-tip{background:#fff9c4;border:2px solid var(--yellow);border-left:5px solid var(--orange);border-radius:6px;padding:10px 14px;margin:12px 0 4px;font-size:0.9rem;font-family:'Kalam',cursive;}
+  .notes-eg{background:#f5f5f5;border-left:4px solid var(--blue);padding:8px 12px;margin:8px 0;border-radius:0 6px 6px 0;font-size:0.88rem;font-style:italic;font-family:'Kalam',cursive;}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+  .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:12px 0;}
+  @media(max-width:580px){.g2{grid-template-columns:1fr;}.g3{grid-template-columns:1fr;}}
+  .nl{display:flex;align-items:flex-start;gap:9px;margin:6px 0;font-size:0.92rem;line-height:1.5;}
+  .nd{width:24px;height:24px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-family:'Permanent Marker',cursive;flex-shrink:0;margin-top:1px;}
+  .subh{font-family:'Permanent Marker',cursive;font-size:1.05rem;margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+  .subh::after{content:'';flex:1;height:2px;background:currentColor;opacity:0.2;}
+  .n-card{border:2.5px solid;border-radius:10px;overflow:hidden;margin:10px 0;}
+  .n-card-hdr{padding:8px 14px;font-family:'Permanent Marker',cursive;font-size:1rem;color:white;}
+  .n-card-bdy{padding:12px 14px;background:white;font-size:0.92rem;line-height:1.55;}
+  .hl-b{color:var(--blue);font-weight:700;}.hl-t{color:#059669;font-weight:700;}
+  .hl-c{color:var(--coral);font-weight:700;}.hl-p{color:var(--purple);font-weight:700;}
+  .hl-o{color:var(--orange);font-weight:700;}.hl-g{color:var(--green);font-weight:700;}
+  /* code blocks */
+  .code-block{background:#1a1a2e;color:#06d6a0;font-family:'Courier New',monospace;font-size:0.9rem;padding:14px 18px;border-radius:8px;margin:10px 0;line-height:1.8;border:2px solid #06d6a0;overflow-x:auto;}
+  .code-block .kw{color:#ffd166;}.code-block .cm{color:#888;font-style:italic;}.code-block .op{color:#ef476f;font-weight:bold;}
+  /* TRUTH TABLE STYLES */
+  .tt-wrap{overflow-x:auto;margin:14px 0;}
+  .tt{border-collapse:collapse;font-family:'Patrick Hand',cursive;font-size:0.95rem;min-width:100%;}
+  .tt th{background:var(--ink);color:white;padding:10px 16px;text-align:center;font-family:'Permanent Marker',cursive;font-size:0.9rem;white-space:nowrap;}
+  .tt td{padding:9px 16px;text-align:center;border:1.5px solid #e0e0e0;}
+  .tt tr:nth-child(even) td{background:#f9f9f9;}
+  .tt-0{background:#fce4ec;color:var(--coral);font-weight:700;}
+  .tt-1{background:#e0f7f2;color:#059669;font-weight:700;}
+  .tt th.and-col{background:var(--blue);}
+  .tt th.or-col{background:var(--green);}
+  .tt th.not-col{background:var(--purple);}
+  .tt th.out-col{background:var(--coral);}
+  /* quiz */
+  .q-prog-wrap{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .q-prog-bar{flex:1;height:14px;background:#e0e0e0;border:2px solid var(--ink);border-radius:20px;overflow:hidden;}
+  .q-prog-fill{height:100%;background:var(--teal);border-radius:20px;transition:width 0.4s;}
+  .q-score{font-family:'Permanent Marker',cursive;font-size:1.1rem;background:var(--yellow);border:2px solid var(--ink);padding:4px 12px;border-radius:20px;}
+  .q-card{border:3px solid var(--ink);border-radius:12px;padding:22px;background:white;box-shadow:5px 5px 0 var(--ink);}
+  .q-num{font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--teal);margin-bottom:8px;}
+  .q-text{font-family:'Caveat',cursive;font-size:1.35rem;font-weight:600;margin-bottom:16px;line-height:1.4;}
+  .q-opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  @media(max-width:480px){.q-opts{grid-template-columns:1fr;}}
+  .q-opt{padding:11px 14px;border:2.5px solid var(--ink);border-radius:8px;background:white;font-family:'Patrick Hand',cursive;font-size:0.98rem;cursor:pointer;transition:all 0.15s;text-align:left;box-shadow:2px 2px 0 var(--ink);}
+  .q-opt:hover:not(:disabled){transform:translate(-1px,-1px);background:var(--light-yellow);}
+  .q-opt.correct{background:var(--teal)!important;color:white;border-color:#059669;box-shadow:none;}
+  .q-opt.wrong{background:var(--coral)!important;color:white;border-color:#c0392b;box-shadow:none;animation:shake 0.3s;}
+  .q-opt:disabled{cursor:default;}
+  .q-fb{margin-top:12px;padding:10px 14px;border-radius:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:600;border:2px solid;display:none;}
+  .q-fb.show{display:block;}
+  .q-fb.fb-ok{background:#e0faf1;border-color:var(--teal);color:#059669;}
+  .q-fb.fb-no{background:var(--light-coral);border-color:var(--coral);color:var(--coral);}
+  .q-result{text-align:center;padding:30px;}
+  .q-result h2{font-family:'Permanent Marker',cursive;font-size:2.5rem;margin-bottom:10px;}
+  .big-score{font-family:'Permanent Marker',cursive;font-size:4rem;color:var(--teal);}
+  /* activities */
+  .act-card{border:3px solid var(--ink);border-radius:12px;overflow:hidden;margin-bottom:22px;box-shadow:5px 5px 0 var(--ink);}
+  .act-hdr{padding:13px 18px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--ink);}
+  .act-icon{font-size:1.8rem;}
+  .act-title{font-family:'Permanent Marker',cursive;font-size:1.25rem;}
+  .act-bdy{background:white;padding:18px;font-size:0.95rem;line-height:1.6;}
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+  @media(max-width:500px){.match-grid{grid-template-columns:1fr;}}
+  .match-item{padding:10px 13px;border:2.5px solid var(--ink);border-radius:8px;font-family:'Patrick Hand',cursive;font-size:0.88rem;cursor:pointer;background:white;box-shadow:2px 2px 0 var(--ink);transition:all 0.15s;min-height:46px;display:flex;align-items:center;}
+  .match-item:hover{transform:translate(-1px,-1px);background:var(--light-yellow);}
+  .match-item.sel{background:var(--yellow);border-color:var(--orange);}
+  .match-item.ok{background:#e0faf1;border-color:var(--teal);pointer-events:none;}
+  .match-item.bad{background:var(--light-coral);border-color:var(--coral);animation:shake 0.3s;}
+  .tf-card{border:2px solid var(--ink);border-radius:10px;padding:14px 16px;margin:10px 0;background:white;}
+  .tf-q{font-family:'Kalam',cursive;font-size:0.97rem;margin-bottom:10px;line-height:1.5;}
+  .tf-btns{display:flex;gap:10px;}
+  .tf-btn{font-family:'Caveat',cursive;font-size:1rem;font-weight:700;padding:6px 20px;border:2px solid var(--ink);border-radius:20px;cursor:pointer;transition:all 0.15s;background:white;}
+  .tf-btn:hover{background:var(--light-yellow);}
+  .tf-btn.correct{background:var(--teal);color:white;border-color:#059669;}
+  .tf-btn.wrong{background:var(--coral);color:white;border-color:#c0392b;}
+  .tf-btn:disabled{cursor:default;}
+  .tf-exp{display:none;margin-top:8px;padding:8px 12px;border-radius:6px;font-family:'Kalam',cursive;font-size:0.88rem;}
+  .tf-exp.show{display:block;}
+  /* interactive truth table builder */
+  .tt-builder{border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;margin:14px 0;}
+  .tt-builder-hdr{background:var(--purple);color:white;padding:10px 16px;font-family:'Permanent Marker',cursive;font-size:1rem;}
+  .tt-builder-bdy{padding:14px;background:white;}
+  .tt-cell-btn{width:44px;height:36px;border:2px solid var(--ink);border-radius:6px;font-family:'Permanent Marker',cursive;font-size:1.1rem;cursor:pointer;transition:all 0.15s;background:white;}
+  .tt-cell-btn:hover{transform:scale(1.08);}
+  .tt-cell-btn.val-0{background:var(--light-coral);color:var(--coral);}
+  .tt-cell-btn.val-1{background:var(--light-teal);color:#059669;}
+  .tt-output{width:44px;height:36px;border:2px solid var(--ink);border-radius:6px;font-family:'Permanent Marker',cursive;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s;}
+  /* SVG ZOOM */
+  .svg-wrap{position:relative;display:inline-block;width:100%;cursor:zoom-in;border:2px dashed transparent;border-radius:8px;transition:border-color 0.2s;}
+  .svg-wrap:hover{border-color:var(--blue);}
+  .svg-wrap:hover .svg-hint{opacity:1;}
+  .svg-hint{position:absolute;bottom:6px;right:8px;background:var(--blue);color:white;font-family:'Caveat',cursive;font-size:0.82rem;font-weight:700;padding:3px 10px;border-radius:20px;opacity:0;transition:opacity 0.2s;pointer-events:none;box-shadow:1px 1px 4px rgba(0,0,0,0.2);}
+  #svg-modal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,10,30,0.82);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  #svg-modal.open{display:flex;animation:fadeIn 0.2s ease;}
+  #svg-modal-inner{background:#fffdf5;border:3px solid var(--ink);border-radius:14px;box-shadow:8px 8px 0 var(--ink);max-width:95vw;max-height:90vh;overflow:auto;position:relative;padding:16px;}
+  #svg-modal-content{display:block;min-width:300px;}
+  #svg-modal-content svg{width:100%!important;max-width:none!important;height:auto;}
+  #modal-toolbar{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+  #modal-title{font-family:'Permanent Marker',cursive;font-size:1rem;flex:1;color:var(--ink);}
+  .modal-btn{font-family:'Caveat',cursive;font-size:1rem;font-weight:700;padding:6px 16px;border:2.5px solid var(--ink);border-radius:8px;cursor:pointer;background:white;box-shadow:2px 2px 0 var(--ink);transition:all 0.15s;white-space:nowrap;}
+  .modal-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);background:var(--light-yellow);}
+  .modal-btn.close-btn{background:var(--coral);color:white;border-color:#c0392b;}
+  .modal-btn.close-btn:hover{background:#c0392b;}
+  .modal-btn.dl-btn{background:var(--teal);color:var(--ink);border-color:#059669;}
+  .zoom-controls{display:flex;gap:6px;align-items:center;}
+  .zoom-lbl{font-family:'Caveat',cursive;font-size:0.95rem;min-width:44px;text-align:center;}
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#7b2d8b;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-4-computers.html" style="color:#ef476f;text-decoration:none;">📑 Topic 4 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <a href="topic-4-computers.html" style="display:inline-flex;align-items:center;gap:8px;font-family:'Permanent Marker',cursive;font-size:1rem;color:#1a1a2e;text-decoration:none;border:2.5px solid #1a1a2e;border-radius:8px;padding:8px 18px;background:#fff9c4;box-shadow:3px 3px 0 #1a1a2e;margin:20px 0 10px;transform:rotate(-0.5deg);transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'" onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">← Back to Cover Page</a>
+
+  <div class="hero">
+    <h1 class="hero-title">🔣 Logic — 18</h1>
+    <p class="hero-sub">IGCSE Computer Science · Edexcel 4CP01 · Unit 4 Computers</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">🗺 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="activities">✏️ Activities</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+  </div>
+
+  <!-- ════════════ MIND MAP ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🔣 Why Does Logic Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🖥️ CPUs Use Logic</div><p>The ALU inside every CPU performs AND, OR and NOT operations billions of times per second. All conditional code (IF statements) ultimately becomes these three operations.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">📊 Truth Tables are Examinable</div><p>Drawing and completing truth tables for AND, OR, NOT and combined expressions (e.g. NOT A AND B) is a core exam skill — one of the most reliably tested parts of Unit 4.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">🐛 Logic Errors Cause Bugs</div><p>Logic errors are a common cause of bugs. Writing the correct logic statement before coding helps ensure the right code runs. Understanding Boolean operators is essential for all programming.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">⚡ Logic Circuits</div><p>AND, OR and NOT are built directly into electronic circuits — logic gates. Every decision a computer makes, from checking a password to evaluating a game condition, uses these gates.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">📐 Operator Precedence</div><p>Like BIDMAS in maths, logic has a precedence order: brackets first, then NOT, then AND, then OR. Getting this wrong in your truth table costs marks.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">📝 Writing Logic Statements</div><p>You must be able to read a real-world scenario (e.g. an alarm system) and write the correct IF...THEN condition using AND, OR and NOT. This tests both logic and problem-solving skills.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key rule:</strong> AND = both must be true. OR = at least one must be true. NOT = inverts (flips) the value. Precedence: brackets → NOT → AND → OR.</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">🔣 Topic 18: Logic — Overview</div>
+      <div class="highlight-box">🔑 Three Boolean operators: AND · OR · NOT. Used in IF statements. A truth table shows ALL possible input combinations and their outputs.</div>
+
+      <!-- Three operators visual -->
+      <div style="text-align:center;margin:18px 0;">
+        <div class="svg-wrap" onclick="openModal(this,'Boolean Operators — AND, OR, NOT')" title="Click to zoom">
+        <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+        <svg viewBox="0 0 620 200" style="max-width:620px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+          <!-- AND -->
+          <rect x="10" y="10" width="185" height="180" rx="12" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+          <text x="102" y="38" font-size="16" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">AND</text>
+          <text x="102" y="56" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">Output = 1 ONLY if BOTH inputs = 1</text>
+          <!-- mini truth table AND -->
+          <rect x="26" y="66" width="50" height="22" rx="3" fill="#118ab2"/><text x="51" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">A</text>
+          <rect x="80" y="66" width="50" height="22" rx="3" fill="#118ab2"/><text x="105" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">B</text>
+          <rect x="134" y="66" width="50" height="22" rx="3" fill="#118ab2"/><text x="159" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">A AND B</text>
+          <rect x="26" y="90" width="50" height="22" rx="3" fill="#fce4ec"/><text x="51" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="80" y="90" width="50" height="22" rx="3" fill="#fce4ec"/><text x="105" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="134" y="90" width="50" height="22" rx="3" fill="#fce4ec"/><text x="159" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="26" y="114" width="50" height="22" rx="3" fill="#fce4ec"/><text x="51" y="129" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="80" y="114" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="105" y="129" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="134" y="114" width="50" height="22" rx="3" fill="#fce4ec"/><text x="159" y="129" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="26" y="138" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="51" y="153" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="80" y="138" width="50" height="22" rx="3" fill="#fce4ec"/><text x="105" y="153" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="134" y="138" width="50" height="22" rx="3" fill="#fce4ec"/><text x="159" y="153" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="26" y="162" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="51" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="80" y="162" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="105" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="134" y="162" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="159" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <!-- OR -->
+          <rect x="215" y="10" width="185" height="180" rx="12" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2.5"/>
+          <text x="307" y="38" font-size="16" text-anchor="middle" fill="#2d6a4f" font-family="sans-serif" font-weight="bold">OR</text>
+          <text x="307" y="56" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">Output = 1 if AT LEAST ONE input = 1</text>
+          <rect x="231" y="66" width="50" height="22" rx="3" fill="#2d6a4f"/><text x="256" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">A</text>
+          <rect x="285" y="66" width="50" height="22" rx="3" fill="#2d6a4f"/><text x="310" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">B</text>
+          <rect x="339" y="66" width="57" height="22" rx="3" fill="#2d6a4f"/><text x="367" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">A OR B</text>
+          <rect x="231" y="90" width="50" height="22" rx="3" fill="#fce4ec"/><text x="256" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="285" y="90" width="50" height="22" rx="3" fill="#fce4ec"/><text x="310" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="339" y="90" width="57" height="22" rx="3" fill="#fce4ec"/><text x="367" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="231" y="114" width="50" height="22" rx="3" fill="#fce4ec"/><text x="256" y="129" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="285" y="114" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="310" y="129" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="339" y="114" width="57" height="22" rx="3" fill="#e0f7f2"/><text x="367" y="129" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="231" y="138" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="256" y="153" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="285" y="138" width="50" height="22" rx="3" fill="#fce4ec"/><text x="310" y="153" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="339" y="138" width="57" height="22" rx="3" fill="#e0f7f2"/><text x="367" y="153" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="231" y="162" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="256" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="285" y="162" width="50" height="22" rx="3" fill="#e0f7f2"/><text x="310" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="339" y="162" width="57" height="22" rx="3" fill="#e0f7f2"/><text x="367" y="177" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <!-- NOT -->
+          <rect x="420" y="10" width="185" height="130" rx="12" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2.5"/>
+          <text x="512" y="38" font-size="16" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">NOT</text>
+          <text x="512" y="56" font-size="9.5" text-anchor="middle" fill="#555" font-family="sans-serif">Inverts the input — flips 0↔1</text>
+          <rect x="438" y="66" width="70" height="22" rx="3" fill="#7b2d8b"/><text x="473" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">A</text>
+          <rect x="518" y="66" width="70" height="22" rx="3" fill="#7b2d8b"/><text x="553" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">NOT A</text>
+          <rect x="438" y="90" width="70" height="22" rx="3" fill="#fce4ec"/><text x="473" y="105" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <rect x="518" y="90" width="70" height="22" rx="3" fill="#e0f7f2"/><text x="553" y="105" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="438" y="114" width="70" height="22" rx="3" fill="#e0f7f2"/><text x="473" y="129" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">1</text>
+          <rect x="518" y="114" width="70" height="22" rx="3" fill="#fce4ec"/><text x="553" y="129" font-size="10" text-anchor="middle" fill="var(--coral)" font-family="sans-serif" font-weight="bold">0</text>
+          <text x="512" y="158" font-size="9.5" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">Only ONE input</text>
+          <text x="512" y="172" font-size="9" text-anchor="middle" fill="#555" font-family="sans-serif">(unlike AND and OR)</text>
+          <text x="512" y="186" font-size="9" text-anchor="middle" fill="#555" font-family="sans-serif">Boolean: NOT 0 = 1, NOT 1 = 0</text>
+        </svg>
+        </div>
+      </div>
+
+      <div class="ig-grid">
+        <div class="ig-sec" style="border-color:var(--purple);">
+          <span class="ig-label" style="color:var(--purple);">📐 Operator Precedence</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">1</div><div><strong>Brackets</strong> — evaluated first, just like in maths (BIDMAS)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">2</div><div><strong>NOT</strong> — evaluated second</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">3</div><div><strong>AND</strong> — evaluated third</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">4</div><div><strong>OR</strong> — evaluated last</div></div>
+          <div class="notes-eg" style="margin-top:8px;">📌 Example: <code>(A AND B) OR C</code> — brackets first, then OR. Without brackets: <code>A AND B OR C</code> means <code>(A AND B) OR C</code> anyway — AND binds tighter than OR.</div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--orange);">
+          <span class="ig-label" style="color:var(--orange);">🔑 Key Vocabulary</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">B</div><div><strong>Boolean</strong> — something that can only be True (1) or False (0); named after George Boole</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">TT</div><div><strong>Truth table</strong> — shows all possible input combinations and the output produced</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">LC</div><div><strong>Logic circuit</strong> — electronic circuit that implements AND, OR or NOT as hardware gates</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">OP</div><div><strong>Operator precedence</strong> — the order in which logic operators are evaluated: brackets → NOT → AND → OR</div></div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">🏗️ Building Truth Tables</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">1</div><div>Count inputs: n inputs → 2ⁿ rows (2 inputs = 4 rows, 3 inputs = 8 rows)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">2</div><div>Fill input columns with all combinations (00, 01, 10, 11 for 2 inputs)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">3</div><div>Add intermediate columns for complex expressions (evaluate brackets first)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">4</div><div>Calculate the final output column last using the intermediate results</div></div>
+        </div>
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">📝 Writing Logic Statements</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">1</div><div>Identify the variables (the key features of the problem)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">2</div><div>Write the condition using AND, OR, NOT</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">3</div><div>Use brackets to control evaluation order</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">4</div><div>Test with a truth table to verify correctness before coding</div></div>
+        </div>
+      </div>
+    </div>
+  </div><!-- end mindmap -->
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <!-- 18.1 Boolean Operators -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,var(--blue),#0a4f70);">
+        <div class="notes-hdr-left"><span class="notes-num">18.1</span><span class="notes-title">Boolean Operators: AND, OR, NOT</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>All conditions in programs — every <code style="background:#f0f0f0;padding:1px 4px;border-radius:3px;font-family:monospace;">IF</code> statement — are ultimately calculated as <strong class="hl-b">Boolean logic</strong>. There are three Boolean (logical) operators: AND, OR and NOT.</p>
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Boolean</strong> — something that can only take the values True or False (1 or 0). Named after English mathematician George Boole.<br><br>
+          <strong class="hl-b">Truth table</strong> — a table showing all possible combinations of the inputs and outputs of a logic operator or expression.<br><br>
+          <strong class="hl-b">Logic circuit</strong> — an electronic circuit that has inputs and outputs that follow one of the Boolean operators (AND gate, OR gate, NOT gate).<br><br>
+          <strong class="hl-b">Operator precedence</strong> — the order in which operators are applied in an expression. For logic: brackets → NOT → AND → OR.</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🔵 AND Operator</h4>
+        <p>The output of AND is <strong>1 (True) only when BOTH inputs are 1</strong>. If either input is 0, the output is 0.</p>
+        <div class="notes-eg">🎮 Example: <code>IF health &lt;= 0 AND lives = 0 THEN SET game_over TO true</code> — the game only ends when BOTH conditions are true at the same time.</div>
+        <div class="tt-wrap">
+          <table class="tt">
+            <tr><th>A</th><th>B</th><th class="and-col">A AND B</th></tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+          </table>
+        </div>
+
+        <h4 class="subh" style="color:var(--green);">🟢 OR Operator</h4>
+        <p>The output of OR is <strong>1 (True) when AT LEAST ONE input is 1</strong>. It is only 0 when both inputs are 0.</p>
+        <div class="notes-eg">🎮 Example: <code>IF health &lt;= 0 OR score &gt; 1000000 THEN SET game_over TO true</code> — the game ends if health runs out OR the winning score is reached.</div>
+        <div class="tt-wrap">
+          <table class="tt">
+            <tr><th>A</th><th>B</th><th class="or-col">A OR B</th></tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+          </table>
+        </div>
+
+        <h4 class="subh" style="color:var(--purple);">🟣 NOT Operator</h4>
+        <p>NOT has <strong>only one input</strong>. It <strong>inverts (flips)</strong> the value — turns 1 into 0 and 0 into 1.</p>
+        <div class="notes-eg">🎮 Example: <code>IF NOT god_mode AND health &lt;= 0 THEN ...</code> — god_mode makes you invincible, so the game only ends if god_mode is OFF (NOT god_mode = 1) AND health runs out.</div>
+        <div class="tt-wrap">
+          <table class="tt" style="max-width:260px;">
+            <tr><th>A</th><th class="not-col">NOT A</th></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td></tr>
+          </table>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> Remember — NOT has only ONE input, while AND and OR each have TWO. When drawing a truth table for NOT, there are only 2 rows (2¹ = 2). For AND and OR there are 4 rows (2² = 4). For 3 inputs there are 8 rows (2³ = 8).</div>
+      </div>
+    </div>
+
+    <!-- 18.2 Combined expressions & Truth Tables -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,var(--purple),#4a1080);">
+        <div class="notes-hdr-left"><span class="notes-num">18.2</span><span class="notes-title">Combined Expressions &amp; Complex Truth Tables</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>Real programs often combine all three operators in one condition. The key is <strong class="hl-p">operator precedence</strong>: evaluate in this order — <strong>brackets → NOT → AND → OR</strong>. This is the logic equivalent of BIDMAS in maths.</p>
+
+        <h4 class="subh" style="color:var(--purple);">🎮 Game Over Example — 3-input truth table</h4>
+        <p>Consider this condition from the textbook game:</p>
+        <div class="code-block">
+<span class="kw">IF</span> (<span class="op">NOT</span> god_mode <span class="op">AND</span> health &lt;= 0) <span class="op">OR</span> score &gt; 1000000 <span class="kw">THEN</span>
+    <span class="kw">SET</span> game_over <span class="kw">TO</span> true
+<span class="kw">END IF</span>
+        </div>
+        <p style="margin-top:8px;">To build this truth table, we work through the expression step by step, adding intermediate columns:</p>
+
+        <div class="tt-wrap">
+          <table class="tt">
+            <tr>
+              <th>god_mode</th><th>health&lt;=0</th><th>score&gt;1M</th>
+              <th class="not-col">NOT god_mode</th>
+              <th class="and-col">NOT god_mode AND health&lt;=0</th>
+              <th class="out-col">GAME OVER?</th>
+            </tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+          </table>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:6px;">Row 3: god_mode=0 → NOT=1; health&lt;=0=1; NOT AND health = 1×1 = 1; score=0 → GAME OVER = 1 OR 0 = 1 ✓</p>
+        <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;">Row 7: god_mode=1 → NOT=0; even though health&lt;=0=1, NOT AND health = 0×1 = 0; score=0 → GAME OVER = 0 OR 0 = 0 ✓ (god mode protects you!)</p>
+
+        <h4 class="subh" style="color:var(--purple);">📐 How to Build Any Truth Table — Step by Step</h4>
+        <div class="n-card" style="border-color:var(--purple);">
+          <div class="n-card-hdr" style="background:var(--purple);">Method for P = (A AND B) OR C</div>
+          <div class="n-card-bdy">
+            <div class="nl"><span class="nd" style="background:var(--purple);">1</span><div>Count inputs: 3 (A, B, C) → 2³ = <strong>8 rows</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">2</span><div>Write all input combos: A alternates every 4, B every 2, C every 1 → 000 001 010 011 100 101 110 111</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">3</span><div>Add intermediate column: <strong>A AND B</strong> (evaluate brackets first)</div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">4</span><div>Calculate final output: <strong>P = (A AND B) OR C</strong> — use the intermediate column</div></div>
+          </div>
+        </div>
+
+        <div class="tt-wrap" style="margin-top:10px;">
+          <table class="tt">
+            <tr><th>A</th><th>B</th><th>C</th><th class="and-col">A AND B</th><th class="out-col">P = (A AND B) OR C</th></tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td><td class="tt-0">0</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-0">0</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+            <tr><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td><td class="tt-1">1</td></tr>
+          </table>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam technique for truth tables:</strong> Always add intermediate columns for complex expressions — never skip steps. Show your working. The examiner awards marks for correct intermediate columns even if the final output has errors.</div>
+      </div>
+    </div>
+
+    <!-- 18.3 Writing Logic Statements -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,var(--green),#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">18.3</span><span class="notes-title">Writing Logic Statements for Real Scenarios</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>When writing programs, you often need to translate a real-world rule into a logic statement. Logic errors are one of the most common causes of bugs — testing your logic with a truth table before coding prevents mistakes.</p>
+
+        <h4 class="subh" style="color:var(--green);">🌿 Worked Example: Fertiliser Advisor</h4>
+        <p>Mohammad's gardening website gives advice based on leaf colour and size:</p>
+        <div class="g2">
+          <div style="background:var(--light-yellow);border:2px solid var(--yellow);border-radius:8px;padding:10px;font-family:'Kalam',cursive;font-size:0.88rem;">
+            <strong>Rule 1:</strong> Yellow leaves near soil → nitrogen fertiliser<br>
+            <strong>Rule 2:</strong> Brown AND small leaves → phosphorous fertiliser<br>
+            <strong>Rule 3:</strong> Brown AND normal-size leaves → potassium fertiliser
+          </div>
+          <div class="code-block" style="font-size:0.82rem;padding:10px 12px;">
+<span class="kw">SET</span> advice <span class="kw">TO</span> 'nothing needed'
+<span class="kw">IF</span> colour = 'yellow' <span class="kw">THEN</span>
+    <span class="kw">SET</span> advice <span class="kw">TO</span> 'nitrogen'
+<span class="kw">ELSE</span>
+    <span class="kw">IF</span> colour = 'brown' <span class="op">AND</span> size = 'small' <span class="kw">THEN</span>
+        <span class="kw">SET</span> advice <span class="kw">TO</span> 'phosphorous'
+    <span class="kw">ELSE</span>
+        <span class="kw">IF</span> colour = 'brown' <span class="op">AND</span> size = 'normal' <span class="kw">THEN</span>
+            <span class="kw">SET</span> advice <span class="kw">TO</span> 'potassium'
+        <span class="kw">END IF</span>
+    <span class="kw">END IF</span>
+<span class="kw">END IF</span>
+          </div>
+        </div>
+        <div class="notes-eg">💡 <strong>Key technique:</strong> Start by setting a default value ('nothing needed'), then only change it when conditions are met. This means you don't need to handle every possible case explicitly.</div>
+
+        <h4 class="subh" style="color:var(--green);">⏰ Worked Example: Alarm Clock</h4>
+        <p>Nadia's alarm: 7:30am on school days, 9:00am on weekends/holidays, <em>except</em> 8:00am on term-time Saturdays for hockey:</p>
+        <div class="code-block" style="font-size:0.85rem;">
+<span class="kw">SET</span> alarm <span class="kw">TO</span> '7:30 am'
+<span class="kw">IF</span> term_time = false <span class="op">OR</span> (day = 'Saturday' <span class="op">OR</span> day = 'Sunday') <span class="kw">THEN</span>
+    <span class="kw">SET</span> alarm <span class="kw">TO</span> '9:00 am'
+<span class="kw">ELSE</span>
+    <span class="kw">IF</span> term_time = true <span class="op">AND</span> day = 'Saturday' <span class="kw">THEN</span>
+        <span class="kw">SET</span> alarm <span class="kw">TO</span> '8:00 am'
+    <span class="kw">END IF</span>
+<span class="kw">END IF</span>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip — Writing logic statements:</strong> (1) Identify the variables first (what changes?). (2) Write the conditions using AND, OR, NOT. (3) Use brackets to control order. (4) Always set a default value before the conditions. The key mark is showing the correct operator (AND vs OR) for the situation described.</div>
+      </div>
+    </div>
+
+  </div><!-- end notes -->
+
+  <!-- ════════════ QUIZ ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span>/<span id="qtotal">20</span></div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card">
+        <div class="q-num" id="qnum">Question 1 of 20</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="q-opts" id="qopts"></div>
+        <div class="q-fb" id="qfb"></div>
+        <div style="text-align:right;margin-top:14px;">
+          <button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACTIVITIES ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Interactive AND gate -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🔵</span>
+        <span class="act-title">Activity 1 — Interactive Truth Table Builder</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;margin-bottom:12px;">Click the 0/1 input buttons to explore what each operator outputs. The output updates instantly!</p>
+        <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;">
+          <!-- AND gate interactive -->
+          <div style="border:2.5px solid var(--blue);border-radius:10px;overflow:hidden;min-width:200px;">
+            <div style="background:var(--blue);color:white;padding:8px 14px;font-family:'Permanent Marker',cursive;text-align:center;">AND Gate</div>
+            <div style="padding:14px;background:white;text-align:center;">
+              <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;">
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Input A</div><button class="tt-cell-btn val-0" id="and-a" onclick="toggleGate('and-a','and')">0</button></div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.4rem;color:var(--blue);margin-top:18px;">AND</div>
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Input B</div><button class="tt-cell-btn val-0" id="and-b" onclick="toggleGate('and-b','and')">0</button></div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.2rem;margin-top:18px;">=</div>
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Output</div><div class="tt-output tt-0" id="and-out">0</div></div>
+              </div>
+              <div style="font-family:'Kalam',cursive;font-size:0.8rem;color:#888;">Both must be 1 for output = 1</div>
+            </div>
+          </div>
+          <!-- OR gate interactive -->
+          <div style="border:2.5px solid var(--green);border-radius:10px;overflow:hidden;min-width:200px;">
+            <div style="background:var(--green);color:white;padding:8px 14px;font-family:'Permanent Marker',cursive;text-align:center;">OR Gate</div>
+            <div style="padding:14px;background:white;text-align:center;">
+              <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;">
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Input A</div><button class="tt-cell-btn val-0" id="or-a" onclick="toggleGate('or-a','or')">0</button></div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.4rem;color:var(--green);margin-top:18px;">OR</div>
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Input B</div><button class="tt-cell-btn val-0" id="or-b" onclick="toggleGate('or-b','or')">0</button></div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.2rem;margin-top:18px;">=</div>
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Output</div><div class="tt-output tt-0" id="or-out">0</div></div>
+              </div>
+              <div style="font-family:'Kalam',cursive;font-size:0.8rem;color:#888;">At least one must be 1 for output = 1</div>
+            </div>
+          </div>
+          <!-- NOT gate interactive -->
+          <div style="border:2.5px solid var(--purple);border-radius:10px;overflow:hidden;min-width:200px;">
+            <div style="background:var(--purple);color:white;padding:8px 14px;font-family:'Permanent Marker',cursive;text-align:center;">NOT Gate</div>
+            <div style="padding:14px;background:white;text-align:center;">
+              <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;">
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Input A</div><button class="tt-cell-btn val-0" id="not-a" onclick="toggleGate('not-a','not')">0</button></div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.4rem;color:var(--purple);margin-top:18px;">NOT</div>
+                <div style="font-family:'Permanent Marker',cursive;font-size:1.2rem;margin-top:18px;">=</div>
+                <div><div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:4px;">Output</div><div class="tt-output tt-1" id="not-out">1</div></div>
+              </div>
+              <div style="font-family:'Kalam',cursive;font-size:0.8rem;color:#888;">Flips the input — 0 becomes 1, 1 becomes 0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Complete the truth table -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">📊</span>
+        <span class="act-title">Activity 2 — Complete the Truth Table</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;margin-bottom:10px;">Fill in the missing cells for <strong>P = (A AND B) OR C</strong>. Click each cell to toggle between 0 and 1.</p>
+        <div class="tt-wrap" id="complete-tt"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="checkTTComplete()">✓ Check</button>
+          <button class="btn" onclick="resetTTComplete()" style="background:white;">↺ Reset</button>
+          <button class="btn" onclick="revealTTComplete()" style="background:white;">👁 Reveal</button>
+          <span id="tt-complete-score" style="font-family:'Permanent Marker',cursive;font-size:1.2rem;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Match operator to rule -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-green);">
+        <span class="act-icon">🔗</span>
+        <span class="act-title">Activity 3 — Match the Term to its Definition</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Click a term on the left, then its matching definition on the right.</p>
+        <div class="match-grid" id="match-area-1"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkMatch1()">✓ Check</button>
+          <button class="btn" onclick="resetMatch1()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="match-res-1" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 4: True/False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <span class="act-icon">✅</span>
+        <span class="act-title">Activity 4 — True or False?</span>
+      </div>
+      <div class="act-bdy"><div id="tf-area"></div></div>
+    </div>
+
+    <!-- Activity 5: Logic statement writer -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-yellow);">
+        <span class="act-icon">📝</span>
+        <span class="act-title">Activity 5 — Which Operator? Scenario Challenge</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;margin-bottom:12px;">For each scenario, choose the correct Boolean operator.</p>
+        <div id="scenario-area"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities -->
+
+  <!-- ════════════ EXAM QUESTIONS ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <div class="tip-box" style="margin-bottom:18px;">📋 <strong>Exam technique:</strong> Logic questions test truth tables, writing conditions, and explaining operators. For truth tables: always show intermediate columns. For writing conditions: identify variables first, then write the expression. Use correct notation: AND, OR, NOT (not &amp;&amp;, ||, !).</div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c1"><span class="eq-num">Question 1 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Complete the truth table for the AND operator. State the rule for AND in one sentence.</p>
+        <div class="eq-ctx">Complete the table (A AND B) and state the rule.</div>
+        <textarea class="ans-ta" placeholder="Draw/describe the truth table and write the rule…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>Truth table (3 marks — 1 per correct row excluding header):</strong></p>
+          <ul><li>A=0, B=0 → 0 [1]</li><li>A=0, B=1 → 0 [1]</li><li>A=1, B=0 → 0 [1]</li><li>A=1, B=1 → 1 [1]</li></ul>
+          <p><strong>Rule (1 mark):</strong></p>
+          <ul><li>The output is 1 (True) only when BOTH inputs are 1 (True) [1]</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c2"><span class="eq-num">Question 2 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">3 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Complete the truth table for the OR operator and state one key difference between AND and OR.</p>
+        <textarea class="ans-ta" placeholder="Write the OR truth table and the difference…" rows="6"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>0 OR 0 = 0 [1]</li>
+            <li>0 OR 1 = 1; 1 OR 0 = 1; 1 OR 1 = 1 [1 for all three correct]</li>
+            <li>Difference: AND requires BOTH inputs to be 1; OR requires only ONE input to be 1 (OR is 0 only when both inputs are 0) [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c3"><span class="eq-num">Question 3 <span class="tag tag-med">Medium</span></span><span class="eq-marks">5 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A security system turns on an alarm (ALARM = 1) if: the door is open (DOOR = 1) AND it is night-time (NIGHT = 1), OR the panic button is pressed (PANIC = 1).<br>Expression: ALARM = (DOOR AND NIGHT) OR PANIC</div>
+        <p class="eq-txt">Construct a full truth table for this expression. Show all intermediate columns.</p>
+        <textarea class="ans-ta" placeholder="Draw the truth table with columns: DOOR, NIGHT, PANIC, DOOR AND NIGHT, ALARM…" rows="12"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p>Headers: DOOR | NIGHT | PANIC | DOOR AND NIGHT | ALARM [1 for correct columns]</p>
+          <p>8 rows, all correct input combinations 000→111 [1]</p>
+          <p>DOOR AND NIGHT column: 0,0,0,0,0,0,1,1 [1]</p>
+          <p>ALARM = (DOOR AND NIGHT) OR PANIC: 0,1,0,1,0,1,1,1 [2]</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c4"><span class="eq-num">Question 4 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A car headlight system: headlights come on (LIGHT = 1) if the light sensor detects it is dark (DARK = 1) OR the headlamp switch is turned on (SWITCH = 1).</div>
+        <p class="eq-txt">(a) Write the logic statement for this system using IF...THEN notation. [2] (b) Construct the truth table. [2]</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="7"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>(a) Logic statement:</strong></p>
+          <ul>
+            <li>IF DARK = 1 OR SWITCH = 1 THEN SET LIGHT TO 1 END IF [1 for correct operator OR, 1 for correct structure]</li>
+          </ul>
+          <p><strong>(b) Truth table:</strong></p>
+          <ul>
+            <li>DARK=0, SWITCH=0 → LIGHT=0 [1]</li>
+            <li>DARK=0, SWITCH=1 → LIGHT=1; DARK=1, SWITCH=0 → LIGHT=1; DARK=1, SWITCH=1 → LIGHT=1 [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c5"><span class="eq-num">Question 5 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">6 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A student writes this condition for a school system:<br><code style="background:#f0f0f0;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:0.9rem;">IF year = 11 AND (grade &lt; target OR target &gt; 7) THEN SET revision_class TO true</code></div>
+        <p class="eq-txt">(a) State the operator precedence used to evaluate this expression. [2] (b) Construct a partial truth table showing: year=11, grade&lt;target, target&gt;7, the bracketed sub-expression, and the final output for ALL combinations where year=11. [4]</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="10"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>(a) Precedence [2]:</strong></p>
+          <ul>
+            <li>Brackets are evaluated first: (grade &lt; target OR target &gt; 7) [1]</li>
+            <li>Then AND is evaluated: year = 11 AND (bracketed result) [1]</li>
+          </ul>
+          <p><strong>(b) Table (year=11 rows only) [4]:</strong></p>
+          <ul>
+            <li>Columns: year=11 | grade&lt;target | target&gt;7 | (grade&lt;target OR target&gt;7) | revision_class [1]</li>
+            <li>year=11=1, 0, 0 → bracket=0 → output=0 [1]</li>
+            <li>year=11=1, 0, 1 → bracket=1 → output=1 [1]</li>
+            <li>year=11=1, 1, 0 → bracket=1 → output=1 [1]</li>
+            <li>year=11=1, 1, 1 → bracket=1 → output=1 [1] (max 4)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c6"><span class="eq-num">Question 6 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">3 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">(a) What does the NOT operator do? [1] (b) How many inputs does NOT have, compared to AND and OR? [1] (c) State the correct operator precedence for evaluating: <code style="background:#f0f0f0;padding:1px 5px;border-radius:3px;font-family:monospace;">NOT A AND B OR C</code> [1]</p>
+        <textarea class="ans-ta" placeholder="Write your answers here…" rows="4"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>(a) NOT inverts the input — turns 1 into 0 and 0 into 1 (flips the Boolean value) [1]</li>
+            <li>(b) NOT has ONE input; AND and OR each have TWO inputs [1]</li>
+            <li>(c) First: NOT A → then: (NOT A) AND B → then: result OR C. Precedence: NOT first, then AND, then OR [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c7"><span class="eq-num">Question 7 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">Rania is writing a program for a vending machine. The machine dispenses a drink (DISPENSE = 1) if: the correct amount has been paid (PAID = 1) AND the selected drink is in stock (STOCK = 1) AND the machine is not in maintenance mode (MAINT = 0).</div>
+        <p class="eq-txt">Write the full logic expression using AND and NOT, then construct the truth table showing all 8 rows.</p>
+        <textarea class="ans-ta" placeholder="Write the logic expression, then the 8-row truth table…" rows="10"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Expression: DISPENSE = PAID AND STOCK AND NOT MAINT [1]</li>
+            <li>Correct columns with NOT MAINT intermediate column [1]</li>
+            <li>8 rows with all correct input combinations [1]</li>
+            <li>Output = 1 ONLY when PAID=1, STOCK=1, MAINT=0 (one row only) [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end exam -->
+
+</div><!-- end page-wrap -->
+
+<!-- SVG ZOOM MODAL -->
+<div id="svg-modal" onclick="handleModalClick(event)">
+  <div id="svg-modal-inner">
+    <div id="modal-toolbar">
+      <span id="modal-title">Diagram</span>
+      <div class="zoom-controls">
+        <button class="modal-btn" onclick="modalZoom(-0.2)">➖</button>
+        <span class="zoom-lbl" id="zoom-lbl">100%</span>
+        <button class="modal-btn" onclick="modalZoom(+0.2)">➕</button>
+        <button class="modal-btn" onclick="modalResetZoom()">↺ Fit</button>
+      </div>
+      <button class="modal-btn dl-btn" onclick="downloadSVG()">⬇ Download</button>
+      <button class="modal-btn close-btn" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div id="svg-modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+function toggleSection(id){const bdy=document.querySelector('#'+id+' .notes-bdy'),tog=document.querySelector('#'+id+' .notes-tog');bdy.classList.toggle('open');tog.textContent=bdy.classList.contains('open')?'▲':'▼';}
+function toggleMS(btn){const ms=btn.nextElementSibling;ms.classList.toggle('show');btn.textContent=ms.classList.contains('show')?'🙈 Hide Mark Scheme':'📋 Show Mark Scheme';}
+
+// ── QUIZ ──
+const quizData=[
+  {q:'What is the output of A AND B when A=1 and B=0?',opts:['0','1','Depends on A','Same as OR'],ans:0,fb:'AND = 1 ONLY when BOTH inputs are 1. Since B=0, the output is 0. Remember: AND is the strict operator — both must be true.'},
+  {q:'What is the output of A OR B when A=0 and B=1?',opts:['0','1','2','Undefined'],ans:1,fb:'OR = 1 when AT LEAST ONE input is 1. Since B=1, the output is 1. OR is 0 only when BOTH inputs are 0.'},
+  {q:'What is NOT 1?',opts:['1','0','2','-1'],ans:1,fb:'NOT inverts the input. NOT 1 = 0. NOT 0 = 1. Simple flip — that\'s all NOT does.'},
+  {q:'How many inputs does the NOT operator have?',opts:['Two inputs (A and B)','Three inputs','One input','It depends on the expression'],ans:2,fb:'NOT has only ONE input — unlike AND and OR which each have two. This means a NOT truth table has only 2 rows (2¹=2), not 4.'},
+  {q:'How many rows does a truth table with 3 inputs have?',opts:['3 rows','6 rows','8 rows','16 rows'],ans:2,fb:'n inputs → 2ⁿ rows. 3 inputs → 2³ = 8 rows. 2 inputs → 2² = 4 rows. 1 input → 2¹ = 2 rows.'},
+  {q:'What is the output of A AND B when BOTH inputs are 0?',opts:['1','0','Depends on context','Same as OR result'],ans:1,fb:'AND is 0 whenever at least one input is 0. Both = 0 → output = 0. AND is only 1 when both = 1.'},
+  {q:'What is the operator precedence for logic expressions?',opts:['AND → OR → NOT → brackets','OR → AND → NOT → brackets','Brackets → NOT → AND → OR','NOT → brackets → AND → OR'],ans:2,fb:'Precedence: Brackets first (just like BIDMAS), then NOT, then AND, then OR. This is the same concept as BIDMAS in maths but for logic operators.'},
+  {q:'What does "Boolean" mean?',opts:['A number between 0 and 9','A value that can only be True (1) or False (0)','A type of programming loop','A CPU instruction'],ans:1,fb:'Boolean refers to values that can only be True (1) or False (0). Named after George Boole, the English mathematician who developed Boolean algebra.'},
+  {q:'A AND B OR C (without brackets) — which operation is evaluated first?',opts:['OR — it appears last','AND — AND has higher precedence than OR','NOT — always evaluated first','Both at the same time'],ans:1,fb:'AND has higher precedence than OR (just like multiplication before addition in maths). So A AND B is calculated first, then the result OR C. Adding brackets as (A AND B) OR C makes this explicit.'},
+  {q:'What is the output of 1 OR 1?',opts:['0','1','2','Error'],ans:1,fb:'1 OR 1 = 1. OR is 1 whenever at least one input is 1. Since both are 1, the output is definitely 1. OR is ONLY 0 when both inputs are 0.'},
+  {q:'What is the output of NOT 0?',opts:['0','1','-1','Undefined'],ans:1,fb:'NOT flips the value. NOT 0 = 1. NOT 1 = 0. Think of it as a light switch — NOT turns off what\'s on and turns on what\'s off.'},
+  {q:'In the expression (NOT A AND B) OR C, what is evaluated FIRST?',opts:['OR','AND','NOT A','C'],ans:2,fb:'Precedence: Brackets first → then NOT A → then AND → then OR. Even with brackets, NOT inside the brackets is evaluated before AND. So step 1: NOT A. Step 2: (NOT A) AND B. Step 3: result OR C.'},
+  {q:'When is A OR B equal to 0?',opts:['When A=1 and B=0','When A=0 and B=1','Only when BOTH A=0 AND B=0','When A=1 and B=1'],ans:2,fb:'OR is 0 ONLY when both inputs are 0 (0 OR 0 = 0). In all other cases (01, 10, 11), OR outputs 1. This is the one scenario where OR is false.'},
+  {q:'A truth table is described as showing...',opts:['The speed at which the CPU calculates logic','All possible combinations of inputs and the output produced','The order in which instructions are executed','The number of logic gates in a CPU'],ans:1,fb:'A truth table shows ALL possible combinations of inputs and the corresponding output. For 2 inputs there are 4 rows; for 3 inputs there are 8 rows.'},
+  {q:'Which statement about AND is correct?',opts:['AND is true when at least one input is true','AND is true only when ALL inputs are true','AND is the same as NOT OR','AND can have only one input'],ans:1,fb:'AND = true ONLY when ALL inputs are true. With two inputs, this means BOTH must be 1. This is why AND is more restrictive than OR.'},
+  {q:'A game ends if lives=0 AND health=0. What type of operator is this?',opts:['OR — either condition is enough','AND — both conditions must be true','NOT — one condition is inverted','XOR — the conditions are different'],ans:1,fb:'AND — BOTH conditions must be met simultaneously. If only one is true (e.g. lives=0 but health>0), the game does NOT end. Only when both are true does the condition trigger.'},
+  {q:'An alarm sounds if motion IS detected OR a window IS broken. What operator?',opts:['AND — both must happen','OR — either one is enough','NOT — the input is inverted','AND NOT — one inverts the other'],ans:1,fb:'OR — either condition being true is sufficient to trigger the alarm. If motion is detected alone, alarm sounds. If window is broken alone, alarm sounds. Both happening also triggers it.'},
+  {q:'NOT god_mode means...',opts:['god_mode = 1 (god mode is ON)','god_mode = 0 (god mode is OFF)','god_mode is undefined','god_mode is doubled'],ans:1,fb:'NOT inverts the value. If god_mode = 1 (ON), then NOT god_mode = 0. If god_mode = 0 (OFF), then NOT god_mode = 1. So "NOT god_mode" is true when god mode is turned OFF.'},
+  {q:'For 2 inputs, which operator produces the FEWEST 1s in its output column?',opts:['OR — produces 3 ones','AND — produces only 1 one (when both = 1)','NOT — produces exactly 1 one','They produce the same number'],ans:1,fb:'AND produces only ONE 1 in its output column (when A=1, B=1). OR produces THREE 1s. AND is therefore the more restrictive operator.'},
+  {q:'What should you do BEFORE coding a complex condition to avoid logic errors?',opts:['Run the program and see what happens','Write a truth table to verify all possible input combinations and expected outputs','Ask the computer to check the logic automatically','Write the condition in natural language only'],ans:1,fb:'Writing a truth table before coding lets you verify that your logic expression produces the correct output for every possible input combination. Logic errors are a common cause of bugs — testing logic first prevents them.'},
+];
+let qIdx=0,qScore=0;
+function renderQ(){
+  if(qIdx>=quizData.length){document.getElementById('quiz-area').innerHTML=`<div class="q-result"><h2>Quiz Complete! 🎉</h2><div class="big-score">${qScore}/${quizData.length}</div><p style="font-family:'Caveat',cursive;font-size:1.3rem;margin:16px 0;">${qScore===quizData.length?'Perfect! 🌟':qScore>=16?'Excellent! 💪':qScore>=12?'Good work! 📖':'Keep revising! 📚'}</p><button class="btn btn-teal" onclick="restartQuiz()">🔄 Try Again</button></div>`;return;}
+  const d=quizData[qIdx];
+  document.getElementById('qnum').textContent=`Question ${qIdx+1} of ${quizData.length}`;
+  document.getElementById('qtext').textContent=d.q;
+  document.getElementById('qtotal').textContent=quizData.length;
+  const opts=document.getElementById('qopts');opts.innerHTML='';
+  d.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='q-opt';b.textContent=o;b.onclick=()=>answerQ(i);opts.appendChild(b);});
+  document.getElementById('qfb').className='q-fb';document.getElementById('qfb').textContent='';
+  document.getElementById('qnext').style.display='none';
+  document.getElementById('qprog').style.width=(qIdx/quizData.length*100)+'%';
+}
+function answerQ(i){
+  const d=quizData[qIdx];const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.disabled=true);opts[d.ans].classList.add('correct');
+  const fb=document.getElementById('qfb');
+  if(i===d.ans){qScore++;document.getElementById('qscore').textContent=qScore;opts[i].classList.add('correct');fb.className='q-fb show fb-ok';fb.textContent='✓ Correct! '+d.fb;}
+  else{opts[i].classList.add('wrong');fb.className='q-fb show fb-no';fb.textContent='✗ Not quite. '+d.fb;}
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){qIdx++;renderQ();}
+function restartQuiz(){qIdx=0;qScore=0;document.getElementById('qscore').textContent=0;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num" id="qnum"></div><div class="q-text" id="qtext"></div><div class="q-opts" id="qopts"></div><div class="q-fb" id="qfb"></div><div style="text-align:right;margin-top:14px;"><button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button></div></div>`;renderQ();}
+renderQ();
+
+// ── ACTIVITY 1: INTERACTIVE GATES ──
+const gateState={and:{a:0,b:0},or:{a:0,b:0},not:{a:0}};
+function toggleGate(btnId,gate){
+  const btn=document.getElementById(btnId);
+  const input=btnId.split('-')[1];
+  gateState[gate][input]=gateState[gate][input]===0?1:0;
+  const v=gateState[gate][input];
+  btn.textContent=v;btn.className='tt-cell-btn '+(v?'val-1':'val-0');
+  updateGateOutput(gate);
+}
+function updateGateOutput(gate){
+  let out,el=document.getElementById(gate+'-out');
+  if(gate==='and')out=gateState.and.a&gateState.and.b;
+  else if(gate==='or')out=gateState.or.a|gateState.or.b;
+  else out=gateState.not.a?0:1;
+  el.textContent=out;el.className='tt-output '+(out?'tt-1':'tt-0');
+}
+
+// ── ACTIVITY 2: COMPLETE TRUTH TABLE ──
+// P = (A AND B) OR C — blank out the output column
+const ttData=[
+  {a:0,b:0,c:0,andb:0,p:0},
+  {a:0,b:0,c:1,andb:0,p:1},
+  {a:0,b:1,c:0,andb:0,p:0},
+  {a:0,b:1,c:1,andb:0,p:1},
+  {a:1,b:0,c:0,andb:0,p:0},
+  {a:1,b:0,c:1,andb:0,p:1},
+  {a:1,b:1,c:0,andb:1,p:1},
+  {a:1,b:1,c:1,andb:1,p:1},
+];
+let ttUserAndb=Array(8).fill(null);
+let ttUserP=Array(8).fill(null);
+function buildTTComplete(){
+  const wrap=document.getElementById('complete-tt');
+  let html=`<table class="tt"><tr><th>A</th><th>B</th><th>C</th><th class="and-col">A AND B</th><th class="out-col">P = (A AND B) OR C</th></tr>`;
+  ttData.forEach((row,i)=>{
+    const aClass=row.a?'tt-1':'tt-0';
+    const bClass=row.b?'tt-1':'tt-0';
+    const cClass=row.c?'tt-1':'tt-0';
+    html+=`<tr>
+      <td class="${aClass}">${row.a}</td>
+      <td class="${bClass}">${row.b}</td>
+      <td class="${cClass}">${row.c}</td>
+      <td><button class="tt-cell-btn ${ttUserAndb[i]===null?'':'tt-cell-btn '+(ttUserAndb[i]?'val-1':'val-0')}" id="tca-${i}" onclick="toggleTTCell('andb',${i})">${ttUserAndb[i]===null?'?':(ttUserAndb[i]?'1':'0')}</button></td>
+      <td><button class="tt-cell-btn ${ttUserP[i]===null?'':'tt-cell-btn '+(ttUserP[i]?'val-1':'val-0')}" id="tcp-${i}" onclick="toggleTTCell('p',${i})">${ttUserP[i]===null?'?':(ttUserP[i]?'1':'0')}</button></td>
+    </tr>`;
+  });
+  html+='</table>';wrap.innerHTML=html;
+}
+function toggleTTCell(col,i){
+  if(col==='andb'){ttUserAndb[i]=ttUserAndb[i]===null?0:(ttUserAndb[i]===0?1:null);}
+  else{ttUserP[i]=ttUserP[i]===null?0:(ttUserP[i]===0?1:null);}
+  buildTTComplete();
+}
+function checkTTComplete(){
+  let ok=0,total=0;
+  ttData.forEach((row,i)=>{
+    if(ttUserAndb[i]!==null){total++;if(ttUserAndb[i]===row.andb)ok++;}
+    if(ttUserP[i]!==null){total++;if(ttUserP[i]===row.p)ok++;}
+  });
+  const sc=document.getElementById('tt-complete-score');
+  if(total===0){sc.textContent='Fill in some cells first!';sc.style.color='var(--orange)';return;}
+  const full=ttUserAndb.every(v=>v!==null)&&ttUserP.every(v=>v!==null);
+  sc.textContent=full?`${ok}/16 cells correct!`:`${ok}/${total} filled cells correct`;
+  sc.style.color=ok===total?'var(--teal)':'var(--coral)';
+}
+function revealTTComplete(){ttData.forEach((r,i)=>{ttUserAndb[i]=r.andb;ttUserP[i]=r.p;});buildTTComplete();document.getElementById('tt-complete-score').style.color='var(--teal)';document.getElementById('tt-complete-score').textContent='All 16 answers revealed!';}
+function resetTTComplete(){ttUserAndb=Array(8).fill(null);ttUserP=Array(8).fill(null);buildTTComplete();document.getElementById('tt-complete-score').textContent='';}
+buildTTComplete();
+
+// ── ACTIVITY 3: MATCH ──
+const matchPairs1=[
+  {term:'AND',def:'Output is 1 ONLY when both inputs are 1'},
+  {term:'OR',def:'Output is 1 when at least one input is 1'},
+  {term:'NOT',def:'Inverts the input — turns 0 into 1 and 1 into 0 (one input only)'},
+  {term:'Truth table',def:'A table showing all possible input combinations and outputs'},
+  {term:'Boolean',def:'A value that can only be True (1) or False (0)'},
+  {term:'Operator precedence',def:'The order in which operators are evaluated: brackets → NOT → AND → OR'},
+];
+let match1Sel=null;
+function buildMatch1(){
+  const area=document.getElementById('match-area-1');area.innerHTML='';
+  const terms=matchPairs1.map(p=>p.term);
+  const defs=[...matchPairs1.map(p=>p.def)].sort(()=>Math.random()-0.5);
+  terms.forEach(t=>{const el=document.createElement('div');el.className='match-item';el.textContent=t;el.dataset.term=t;el.dataset.side='term';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+  defs.forEach(d=>{const el=document.createElement('div');el.className='match-item';el.textContent=d;el.dataset.def=d;el.dataset.side='def';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+}
+function selectMatch1(el){
+  if(el.classList.contains('ok'))return;
+  if(!match1Sel){if(match1Sel)match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;}
+  else{
+    if(match1Sel===el){el.classList.remove('sel');match1Sel=null;return;}
+    if(match1Sel.dataset.side===el.dataset.side){match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;return;}
+    const termEl=match1Sel.dataset.side==='term'?match1Sel:el;
+    const defEl=match1Sel.dataset.side==='def'?match1Sel:el;
+    const correct=matchPairs1.find(p=>p.term===termEl.dataset.term&&p.def===defEl.dataset.def);
+    if(correct){termEl.classList.remove('sel','bad');defEl.classList.remove('sel','bad');termEl.classList.add('ok');defEl.classList.add('ok');}
+    else{termEl.classList.add('bad');defEl.classList.add('bad');setTimeout(()=>{termEl.classList.remove('bad','sel');defEl.classList.remove('bad','sel');},600);}
+    match1Sel=null;
+  }
+}
+function checkMatch1(){const ok=document.querySelectorAll('#match-area-1 .ok').length/2;const res=document.getElementById('match-res-1');res.textContent=ok===matchPairs1.length?`✓ All ${matchPairs1.length} matched! 🎉`:`${ok}/${matchPairs1.length} correct.`;res.style.color=ok===matchPairs1.length?'var(--teal)':'var(--orange)';}
+function resetMatch1(){match1Sel=null;buildMatch1();document.getElementById('match-res-1').textContent='';}
+buildMatch1();
+
+// ── ACTIVITY 4: TRUE/FALSE ──
+const tfItems=[
+  {q:'AND outputs 1 when at least one of its inputs is 1.',ans:false,exp:'✗ False! That is OR. AND outputs 1 ONLY when ALL inputs are 1. AND is the strict operator — both must be true simultaneously.'},
+  {q:'NOT has two inputs, just like AND and OR.',ans:false,exp:'✗ False! NOT has only ONE input. AND and OR each have two inputs. This means a NOT truth table has only 2 rows, while AND/OR have 4 rows.'},
+  {q:'For a truth table with 3 inputs, there are 8 rows.',ans:true,exp:'✓ True! 2³ = 8. The formula is: number of rows = 2 to the power of the number of inputs. 1 input = 2 rows, 2 inputs = 4 rows, 3 inputs = 8 rows, 4 inputs = 16 rows.'},
+  {q:'In the expression A AND B OR C, OR is evaluated before AND.',ans:false,exp:'✗ False! AND has HIGHER precedence than OR — AND is evaluated first. So A AND B OR C means (A AND B) OR C. This is the same as multiplication before addition in maths.'},
+  {q:'NOT 0 = 1 and NOT 1 = 0.',ans:true,exp:'✓ True! NOT simply flips/inverts the value. NOT 0 = 1 (False becomes True). NOT 1 = 0 (True becomes False). It is the simplest of the three Boolean operators.'},
+  {q:'OR outputs 0 only when both inputs are 0.',ans:true,exp:'✓ True! OR is 0 ONLY when both inputs are 0 (0 OR 0 = 0). In all other cases (0 OR 1, 1 OR 0, 1 OR 1), OR outputs 1. OR is the lenient operator.'},
+  {q:'When evaluating (A AND B) OR C, you calculate OR first because of the brackets.',ans:false,exp:'✗ False! Brackets tell you to evaluate WHAT IS INSIDE the brackets first — not the bracket operator itself. So you evaluate A AND B first (it\'s in brackets), THEN OR it with C.'},
+  {q:'A truth table for AND has exactly one row where the output is 1.',ans:true,exp:'✓ True! The AND truth table has 4 rows (2 inputs), and only the last row (1 AND 1) gives output 1. The other three rows all give 0. This is why AND is described as strict or restrictive.'},
+];
+function buildTF(){
+  const area=document.getElementById('tf-area');area.innerHTML='';
+  tfItems.forEach((item,i)=>{
+    const div=document.createElement('div');div.className='tf-card';
+    div.innerHTML=`<div class="tf-q">${i+1}. ${item.q}</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,${i},true)">TRUE</button><button class="tf-btn" onclick="checkTF(this,${i},false)">FALSE</button></div><div class="tf-exp" id="tf-exp-${i}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkTF(btn,i,ans){
+  const item=tfItems[i];const btns=btn.closest('.tf-card').querySelectorAll('.tf-btn');btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById(`tf-exp-${i}`);
+  if(ans===item.ans){btn.classList.add('correct');exp.className='tf-exp show';exp.style.cssText='background:#e0faf1;border-left:4px solid var(--teal);';}
+  else{btn.classList.add('wrong');btns.forEach(b=>{if((b.textContent==='TRUE')===item.ans)b.classList.add('correct');});exp.className='tf-exp show';exp.style.cssText='background:var(--light-coral);border-left:4px solid var(--coral);';}
+  exp.textContent=item.exp;
+}
+buildTF();
+
+// ── ACTIVITY 5: SCENARIO CHALLENGE ──
+const scenarios=[
+  {q:'A door lock opens if the correct PIN is entered AND the card is valid. Which operator?',opts:['OR — either condition is enough','AND — both must be true','NOT — inverts the input','OR NOT — one inverts the other'],ans:1,fb:'AND — BOTH the PIN and the card must be correct simultaneously. If only the PIN is right but the card is wrong, the door stays locked.'},
+  {q:'A street light turns on if it is dark OR if the timer says "lights on". Which operator?',opts:['AND — both must be true','NOT — inverts','OR — either condition is sufficient','AND NOT — complex combination'],ans:2,fb:'OR — either condition alone is sufficient to turn the lights on. If it\'s dark, lights on. If the timer triggers, lights on. If both are true, lights still on.'},
+  {q:'In god_mode, the player cannot be hurt. The code should protect if god_mode is ON. We want true when god_mode is OFF. Which operator?',opts:['AND — combine two conditions','OR — at least one must be true','NOT — invert god_mode','XOR — exclusive or'],ans:2,fb:'NOT god_mode = 1 when god_mode = 0 (OFF). We use NOT to invert the condition — we want the protection to apply when god_mode is NOT active.'},
+  {q:'A train door closes if the train IS moving AND passengers are NOT boarding. Which two operators?',opts:['OR and NOT','AND and OR','AND and NOT','Just AND'],ans:2,fb:'AND + NOT — both conditions must be met: moving=1 AND NOT boarding (boarding=0). Written as: moving AND NOT boarding.'},
+  {q:'How many rows does a truth table for 2 inputs have?',opts:['2 rows','4 rows','6 rows','8 rows'],ans:1,fb:'2 inputs → 2² = 4 rows. The combinations are: 00, 01, 10, 11. Always list them in this binary counting order.'},
+];
+function buildScenarios(){
+  const area=document.getElementById('scenario-area');area.innerHTML='';
+  scenarios.forEach((s,i)=>{
+    const card=document.createElement('div');card.style.cssText='border:2.5px solid var(--ink);border-radius:10px;overflow:hidden;margin-bottom:14px;box-shadow:3px 3px 0 var(--ink);';
+    card.innerHTML=`<div style="background:var(--light-yellow);padding:10px 14px;font-family:'Kalam',cursive;font-size:0.95rem;border-bottom:2px solid var(--ink);">📌 Scenario ${i+1}: ${s.q}</div>
+    <div style="padding:12px 14px;background:white;"><div style="display:flex;flex-wrap:wrap;gap:8px;" id="scen-opts-${i}">
+        ${s.opts.map((o,j)=>`<button onclick="answerScen(${i},${j})" id="scen-btn-${i}-${j}" style="font-family:'Patrick Hand',cursive;font-size:0.92rem;padding:8px 16px;border:2.5px solid var(--ink);border-radius:8px;background:white;cursor:pointer;box-shadow:2px 2px 0 var(--ink);">${o}</button>`).join('')}
+    </div><div id="scen-fb-${i}" style="margin-top:8px;display:none;padding:8px 12px;border-radius:6px;font-family:'Kalam',cursive;font-size:0.88rem;"></div></div>`;
+    area.appendChild(card);
+  });
+}
+function answerScen(i,j){
+  const s=scenarios[i];
+  document.querySelectorAll(`#scen-opts-${i} button`).forEach(b=>b.disabled=true);
+  const fb=document.getElementById(`scen-fb-${i}`);fb.style.display='block';
+  const correct=document.getElementById(`scen-btn-${i}-${s.ans}`);correct.style.background='var(--teal)';correct.style.color='white';correct.style.borderColor='#059669';
+  const btn=document.getElementById(`scen-btn-${i}-${j}`);
+  if(j===s.ans){fb.style.cssText='display:block;margin-top:8px;padding:8px 12px;border-radius:6px;font-family:"Kalam",cursive;font-size:0.88rem;background:#e0faf1;border-left:4px solid var(--teal);';fb.textContent='✓ Correct! '+s.fb;}
+  else{btn.style.background='var(--coral)';btn.style.color='white';btn.style.borderColor='#c0392b';fb.style.cssText='display:block;margin-top:8px;padding:8px 12px;border-radius:6px;font-family:"Kalam",cursive;font-size:0.88rem;background:var(--light-coral);border-left:4px solid var(--coral);';fb.textContent='✗ Not quite. '+s.fb;}
+}
+buildScenarios();
+
+// ── SVG ZOOM MODAL ──
+let modalScale=1,currentSVGEl=null;
+function openModal(wrapEl,title){const svgEl=wrapEl.querySelector('svg');if(!svgEl)return;currentSVGEl=svgEl;modalScale=1;const clone=svgEl.cloneNode(true);clone.removeAttribute('style');clone.style.width='100%';clone.style.height='auto';clone.style.display='block';const content=document.getElementById('svg-modal-content');content.innerHTML='';content.appendChild(clone);content.style.transform='scale(1)';content.style.transformOrigin='top center';document.getElementById('modal-title').textContent=title||'Diagram';document.getElementById('zoom-lbl').textContent='100%';document.getElementById('svg-modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('svg-modal').classList.remove('open');document.body.style.overflow='';currentSVGEl=null;}
+function handleModalClick(e){if(e.target===document.getElementById('svg-modal'))closeModal();}
+function modalZoom(delta){modalScale=Math.max(0.4,Math.min(4,modalScale+delta));const c=document.getElementById('svg-modal-content');c.style.transform=`scale(${modalScale})`;c.style.transformOrigin='top center';document.getElementById('zoom-lbl').textContent=Math.round(modalScale*100)+'%';}
+function modalResetZoom(){modalScale=1;document.getElementById('svg-modal-content').style.transform='scale(1)';document.getElementById('zoom-lbl').textContent='100%';}
+function downloadSVG(){const svgEl=document.getElementById('svg-modal-content').querySelector('svg');if(!svgEl)return;const varMap={'--ink':'#1a1a2e','--paper':'#fdf8f0','--yellow':'#ffd166','--coral':'#ef476f','--teal':'#06d6a0','--blue':'#118ab2','--purple':'#7b2d8b','--orange':'#f77f00','--green':'#2d6a4f','--light-yellow':'#fff9c4','--light-coral':'#fce4ec','--light-teal':'#e0f7f2','--light-blue':'#e3f2fd','--light-purple':'#f3e5f5','--light-green':'#d8f3dc'};let svgStr=svgEl.outerHTML;Object.entries(varMap).forEach(([v,val])=>{svgStr=svgStr.replaceAll(`var(${v})`,val);});svgStr=svgStr.replace('<svg',`<svg xmlns="http://www.w3.org/2000/svg"`);const vb=svgEl.getAttribute('viewBox')||'0 0 560 120';const parts=vb.split(' ');const w=parseFloat(parts[2])||560;const h=parseFloat(parts[3])||120;svgStr=svgStr.replace(/>/, `><rect width="${w}" height="${h}" fill="#fffdf5"/>`);const blob=new Blob([svgStr],{type:'image/svg+xml'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=(document.getElementById('modal-title').textContent||'diagram').replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.svg';a.click();URL.revokeObjectURL(url);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if((e.key==='+'||e.key==='=')&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(0.2);if(e.key==='-'&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(-0.2);});
+</script>
+</body>
+</html>

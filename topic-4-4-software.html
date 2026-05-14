@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 19: Software – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 20px 30px 60px 90px; position: relative; z-index: 1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero-title { font-family: 'Permanent Marker', cursive; font-size: 2.8rem; color: var(--ink); text-shadow: 3px 3px 0 var(--teal); letter-spacing: 2px; transform: rotate(-1.5deg); display: inline-block; position: relative; }
+  .hero-title::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px; background: var(--blue); border-radius: 2px; }
+  .hero-sub { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--blue); margin-top: 18px; }
+  .tabs-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 20px; justify-content: center; }
+  .tab-btn { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; padding: 8px 18px; border: 3px solid var(--ink); border-radius: 6px; background: white; cursor: pointer; transition: all 0.2s; box-shadow: 3px 3px 0 var(--ink); }
+  .tab-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab-btn.active { background: var(--ink); color: white; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background: var(--blue); }
+  .tab-btn[data-tab="notes"].active { background: var(--green); }
+  .tab-btn[data-tab="quiz"].active { background: #059669; }
+  .tab-btn[data-tab="activities"].active { background: var(--orange); }
+  .tab-btn[data-tab="exam"].active { background: var(--purple); }
+  .eq-wrap { margin-bottom: 26px; border: 2.5px solid var(--ink); border-radius: 10px; background: white; box-shadow: 4px 4px 0 var(--ink); overflow: hidden; }
+  .eq-hdr { padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);} .eq-hdr.c2{background:var(--light-blue);} .eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;} .eq-hdr.c5{background:var(--light-yellow);} .eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);} .eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; }
+  .eq-marks { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; background: var(--ink); color: white; padding: 2px 10px; border-radius: 20px; }
+  .eq-bdy { padding: 14px 16px; }
+  .eq-txt { font-size: 1.02rem; line-height: 1.6; margin-bottom: 12px; }
+  .eq-ctx { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 10px 14px; margin-bottom: 12px; font-size: 0.93rem; line-height: 1.5; border-radius: 0 6px 6px 0; font-style: italic; font-family: 'Kalam', cursive; }
+  .ans-ta { width: 100%; border: 1.5px solid #b0bec5; border-radius: 6px; background: transparent; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; padding: 8px; outline: none; resize: vertical; min-height: 80px; }
+  .show-ms { font-family: 'Caveat', cursive; font-size: 1rem; padding: 6px 16px; border: 2px solid var(--purple); border-radius: 20px; background: white; color: var(--purple); cursor: pointer; margin-top: 10px; transition: all 0.15s; }
+  .show-ms:hover { background: var(--purple); color: white; }
+  .ms { display: none; margin-top: 10px; background: var(--light-purple); border: 2px solid var(--purple); border-radius: 8px; padding: 12px 16px; font-size: 0.93rem; line-height: 1.6; }
+  .ms.show { display: block; animation: fadeIn 0.3s ease; }
+  .ms ul { padding-left: 20px; margin-top: 6px; }
+  .ms li { margin: 4px 0; }
+  .ms-lbl { font-family: 'Permanent Marker', cursive; font-size: 1rem; color: var(--purple); margin-bottom: 6px; }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+  .tip-box { background: var(--light-yellow); border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-family: 'Kalam', cursive; font-size: 0.95rem; }
+  .btn { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; padding: 9px 22px; border: 2.5px solid var(--ink); border-radius: 8px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-teal { background: var(--teal); color: var(--ink); border-color: #059669; box-shadow: 3px 3px 0 #059669; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 4px; font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700; border: 1.5px solid; margin-right: 4px; }
+  .tag-hard { color: var(--coral); border-color: var(--coral); background: var(--light-coral); }
+  .tag-med { color: var(--orange); border-color: var(--orange); background: #fff3e0; }
+  .tag-easy { color: #059669; border-color: var(--teal); background: var(--light-teal); }
+  .imp-banner { margin-bottom: 20px; border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .imp-header { background: var(--blue); color: white; padding: 10px 18px; font-family: 'Permanent Marker', cursive; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .imp-body { display: none; background: white; }
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); }
+  .imp-cell { padding: 14px 16px; border-right: 2px solid #eee; border-bottom: 2px solid #eee; }
+  .imp-cell-title { font-family: 'Permanent Marker', cursive; font-size: 0.95rem; margin-bottom: 6px; }
+  .imp-cell p { font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.5; }
+  .imp-footer { background: #fff9c4; border-top: 2px solid var(--ink); padding: 10px 16px; font-family: 'Kalam', cursive; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+  .ig-wrap { background: #fffdf5; border: 3px solid var(--ink); border-radius: 12px; padding: 28px; box-shadow: 6px 6px 0 var(--ink); }
+  .ig-title { font-family: 'Permanent Marker', cursive; font-size: 2rem; text-align: center; margin-bottom: 20px; }
+  .ig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width:600px){ .ig-grid{grid-template-columns:1fr;} }
+  .ig-sec { border: 2.5px solid var(--ink); border-radius: 10px; padding: 16px; background: white; position: relative; }
+  .ig-label { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; position: absolute; top: -13px; left: 14px; background: white; padding: 0 8px; }
+  .ig-item { display: flex; align-items: flex-start; gap: 9px; margin: 7px 0; font-family: 'Kalam', cursive; font-size: 0.92rem; line-height: 1.4; }
+  .ig-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .highlight-box { background: var(--light-teal); border: 2.5px solid var(--ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-family: 'Kalam', cursive; font-size: 1rem; text-align: center; transform: rotate(-0.3deg); }
+  .notes-sec { margin-bottom: 14px; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .notes-hdr { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .notes-hdr:hover { opacity: 0.9; }
+  .notes-hdr-left { display: flex; align-items: center; gap: 12px; }
+  .notes-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .notes-title { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; color: white; }
+  .notes-tog { font-family: 'Caveat', cursive; font-size: 1.2rem; color: white; transition: transform 0.3s; }
+  .notes-bdy { display: none; padding: 18px 20px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.65; }
+  .notes-bdy.open { display: block; animation: fadeIn 0.25s ease; }
+  .def-box { border: 2px solid; border-radius: 8px; padding: 12px 14px 10px; margin: 12px 0; position: relative; padding-top: 22px; font-size: 0.92rem; line-height: 1.55; }
+  .def-label { position: absolute; top: -11px; left: 12px; color: white; font-family: 'Caveat', cursive; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+  .notes-tip { background: #fff9c4; border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 12px 0 4px; font-size: 0.9rem; font-family: 'Kalam', cursive; }
+  .notes-eg { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; font-style: italic; font-family: 'Kalam', cursive; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:580px){ .g2{grid-template-columns:1fr;} .g3{grid-template-columns:1fr;} }
+  .nl { display: flex; align-items: flex-start; gap: 9px; margin: 6px 0; font-size: 0.92rem; line-height: 1.5; }
+  .nd { width: 24px; height: 24px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .subh { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+  .subh::after { content: ''; flex: 1; height: 2px; background: currentColor; opacity: 0.2; }
+  .n-card { border: 2.5px solid; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+  .n-card-hdr { padding: 8px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; }
+  .n-card-bdy { padding: 12px 14px; background: white; font-size: 0.92rem; line-height: 1.55; }
+  .hl-b { color: var(--blue); font-weight: 700; } .hl-t { color: #059669; font-weight: 700; }
+  .hl-c { color: var(--coral); font-weight: 700; } .hl-p { color: var(--purple); font-weight: 700; }
+  .hl-o { color: var(--orange); font-weight: 700; } .hl-g { color: var(--green); font-weight: 700; }
+  .q-prog-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .q-prog-bar { flex: 1; height: 14px; background: #e0e0e0; border: 2px solid var(--ink); border-radius: 20px; overflow: hidden; }
+  .q-prog-fill { height: 100%; background: var(--teal); border-radius: 20px; transition: width 0.4s; }
+  .q-score { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; background: var(--yellow); border: 2px solid var(--ink); padding: 4px 12px; border-radius: 20px; }
+  .q-card { border: 3px solid var(--ink); border-radius: 12px; padding: 22px; background: white; box-shadow: 5px 5px 0 var(--ink); }
+  .q-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; color: var(--teal); margin-bottom: 8px; }
+  .q-text { font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 600; margin-bottom: 16px; line-height: 1.4; }
+  .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media(max-width:480px){ .q-opts{grid-template-columns:1fr;} }
+  .q-opt { padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.98rem; cursor: pointer; transition: all 0.15s; text-align: left; box-shadow: 2px 2px 0 var(--ink); }
+  .q-opt:hover:not(:disabled) { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .q-opt.correct { background: var(--teal) !important; color: white; border-color: #059669; box-shadow: none; }
+  .q-opt.wrong { background: var(--coral) !important; color: white; border-color: #c0392b; box-shadow: none; animation: shake 0.3s; }
+  .q-opt:disabled { cursor: default; }
+  .q-fb { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600; border: 2px solid; display: none; }
+  .q-fb.show { display: block; }
+  .q-fb.fb-ok { background: #e0faf1; border-color: var(--teal); color: #059669; }
+  .q-fb.fb-no { background: var(--light-coral); border-color: var(--coral); color: var(--coral); }
+  .q-result { text-align: center; padding: 30px; }
+  .q-result h2 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin-bottom: 10px; }
+  .big-score { font-family: 'Permanent Marker', cursive; font-size: 4rem; color: var(--teal); }
+  .act-card { border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; margin-bottom: 22px; box-shadow: 5px 5px 0 var(--ink); }
+  .act-hdr { padding: 13px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid var(--ink); }
+  .act-icon { font-size: 1.8rem; }
+  .act-title { font-family: 'Permanent Marker', cursive; font-size: 1.25rem; }
+  .act-bdy { background: white; padding: 18px; font-size: 0.95rem; line-height: 1.6; }
+  .chip-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; padding: 12px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; min-height: 48px; }
+  .chip { padding: 6px 14px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Patrick Hand', cursive; font-size: 0.9rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .chip:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .chip.chip-sel { background: var(--yellow); border-color: var(--orange); box-shadow: none; }
+  .chip.chip-used { opacity: 0.35; pointer-events: none; }
+  .chip.chip-ok { background: var(--light-teal); border-color: #059669; }
+  .chip.chip-bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+  .drop-zone-wrap { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 12px; margin: 12px 0; }
+  .drop-col { border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .drop-col-hdr { padding: 9px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; text-align: center; }
+  .drop-zone { min-height: 80px; padding: 8px; background: white; display: flex; flex-direction: column; gap: 6px; }
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:500px){ .match-grid{grid-template-columns:1fr;} }
+  .match-item { padding: 10px 13px; border: 2.5px solid var(--ink); border-radius: 8px; font-family: 'Patrick Hand', cursive; font-size: 0.88rem; cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; min-height: 46px; display: flex; align-items: center; }
+  .match-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .match-item.sel { background: var(--yellow); border-color: var(--orange); }
+  .match-item.ok { background: #e0faf1; border-color: var(--teal); pointer-events: none; }
+  .match-item.bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+  .sort-list { display: flex; flex-direction: column; gap: 7px; }
+  .sort-item { padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.92rem; cursor: grab; display: flex; align-items: center; gap: 10px; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .sort-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .sort-item.dragging { opacity: 0.3; }
+  .sort-grip { color: #bbb; font-size: 1.1rem; }
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .word { padding: 5px 13px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; }
+  .word:hover:not(.used) { background: var(--light-yellow); }
+  .word.sel { background: var(--yellow); border-color: var(--orange); }
+  .word.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+  .fill-para { line-height: 2.6; font-size: 0.95rem; padding: 14px; background: #fafafa; border: 2px solid #ddd; border-radius: 8px; }
+  .blank { display: inline-block; min-width: 90px; border-bottom: 2.5px solid var(--blue); padding: 2px 8px; font-family: 'Caveat', cursive; font-size: 0.98rem; font-weight: 700; text-align: center; margin: 0 3px; cursor: pointer; transition: all 0.15s; border-radius: 4px 4px 0 0; }
+  .blank:hover { background: rgba(255,209,102,0.25); }
+  .blank.filled { color: var(--blue); }
+  .blank.sel-b { background: rgba(255,209,102,0.4); border-color: var(--orange); }
+  .blank.ok { background: var(--light-teal); color: #059669; border-color: #059669; }
+  .blank.bad { background: var(--light-coral); color: var(--coral); border-color: var(--coral); }
+  .tf-card { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: white; }
+  .tf-q { font-family: 'Kalam', cursive; font-size: 0.97rem; margin-bottom: 10px; line-height: 1.5; }
+  .tf-btns { display: flex; gap: 10px; }
+  .tf-btn { font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; padding: 6px 20px; border: 2px solid var(--ink); border-radius: 20px; cursor: pointer; transition: all 0.15s; background: white; }
+  .tf-btn:hover { background: var(--light-yellow); }
+  .tf-btn.correct { background: var(--teal); color: white; border-color: #059669; }
+  .tf-btn.wrong { background: var(--coral); color: white; border-color: #c0392b; }
+  .tf-btn:disabled { cursor: default; }
+  .tf-exp { display: none; margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-family: 'Kalam', cursive; font-size: 0.88rem; }
+  .tf-exp.show { display: block; }
+  .cmp-tbl { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  .cmp-tbl th { background: var(--ink); color: white; font-family: 'Permanent Marker', cursive; padding: 10px 13px; text-align: left; }
+  .cmp-tbl td { padding: 9px 13px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  .cmp-tbl tr:nth-child(even) td { background: #f9f9f9; }
+  /* SVG ZOOM */
+  .svg-wrap { position: relative; display: inline-block; width: 100%; cursor: zoom-in; border: 2px dashed transparent; border-radius: 8px; transition: border-color 0.2s; }
+  .svg-wrap:hover { border-color: var(--blue); }
+  .svg-wrap:hover .svg-hint { opacity: 1; }
+  .svg-hint { position: absolute; bottom: 6px; right: 8px; background: var(--blue); color: white; font-family: 'Caveat', cursive; font-size: 0.82rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; opacity: 0; transition: opacity 0.2s; pointer-events: none; box-shadow: 1px 1px 4px rgba(0,0,0,0.2); }
+  #svg-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(10,10,30,0.82); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 20px; }
+  #svg-modal.open { display: flex; animation: fadeIn 0.2s ease; }
+  #svg-modal-inner { background: #fffdf5; border: 3px solid var(--ink); border-radius: 14px; box-shadow: 8px 8px 0 var(--ink); max-width: 95vw; max-height: 90vh; overflow: auto; position: relative; padding: 16px; }
+  #svg-modal-content { display: block; min-width: 300px; }
+  #svg-modal-content svg { width: 100% !important; max-width: none !important; height: auto; }
+  #modal-toolbar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+  #modal-title { font-family: 'Permanent Marker', cursive; font-size: 1rem; flex: 1; color: var(--ink); }
+  .modal-btn { font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; padding: 6px 16px; border: 2.5px solid var(--ink); border-radius: 8px; cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; white-space: nowrap; }
+  .modal-btn:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); background: var(--light-yellow); }
+  .modal-btn.close-btn { background: var(--coral); color: white; border-color: #c0392b; }
+  .modal-btn.close-btn:hover { background: #c0392b; }
+  .modal-btn.dl-btn { background: var(--teal); color: var(--ink); border-color: #059669; }
+  .zoom-controls { display: flex; gap: 6px; align-items: center; }
+  .zoom-lbl { font-family: 'Caveat', cursive; font-size: 0.95rem; min-width: 44px; text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#7b2d8b;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-4-computers.html" style="color:#ef476f;text-decoration:none;">📑 Topic 4 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <a href="topic-4-computers.html" style="display:inline-flex;align-items:center;gap:8px;font-family:'Permanent Marker',cursive;font-size:1rem;color:#1a1a2e;text-decoration:none;border:2.5px solid #1a1a2e;border-radius:8px;padding:8px 18px;background:#fff9c4;box-shadow:3px 3px 0 #1a1a2e;margin:20px 0 10px;transform:rotate(-0.5deg);transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'" onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">← Back to Cover Page</a>
+
+  <div class="hero">
+    <h1 class="hero-title">💿 Software — 19</h1>
+    <p class="hero-sub">IGCSE Computer Science · Edexcel 4CP01 · Unit 4 Computers</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">🗺 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="activities">✏️ Activities</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+  </div>
+
+  <!-- ════════════ MIND MAP TAB ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        💿 Why Does Software Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🖥️ Hardware Needs Software</div><p>Hardware is useless without software. Software is what makes the hardware do something useful — from the OS managing the CPU to a word processor letting you write an essay.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">⚙️ The OS is Everywhere</div><p>Every general-purpose computer runs an OS. Without it, applications couldn't communicate with the hardware at all. Understanding what the OS does is fundamental to computer science.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">🛠️ Utility Software Keeps Systems Running</div><p>Anti-virus, defragmenters, backup tools and compression software are all utility programs that maintain, secure and optimise computer systems — examined regularly.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🌍 Models Change the World</div><p>Computer simulations and models let scientists test ideas without risk — from weather forecasting to flight simulators. They are powerful tools but always contain assumptions.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">🔐 Security Software is Critical</div><p>Viruses, spyware and malware are real threats. Understanding what antivirus, firewalls and encryption do — and why — is increasingly important in everyday computing.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">📂 File Management</div><p>Compression, defragmentation and backup are essential tools for managing disk space and data safety — all examinable utility software topics.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key distinction:</strong> System software (OS + utilities) vs Application software. The OS sits between hardware and applications. Utility software ≠ application software — it supports the system, not the user's primary task.</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">💿 Topic 19: Software — Overview</div>
+
+      <div class="highlight-box">
+        🔑 Software = System Software (OS + Utilities) + Application Software. The OS sits between the hardware and everything else.
+      </div>
+
+      <!-- Software layers diagram -->
+      <div style="text-align:center;margin:18px 0;">
+        <div class="svg-wrap" onclick="openModal(this,'Software Layers — Apps → OS → Hardware')" title="Click to zoom">
+        <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+        <svg viewBox="0 0 560 210" style="max-width:560px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+          <!-- App layer boxes -->
+          <rect x="20" y="10" width="115" height="44" rx="8" fill="#f77f00" opacity="0.9"/>
+          <text x="77" y="36" font-size="11" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Word Processor</text>
+          <rect x="145" y="10" width="115" height="44" rx="8" fill="#f77f00" opacity="0.9"/>
+          <text x="202" y="36" font-size="11" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Web Browser</text>
+          <rect x="270" y="10" width="115" height="44" rx="8" fill="#f77f00" opacity="0.9"/>
+          <text x="327" y="36" font-size="11" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Image Editor</text>
+          <rect x="395" y="10" width="145" height="44" rx="8" fill="#ef476f" opacity="0.85"/>
+          <text x="467" y="30" font-size="10" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Utility Software</text>
+          <text x="467" y="45" font-size="9" text-anchor="middle" fill="#ffcdd2" font-family="sans-serif">(antivirus, defrag…)</text>
+          <!-- label -->
+          <text x="280" y="66" font-size="9" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">APPLICATION SOFTWARE</text>
+          <!-- OS layer -->
+          <rect x="20" y="72" width="520" height="56" rx="8" fill="#059669" opacity="0.9"/>
+          <text x="280" y="97" font-size="14" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Operating System</text>
+          <text x="280" y="115" font-size="9" text-anchor="middle" fill="#b2dfdb" font-family="sans-serif">manages hardware · schedules processes · provides user interface · file management</text>
+          <!-- Hardware layer -->
+          <rect x="20" y="144" width="520" height="56" rx="8" fill="#118ab2" opacity="0.9"/>
+          <text x="280" y="169" font-size="14" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Hardware</text>
+          <text x="280" y="187" font-size="9" text-anchor="middle" fill="#b3e5fc" font-family="sans-serif">CPU · RAM · ROM · Hard Disk · Input &amp; Output Devices</text>
+          <!-- arrows -->
+          <line x1="280" y1="128" x2="280" y2="144" stroke="white" stroke-width="2.5" marker-end="url(#sw_arr)"/>
+          <defs><marker id="sw_arr" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="white"/></marker></defs>
+        </svg>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">Figure 4.16 — The OS sits between the hardware and application programs</p>
+      </div>
+
+      <div class="ig-grid">
+
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">⚙️ Operating System Functions</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">H</div><div><strong>Hardware management</strong> — manages access to CPU, RAM, I/O devices</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">F</div><div><strong>File management</strong> — manages files, folders and directory structure</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">S</div><div><strong>Scheduling</strong> — shares CPU between running processes (multitasking)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">P</div><div><strong>Paging</strong> — moves programs RAM↔disk when RAM is full (virtual memory)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">U</div><div><strong>User interface</strong> — provides GUI (WIMP) or CLI</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--blue);border-color:var(--blue);color:white;">A</div><div><strong>Authentication</strong> — verifies user identity (username/password)</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--orange);">
+          <span class="ig-label" style="color:var(--orange);">🛠️ Utility Software</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">🦠</div><div><strong>Anti-virus / Anti-spyware</strong> — detects and removes malware</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">🔥</div><div><strong>Firewall</strong> — controls incoming/outgoing network traffic</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">📦</div><div><strong>Compression</strong> — reduces file size; slower to access</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">💾</div><div><strong>Defragmenter</strong> — moves file clusters together on HDD; speeds up access</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">💿</div><div><strong>Backup</strong> — copies files to another location in case originals are lost</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--orange);border-color:var(--orange);color:white;">🔁</div><div><strong>File converter</strong> — converts between formats (e.g. jpg→png)</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">📱 Application Software</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">📝</div><div>Word processor (Microsoft Word, Google Docs)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">📊</div><div>Spreadsheet (Microsoft Excel)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">🌐</div><div>Web browser (Chrome, Firefox)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">🎨</div><div>Image editor (Photoshop, GIMP)</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--green);border-color:var(--green);color:white;">🎮</div><div>Games, video players, email clients</div></div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--purple);">
+          <span class="ig-label" style="color:var(--purple);">🌍 Simulation &amp; Modelling</span>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">✈</div><div><strong>Flight simulator</strong> — pilots train safely without real aircraft</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">🌦</div><div><strong>Weather forecasting</strong> — atmospheric models predict weather patterns</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">❓</div><div><strong>'What if?' questions</strong> — test scenarios impossible/unethical in real world</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">⚠</div><div><strong>Limitations</strong>: contains assumptions; simplified; may not be accurate</div></div>
+          <div class="ig-item"><div class="ig-dot" style="background:var(--purple);border-color:var(--purple);color:white;">🤖</div><div><strong>Heuristics, Monte Carlo, Neural networks</strong> — techniques for complex models</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end mindmap -->
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <!-- 19.1 Software Types -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,var(--blue),#0a4f70);">
+        <div class="notes-hdr-left"><span class="notes-num">19.1</span><span class="notes-title">Types of Software: System vs Application</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Software</strong> — the set of programs run by a computer system.<br><br>
+          <strong class="hl-b">Application software</strong> — software that performs a task that would otherwise be done by hand (e.g. word processor, spreadsheet, browser, games). It is the reason a user chooses to use the computer.<br><br>
+          <strong class="hl-b">System software</strong> — software that supports the running of other software and the management of hardware. Includes the operating system AND utility software.<br><br>
+          <strong class="hl-b">Operating system (OS)</strong> — system software designed for particular hardware which manages other programs' access to the hardware. Examples: Windows, Linux, Android, iOS.<br><br>
+          <strong class="hl-b">Utility software</strong> — software that does a useful job for the user that is not essential to the OS and is not the reason for using a computer in the first place. Examples: antivirus, defragmenter, backup tools.</p>
+        </div>
+
+        <div class="g2" style="margin-top:14px;">
+          <div style="background:var(--light-green);border:2px solid var(--green);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--green);margin-bottom:8px;">📱 Application Software</div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Performs a task for the user</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>The primary reason for using the computer</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Written for a specific OS (e.g. Android apps won't run on iOS)</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">✓</span><div>Examples: Word, Chrome, Excel, Minecraft, Photoshop</div></div>
+          </div>
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:var(--blue);margin-bottom:8px;">⚙️ System Software</div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Supports the hardware and other software</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>NOT the reason the user chose the computer</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Includes: OS + Utility software</div></div>
+            <div class="nl"><span class="nd" style="background:var(--blue);">✓</span><div>Examples: Windows, Linux, antivirus, defragmenter</div></div>
+          </div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> Students often confuse utility software with application software. Remember: utility software is <em>not</em> the reason you use the computer — you don't buy a laptop to run antivirus. It's system software that supports and maintains the system.</div>
+      </div>
+    </div>
+
+    <!-- 19.2 Operating Systems -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,#059669,#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">19.2</span><span class="notes-title">Operating Systems — Functions in Detail</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>A general-purpose computer needs an OS because software must work on <strong>many different hardware configurations</strong>. Rather than writing software that talks directly to hardware, programmers use the OS as a middle layer. The OS provides an <strong>API (Application Programming Interface)</strong> — a set of commands (e.g. <code style="background:#f0f0f0;padding:1px 5px;border-radius:3px;font-family:monospace;">OpenFile</code>) that hide the complexity of the hardware.</p>
+
+        <div style="text-align:center;margin:16px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'OS Functions — Process Scheduling &amp; Paging')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 580 180" style="max-width:580px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="os_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#059669"/></marker></defs>
+            <!-- CPU -->
+            <rect x="10" y="30" width="110" height="120" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="65" y="58" font-size="12" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">CPU</text>
+            <rect x="22" y="65" width="86" height="22" rx="5" fill="#118ab2"/>
+            <text x="65" y="81" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif" font-weight="bold">Process A ← now</text>
+            <rect x="22" y="92" width="86" height="22" rx="5" fill="#90caf9"/>
+            <text x="65" y="108" font-size="9" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif">Process B ← waiting</text>
+            <rect x="22" y="119" width="86" height="22" rx="5" fill="#90caf9"/>
+            <text x="65" y="135" font-size="9" text-anchor="middle" fill="#1a1a2e" font-family="sans-serif">Process C ← waiting</text>
+            <!-- scheduling arrow -->
+            <path d="M120,90 Q155,90 155,55 Q155,20 120,20 Q85,20 85,30" stroke="#059669" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#os_a)"/>
+            <text x="165" y="30" font-size="9" fill="#059669" font-family="sans-serif" font-weight="bold">SCHEDULING</text>
+            <text x="165" y="43" font-size="8" fill="#555" font-family="sans-serif">OS gives each process</text>
+            <text x="165" y="55" font-size="8" fill="#555" font-family="sans-serif">a short CPU time-slice</text>
+            <text x="165" y="67" font-size="8" fill="#555" font-family="sans-serif">in turn (round-robin)</text>
+            <!-- RAM -->
+            <rect x="10" y="165" width="110" height="10" rx="3" fill="#ef476f" opacity="0.3"/>
+            <!-- Paging section -->
+            <rect x="280" y="20" width="130" height="90" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+            <text x="345" y="44" font-size="12" text-anchor="middle" fill="#2d6a4f" font-family="sans-serif" font-weight="bold">RAM</text>
+            <rect x="292" y="52" width="106" height="20" rx="4" fill="#2d6a4f"/>
+            <text x="345" y="66" font-size="8.5" text-anchor="middle" fill="white" font-family="sans-serif">App A (in RAM)</text>
+            <rect x="292" y="77" width="106" height="20" rx="4" fill="#2d6a4f"/>
+            <text x="345" y="91" font-size="8.5" text-anchor="middle" fill="white" font-family="sans-serif">App B (in RAM)</text>
+            <!-- FULL label -->
+            <text x="345" y="122" font-size="10" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">RAM FULL!</text>
+            <!-- Hard disk -->
+            <rect x="440" y="20" width="130" height="90" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+            <text x="505" y="44" font-size="12" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">Hard Disk</text>
+            <rect x="452" y="52" width="106" height="20" rx="4" fill="#ffcc80" stroke="#f77f00" stroke-width="1"/>
+            <text x="505" y="66" font-size="8.5" text-anchor="middle" fill="#7a3c00" font-family="sans-serif">App C (paged out)</text>
+            <rect x="452" y="77" width="106" height="20" rx="4" fill="#ffe0b2" stroke="#f77f00" stroke-width="1" stroke-dasharray="4,2"/>
+            <text x="505" y="91" font-size="8.5" text-anchor="middle" fill="#aaa" font-family="sans-serif">swap space</text>
+            <!-- PAGING arrow -->
+            <path d="M410,62 Q425,62 440,62" stroke="#7b2d8b" stroke-width="2.5" fill="none" marker-end="url(#os_a)"/>
+            <path d="M440,72 Q425,72 410,72" stroke="#7b2d8b" stroke-width="2.5" fill="none" stroke-dasharray="5,3" marker-end="url(#os_a)"/>
+            <text x="345" y="145" font-size="10" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">PAGING</text>
+            <text x="345" y="160" font-size="8" text-anchor="middle" fill="#555" font-family="sans-serif">OS swaps programs between RAM and disk</text>
+          </svg>
+          </div>
+          <p style="font-family:'Kalam',cursive;font-size:0.83rem;color:#666;margin-top:4px;">Left: Scheduling — CPU gives each process a time-slice. Right: Paging — OS swaps programs between RAM and disk when RAM is full.</p>
+        </div>
+
+        <h4 class="subh" style="color:#059669;">📋 The Six Key OS Functions</h4>
+
+        <div class="n-card" style="border-color:#059669;">
+          <div class="n-card-hdr" style="background:#059669;">1 — Hardware Management</div>
+          <div class="n-card-bdy">The OS manages access to hardware devices including the CPU, RAM, and I/O devices. It uses <strong>device drivers</strong> to communicate with specific hardware — a driver translates between the OS and the physical device. This means an application can use <code style="background:#f0f0f0;padding:1px 4px;border-radius:3px;font-family:monospace;">OpenFile</code> without knowing whether the file is on an SSD or HDD.</div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--blue);">
+          <div class="n-card-hdr" style="background:var(--blue);">2 — File Management</div>
+          <div class="n-card-bdy">The OS manages the directory (folder) structure, file naming, and access to secondary storage. It keeps track of where files are stored on disk, allows files to be created, moved, renamed, copied and deleted, and controls which users can access which files.</div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--purple);">
+          <div class="n-card-hdr" style="background:var(--purple);">3 — Process Management &amp; Scheduling</div>
+          <div class="n-card-bdy">
+            <p>Each running program is a <strong>process</strong>. A von Neumann CPU can only do one thing at a time, yet multiple apps appear to run simultaneously. The OS creates this <strong>illusion</strong> using <strong>scheduling</strong> — giving each process a short slice of CPU time before switching to the next. This is called <strong>round-robin scheduling</strong>. Processes running alongside each other this way are called <strong>concurrent</strong> processes.</p>
+            <div class="notes-eg">💡 <strong>Example:</strong> You can listen to music while typing in Word because the OS rapidly switches the CPU between the music player process and the Word process — so fast it appears simultaneous.</div>
+          </div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--orange);">
+          <div class="n-card-hdr" style="background:var(--orange);">4 — Memory Management &amp; Paging</div>
+          <div class="n-card-bdy">When you open many applications, RAM can become full. The OS handles this using <strong>paging</strong> — it moves programs or data from RAM to the hard disk and back again as needed. This is the same as virtual memory (covered in Topic 17). A computer using paging heavily may run noticeably slower as disk access is much slower than RAM.</div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--coral);">
+          <div class="n-card-hdr" style="background:var(--coral);">5 — User Interface</div>
+          <div class="n-card-bdy">
+            <p>The OS provides the <strong>user interface (UI)</strong> — the way the user interacts with the computer. There are two main types:</p>
+            <div class="g2" style="margin-top:8px;">
+              <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:6px;padding:10px;">
+                <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--blue);">GUI — Graphical User Interface</div>
+                <p style="font-family:'Kalam',cursive;font-size:0.85rem;margin-top:4px;">Windows, Icons, Menus, Pointer (WIMP). Examples: Windows, macOS, Android. Easy to learn, no commands to memorise, visual feedback. Used by most general-purpose computers.</p>
+              </div>
+              <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:6px;padding:10px;">
+                <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--purple);">CLI — Command-Line Interface</div>
+                <p style="font-family:'Kalam',cursive;font-size:0.85rem;margin-top:4px;">Text commands typed by the user (e.g. MS-DOS, Linux terminal). Faster for experts, uses less memory, more precise control. Used by servers and technical users who prefer speed over ease.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--green);">
+          <div class="n-card-hdr" style="background:var(--green);">6 — Authentication &amp; Security</div>
+          <div class="n-card-bdy">
+            <p><strong class="hl-g">Authentication</strong> is the process of proving to a computer system who you are (e.g. using a username and password, fingerprint, or PIN). In <strong>multi-user systems</strong> (like a school network), each user must authenticate. Authority is based on identity — learner users may not be able to print, while tutor users can. There is usually a <strong>super-user (administrator/root)</strong> who can access all resources and control others' access rights.</p>
+          </div>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> A common question is "state four functions of an operating system." Use the six above — pick any four and state each clearly: file management, process scheduling, memory management/paging, user interface, authentication, hardware management. One function per mark — don't write paragraphs for a "state" question.</div>
+      </div>
+    </div>
+
+    <!-- 19.3 Utility Software -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,var(--orange),#7a3c00);">
+        <div class="notes-hdr-left"><span class="notes-num">19.3</span><span class="notes-title">Utility Software — Types &amp; Functions</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>Utility software does a <strong>useful job for the user</strong> but is not essential to the OS and is not the primary reason for buying a computer. It falls into three areas: basic tools, file management tools, and security tools.</p>
+
+        <h4 class="subh" style="color:var(--orange);">🛠️ File Management Utilities</h4>
+
+        <div class="g2">
+          <div class="n-card" style="border-color:#555;margin:0;">
+            <div class="n-card-hdr" style="background:#555;">💾 Backup Software</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.87rem;line-height:1.5;">
+              <strong>What it does:</strong> Makes a copy of files in another location so they are still available if the original is lost or damaged.<br><br>
+              <strong>Why it's needed:</strong> Hardware can fail, files can be accidentally deleted, ransomware can encrypt files. Regular backups prevent data loss.<br><br>
+              ✅ Protects against data loss · Can recover deleted files
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);margin:0;">
+            <div class="n-card-hdr" style="background:var(--blue);">📦 Compression Software</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.87rem;line-height:1.5;">
+              <strong>What it does:</strong> Reduces file size by encoding data more efficiently (e.g. ZIP files). Frees up disk space.<br><br>
+              <strong>Trade-off:</strong> Compressed files are slower to access — they must be decompressed before use.<br><br>
+              ✅ Saves disk space · Faster to upload/email<br>
+              ❌ Slower to open · ⚠ NOT the same as encryption!
+            </div>
+          </div>
+        </div>
+
+        <div class="g2" style="margin-top:12px;">
+          <div class="n-card" style="border-color:var(--green);margin:0;">
+            <div class="n-card-hdr" style="background:var(--green);">🔀 Defragmenter</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.87rem;line-height:1.5;">
+              <strong>What it does:</strong> Files on a hard disk are stored in chunks called <strong>clusters</strong>. A single file's clusters can be spread across the disk (fragmented). The defragmenter moves clusters so they are physically closer together, speeding up disk access.<br><br>
+              ⚠ <strong>Only for HDDs!</strong> SSDs do not need defragmenting — access times are the same regardless of where data is stored.
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--purple);margin:0;">
+            <div class="n-card-hdr" style="background:var(--purple);">🔁 File Converter</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.87rem;line-height:1.5;">
+              <strong>What it does:</strong> Converts files between different formats. Especially useful for <strong>multimedia files</strong> (images, video, audio) which have many common formats (jpg, png, gif, mp3, mp4, etc.).<br><br>
+              <strong>Example:</strong> Converting a .WAV audio file to .MP3 reduces the file size significantly.
+            </div>
+          </div>
+        </div>
+
+        <!-- Defrag diagram -->
+        <h4 class="subh" style="color:var(--orange);">🔀 How Defragmentation Works — Diagram</h4>
+        <div style="text-align:center;margin:12px 0;">
+          <div class="svg-wrap" onclick="openModal(this,'Defragmentation — Before and After')" title="Click to zoom">
+          <span class="svg-hint">🔍 Click to zoom &amp; download</span>
+          <svg viewBox="0 0 560 160" style="max-width:560px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <!-- BEFORE -->
+            <text x="140" y="20" font-size="12" text-anchor="middle" fill="#ef476f" font-family="sans-serif" font-weight="bold">BEFORE — Fragmented</text>
+            <!-- disk blocks before -->
+            <rect x="10"  y="30" width="38" height="38" rx="4" fill="#118ab2"/><text x="29"  y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A1</text>
+            <rect x="54"  y="30" width="38" height="38" rx="4" fill="#e0e0e0"/><text x="73"  y="54" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">free</text>
+            <rect x="98"  y="30" width="38" height="38" rx="4" fill="#ef476f"/><text x="117" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B1</text>
+            <rect x="142" y="30" width="38" height="38" rx="4" fill="#118ab2"/><text x="161" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A2</text>
+            <rect x="186" y="30" width="38" height="38" rx="4" fill="#e0e0e0"/><text x="205" y="54" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">free</text>
+            <rect x="230" y="30" width="38" height="38" rx="4" fill="#ef476f"/><text x="249" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B2</text>
+            <rect x="10"  y="74" width="38" height="38" rx="4" fill="#059669"/><text x="29"  y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C1</text>
+            <rect x="54"  y="74" width="38" height="38" rx="4" fill="#118ab2"/><text x="73"  y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A3</text>
+            <rect x="98"  y="74" width="38" height="38" rx="4" fill="#e0e0e0"/><text x="117" y="98" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">free</text>
+            <rect x="142" y="74" width="38" height="38" rx="4" fill="#059669"/><text x="161" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C2</text>
+            <rect x="186" y="74" width="38" height="38" rx="4" fill="#ef476f"/><text x="205" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B3</text>
+            <rect x="230" y="74" width="38" height="38" rx="4" fill="#059669"/><text x="249" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C3</text>
+            <text x="140" y="128" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">File A clusters scattered across disk → slow to read (head must seek many times)</text>
+            <!-- Arrow -->
+            <text x="305" y="76" font-size="28" text-anchor="middle" fill="#f77f00" font-family="sans-serif">→</text>
+            <!-- AFTER -->
+            <text x="430" y="20" font-size="12" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">AFTER — Defragmented</text>
+            <rect x="300" y="30" width="38" height="38" rx="4" fill="#118ab2"/><text x="319" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A1</text>
+            <rect x="344" y="30" width="38" height="38" rx="4" fill="#118ab2"/><text x="363" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A2</text>
+            <rect x="388" y="30" width="38" height="38" rx="4" fill="#118ab2"/><text x="407" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">A3</text>
+            <rect x="432" y="30" width="38" height="38" rx="4" fill="#ef476f"/><text x="451" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B1</text>
+            <rect x="476" y="30" width="38" height="38" rx="4" fill="#ef476f"/><text x="495" y="54" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B2</text>
+            <rect x="300" y="74" width="38" height="38" rx="4" fill="#ef476f"/><text x="319" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">B3</text>
+            <rect x="344" y="74" width="38" height="38" rx="4" fill="#059669"/><text x="363" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C1</text>
+            <rect x="388" y="74" width="38" height="38" rx="4" fill="#059669"/><text x="407" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C2</text>
+            <rect x="432" y="74" width="38" height="38" rx="4" fill="#059669"/><text x="451" y="98" font-size="9" text-anchor="middle" fill="white" font-family="sans-serif">C3</text>
+            <rect x="476" y="74" width="38" height="38" rx="4" fill="#e0e0e0"/><text x="495" y="98" font-size="9" text-anchor="middle" fill="#888" font-family="sans-serif">free</text>
+            <text x="430" y="128" font-size="8.5" text-anchor="middle" fill="#555" font-family="sans-serif">All clusters together → read head moves less → faster disk access</text>
+            <!-- legend -->
+            <rect x="310" y="145" width="14" height="10" rx="2" fill="#118ab2"/><text x="328" y="154" font-size="8" fill="#555" font-family="sans-serif">File A</text>
+            <rect x="360" y="145" width="14" height="10" rx="2" fill="#ef476f"/><text x="378" y="154" font-size="8" fill="#555" font-family="sans-serif">File B</text>
+            <rect x="410" y="145" width="14" height="10" rx="2" fill="#059669"/><text x="428" y="154" font-size="8" fill="#555" font-family="sans-serif">File C</text>
+          </svg>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--coral);">🔐 Security Utilities</h4>
+
+        <div class="g3">
+          <div class="n-card" style="border-color:var(--coral);margin:0;">
+            <div class="n-card-hdr" style="background:var(--coral);">🦠 Anti-virus Software</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.5;">
+              Detects and removes <strong>viruses</strong> and malware. A <strong>virus</strong> copies itself and spreads — it can steal data, send spam, crash servers, or simply annoy users. Antivirus identifies code that copies itself and prevents those processes from running.
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--purple);margin:0;">
+            <div class="n-card-hdr" style="background:var(--purple);">🕵️ Anti-spyware</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.5;">
+              <strong>Spyware</strong> is software installed secretly that records private information as the user enters it (e.g. keystrokes, passwords, bank details). Anti-spyware detects and removes these hidden programs.
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);margin:0;">
+            <div class="n-card-hdr" style="background:var(--blue);">🔥 Firewall</div>
+            <div class="n-card-bdy" style="font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.5;">
+              Controls program access to the network — both incoming and outgoing traffic. Decides which data is allowed to flow to and from the computer. Can prevent infection by viruses and stop malware from sending data out.
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-eg" style="margin-top:12px;">🔐 <strong>Encryption software</strong> makes files unreadable without a password. Data on a laptop might be encrypted so it is not accessible if the laptop is stolen — even if the hard drive is removed.</div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> Know the difference between a virus (self-copies, spreads) and spyware (secretly records data). Both are malware but work differently. A firewall controls NETWORK traffic — it is not the same as antivirus.</div>
+      </div>
+    </div>
+
+    <!-- 19.4 Simulation & Modelling -->
+    <div class="notes-sec" id="ns4">
+      <div class="notes-hdr" onclick="toggleSection('ns4')" style="background:linear-gradient(135deg,var(--purple),#4a1080);">
+        <div class="notes-hdr-left"><span class="notes-num">19.4</span><span class="notes-title">Simulation &amp; Computer Modelling</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>A <strong class="hl-p">computer model</strong> is a program that simulates a real-world system or process. It uses <strong>abstraction</strong> — hiding complexity and only modelling the key features. It allows scientists, engineers and economists to ask <strong>'what if?' questions</strong> without interfering with the real world.</p>
+
+        <div class="def-box" style="border-color:var(--purple);">
+          <span class="def-label" style="background:var(--purple);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-p">'What if?' question</strong> — running a computer model with a given set of inputs to see what the model produces as an output or prediction. E.g. "What if the bridge were twice as long?"<br><br>
+          <strong class="hl-p">Heuristic</strong> — a type of algorithm that finds a good (not necessarily perfect) solution quickly through trial and error and educated guesswork. Useful when exact solutions are too slow or impossible to calculate.<br><br>
+          <strong class="hl-p">Monte Carlo method</strong> — carrying out a large number of random samples to get approximate solutions. The more samples used, the more accurate the result.<br><br>
+          <strong class="hl-p">Neural networks</strong> — systems that process information in a way similar to human brains, learning and adapting over time. Useful for pattern recognition (faces, medical diagnosis, etc.).</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--purple);">✈️ Real-World Examples</h4>
+        <div class="g3">
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--blue);margin-bottom:5px;">✈️ Flight Simulator</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">Pilots train to fly safely without endangering real passengers. Uses real controls and a moveable cabin to feel realistic. Mistakes are safe — no lives at risk.</p>
+          </div>
+          <div style="background:var(--light-teal);border:2px solid #059669;border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:#059669;margin-bottom:5px;">🌦 Weather Forecasting</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">Atmospheric models split the atmosphere into sections, tracking temperature, pressure and humidity. Each section's effect on neighbours is calculated to predict weather patterns.</p>
+          </div>
+          <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--purple);margin-bottom:5px;">🌍 Earthquake Prediction</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.85rem;">Uses heuristics, Monte Carlo methods and neural networks to predict earthquake patterns based on probability and past data — since the exact maths behind earthquakes is unknown.</p>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--purple);">⚖️ Advantages &amp; Limitations of Computer Models</h4>
+        <div class="g2">
+          <div style="background:var(--light-teal);border:2px solid #059669;border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;color:#059669;margin-bottom:6px;">✅ Advantages</div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Test scenarios that are impossible, dangerous or unethical in the real world</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Ask 'what if?' questions quickly and cheaply</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Can be run many times with different inputs</div></div>
+            <div class="nl"><span class="nd" style="background:#059669;">✓</span><div>Reveal patterns in complex systems that humans couldn't calculate</div></div>
+          </div>
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;color:var(--coral);margin-bottom:6px;">❌ Limitations</div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Contains <strong>assumptions</strong> — it is not reality, so answers may not be correct</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>The real world is too complex to model every factor — abstraction means detail is lost</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Results are predictions — they should be treated with caution, not as certainty</div></div>
+            <div class="nl"><span class="nd" style="background:var(--coral);">✗</span><div>Only as good as the data and rules used to build the model</div></div>
+          </div>
+        </div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> For "give two advantages of using a computer model" — link each to a real reason: e.g. "Pilots can make mistakes in a flight simulator without risk to passengers" (not just "it is safer"). For limitations, always mention "assumptions" and "simplification" — these are the key marking points.</div>
+      </div>
+    </div>
+
+  </div><!-- end notes -->
+
+  <!-- ════════════ QUIZ TAB ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span>/<span id="qtotal">20</span></div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card">
+        <div class="q-num" id="qnum">Question 1 of 20</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="q-opts" id="qopts"></div>
+        <div class="q-fb" id="qfb"></div>
+        <div style="text-align:right;margin-top:14px;">
+          <button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACTIVITIES TAB ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Match term to definition -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🔗</span>
+        <span class="act-title">Activity 1 — Match the Term to its Definition</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Click a term on the left, then click its matching definition on the right.</p>
+        <div class="match-grid" id="match-area-1"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkMatch1()">✓ Check</button>
+          <button class="btn" onclick="resetMatch1()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="match-res-1" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Classify software -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-green);">
+        <span class="act-icon">🗂️</span>
+        <span class="act-title">Activity 2 — Classify the Software</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a software item, then click the correct category to place it.</p>
+        <div class="chip-bank" id="sw-chips"></div>
+        <div class="drop-zone-wrap" id="sw-drops">
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--green);">📱 Application Software</div>
+            <div class="drop-zone" id="sdrop-app" onclick="dropSWChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--blue);">⚙️ Operating System</div>
+            <div class="drop-zone" id="sdrop-os" onclick="dropSWChip(this)"></div>
+          </div>
+          <div class="drop-col">
+            <div class="drop-col-hdr" style="background:var(--orange);">🛠️ Utility Software</div>
+            <div class="drop-zone" id="sdrop-util" onclick="dropSWChip(this)"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkSWClass()">✓ Check</button>
+          <button class="btn" onclick="resetSWClass()" style="background:white;">↺ Reset</button>
+        </div>
+        <div id="sw-class-res" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Fill in the blanks -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">📝</span>
+        <span class="act-title">Activity 3 — Fill in the Blanks</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:8px;font-family:'Kalam',cursive;">Click a word from the bank, then click a blank to fill it in.</p>
+        <div class="word-bank" id="word-bank"></div>
+        <div class="fill-para" id="fill-para"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-primary" onclick="checkFill()">✓ Check</button>
+          <button class="btn" onclick="revealFill()" style="background:white;">👁 Reveal</button>
+          <button class="btn" onclick="resetFill()" style="background:white;">↺ Reset</button>
+          <span id="fill-score" style="font-family:'Permanent Marker',cursive;font-size:1.3rem;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 4: True / False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <span class="act-icon">✅</span>
+        <span class="act-title">Activity 4 — True or False?</span>
+      </div>
+      <div class="act-bdy">
+        <div id="tf-area"></div>
+      </div>
+    </div>
+
+    <!-- Activity 5: OS functions sort -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-teal);">
+        <span class="act-icon">🔀</span>
+        <span class="act-title">Activity 5 — Sort: Which OS Function is Being Described?</span>
+      </div>
+      <div class="act-bdy">
+        <p style="margin-bottom:10px;font-family:'Kalam',cursive;">Drag and drop to match each description to the correct OS function. Order them from most-fundamental (top) to least-fundamental (bottom).</p>
+        <div class="sort-list" id="os-sort"></div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkOSSort()">✓ Check Order</button>
+          <button class="btn" onclick="revealOSSort()" style="background:white;">👁 Reveal</button>
+          <button class="btn" onclick="shuffleOSSort()" style="background:white;">🔀 Shuffle</button>
+        </div>
+        <div id="os-sort-result" style="margin-top:8px;font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities -->
+
+  <!-- ════════════ EXAM QUESTIONS TAB ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <div class="tip-box" style="margin-bottom:18px;">📋 <strong>Exam technique:</strong> Software questions often ask you to <em>state</em> OS functions (one word/phrase each), <em>describe</em> utility software, or <em>evaluate</em> computer models. Always use correct terminology: scheduling, paging, authentication, concurrent, defragmentation.</div>
+
+    <!-- Q1 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c1"><span class="eq-num">Question 1 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">State four functions of an operating system.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme — any four of:</div>
+          <ul>
+            <li>Managing hardware devices / hardware management [1]</li>
+            <li>File management / managing directory structure [1]</li>
+            <li>Process scheduling (sharing CPU between processes) [1]</li>
+            <li>Memory management / paging (moving programs between RAM and disk) [1]</li>
+            <li>Providing a user interface (GUI or CLI) [1]</li>
+            <li>Authentication (verifying user identity) [1]</li>
+            <li>Managing users' access rights / security [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c2"><span class="eq-num">Question 2 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Explain what is meant by 'scheduling' in an operating system. Why is it necessary on a single-core processor?</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Scheduling is the algorithm the OS uses to allow each running process to use the CPU [1]</li>
+            <li>The OS gives each process a short time-slice of CPU time before switching to the next [1]</li>
+            <li>A single-core CPU can only process one instruction at a time [1]</li>
+            <li>Scheduling creates the illusion that processes are running simultaneously (concurrently) [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c3"><span class="eq-num">Question 3 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Describe what a defragmenter does and explain why it is only useful for hard disk drives (HDDs) and not solid-state drives (SSDs).</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Files are stored on a hard disk in chunks called clusters [1]</li>
+            <li>A fragmented file has its clusters spread across the disk — the read head must move many times to access it, which is slow [1]</li>
+            <li>A defragmenter moves clusters so that all the parts of each file are stored closer together / contiguously, speeding up disk access [1]</li>
+            <li>SSDs have no moving parts — access time is the same regardless of where data is stored on the chip, so defragmentation provides no speed benefit [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c4"><span class="eq-num">Question 4 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Compare a Graphical User Interface (GUI) with a Command-Line Interface (CLI). Give one advantage of each.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>GUI uses windows, icons, menus and a pointer (WIMP); CLI uses typed text commands [1]</li>
+            <li>GUI advantage: easier to learn, no commands to memorise, visual feedback, suitable for general users [1]</li>
+            <li>CLI advantage: faster for experienced users, uses less memory/processing power, more precise control, preferred by technical users/server administrators [1]</li>
+            <li>CLI: commands must be memorised / steeper learning curve [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c5"><span class="eq-num">Question 5 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">6 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">Scientists are using a computer model to predict how rising global temperatures will affect sea levels over the next 50 years.</div>
+        <p class="eq-txt">Explain two advantages and two disadvantages of using a computer model for this type of prediction.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="8"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark per point, max 2 per A/D)</div>
+          <p><strong>Advantages (any 2):</strong></p>
+          <ul>
+            <li>It would be impossible / unethical to test the real-world scenario — a model allows scientists to test the effect without actually causing it [1]</li>
+            <li>Scientists can ask 'what if?' questions (e.g. what if temperatures rise 2°C vs 4°C) without waiting 50 years [1]</li>
+            <li>The model can be run many times with different inputs quickly and cheaply [1]</li>
+          </ul>
+          <p><strong>Disadvantages (any 2):</strong></p>
+          <ul>
+            <li>The model contains assumptions / simplifications — the real world is far more complex, so results may not be accurate [1]</li>
+            <li>Not all factors can be included — some variables may be unknown or hard to model (e.g. human behaviour, volcanic activity) [1]</li>
+            <li>Results are predictions, not certainties — they cannot be fully trusted / should be treated with caution [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c6"><span class="eq-num">Question 6 <span class="tag tag-med">Medium</span></span><span class="eq-marks">4 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Describe two differences between a virus and spyware. For each, explain how security software deals with the threat.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="5"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>A virus copies itself and spreads to other computers/files; spyware is designed to be installed secretly without copying itself [1]</li>
+            <li>A virus may crash programs, send spam or steal data by spreading; spyware records private information (keystrokes, passwords) as the user enters it [1]</li>
+            <li>Antivirus software identifies code that copies itself and prevents those processes from running [1]</li>
+            <li>Anti-spyware detects hidden processes running in the background and removes them [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c7"><span class="eq-num">Question 7 <span class="tag tag-easy">Easy</span></span><span class="eq-marks">3 marks</span></div>
+      <div class="eq-bdy">
+        <p class="eq-txt">Explain the difference between application software and system software. Give one example of each.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="4"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <ul>
+            <li>Application software performs a task for the user that they would otherwise do by hand (e.g. word processor, spreadsheet, browser, game) [1]</li>
+            <li>System software supports the hardware and manages other software — it is not the primary reason for using the computer (e.g. operating system, antivirus, defragmenter) [1]</li>
+            <li>One correct example of each stated [1]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c8"><span class="eq-num">Question 8 <span class="tag tag-hard">Hard</span></span><span class="eq-marks">5 marks</span></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A user has many programs open on their computer at the same time. The computer is running slowly.</div>
+        <p class="eq-txt">Explain two reasons why the computer might be running slowly. For each, name the OS mechanism involved and describe what the OS does to manage the situation.</p>
+        <textarea class="ans-ta" placeholder="Write your answer here…" rows="8"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">📋 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+          <p><strong>Reason 1 — CPU Scheduling:</strong></p>
+          <ul>
+            <li>Many processes are competing for CPU time. The OS uses scheduling to give each process a short time-slice in turn, creating the illusion they all run simultaneously. With many processes, each gets less CPU time → slower. [up to 2]</li>
+          </ul>
+          <p><strong>Reason 2 — Paging / Virtual Memory:</strong></p>
+          <ul>
+            <li>RAM may be full with many programs loaded. The OS uses paging — moving programs from RAM to the hard disk swap area and back when needed. Hard disk access is much slower than RAM, causing a significant drop in performance / disk thrashing. [up to 3]</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end exam -->
+
+</div><!-- end page-wrap -->
+
+<!-- SVG ZOOM MODAL -->
+<div id="svg-modal" onclick="handleModalClick(event)">
+  <div id="svg-modal-inner">
+    <div id="modal-toolbar">
+      <span id="modal-title">Diagram</span>
+      <div class="zoom-controls">
+        <button class="modal-btn" onclick="modalZoom(-0.2)">➖</button>
+        <span class="zoom-lbl" id="zoom-lbl">100%</span>
+        <button class="modal-btn" onclick="modalZoom(+0.2)">➕</button>
+        <button class="modal-btn" onclick="modalResetZoom()">↺ Fit</button>
+      </div>
+      <button class="modal-btn dl-btn" onclick="downloadSVG()">⬇ Download</button>
+      <button class="modal-btn close-btn" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div id="svg-modal-content"></div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+function toggleSection(id){
+  const bdy=document.querySelector('#'+id+' .notes-bdy');
+  const tog=document.querySelector('#'+id+' .notes-tog');
+  bdy.classList.toggle('open');
+  tog.textContent=bdy.classList.contains('open')?'▲':'▼';
+}
+function toggleMS(btn){
+  const ms=btn.nextElementSibling;
+  ms.classList.toggle('show');
+  btn.textContent=ms.classList.contains('show')?'🙈 Hide Mark Scheme':'📋 Show Mark Scheme';
+}
+
+// ── QUIZ ──
+const quizData=[
+  {q:'What is the difference between system software and application software?',opts:['Application software manages hardware; system software performs user tasks','System software supports hardware and other programs; application software performs tasks for the user','They are the same thing — both run on the OS','System software is free; application software must be purchased'],ans:1,fb:'System software (OS + utilities) supports and manages the hardware. Application software performs tasks the user wants to do — like word processing or browsing.'},
+  {q:'Which of these is an example of UTILITY software?',opts:['Microsoft Word','Google Chrome','Defragmenter','Windows 11'],ans:2,fb:'A defragmenter is utility software — it maintains the file system. Word and Chrome are application software. Windows 11 is an operating system.'},
+  {q:'What does an operating system use "scheduling" for?',opts:['Deciding which files to delete','Sharing CPU time between multiple running processes','Deciding how to compress files','Updating software automatically'],ans:1,fb:'Scheduling is the OS algorithm that gives each process a short time-slice of CPU time in turn — creating the illusion that processes run simultaneously on a single-core CPU.'},
+  {q:'What is "paging" in the context of an operating system?',opts:['Printing a document page by page','Moving programs between RAM and the hard disk when RAM is full','Arranging icons on the desktop','Compressing files to save space'],ans:1,fb:'Paging is how the OS manages virtual memory — when RAM is full it moves programs to the hard disk swap area and back as needed. It is slower as HDD is much slower than RAM.'},
+  {q:'What is "authentication" in an OS?',opts:['Encrypting files so they cannot be read','Scheduling processes fairly','The process of proving who you are (e.g. username and password)','Compressing files for storage'],ans:2,fb:'Authentication = proving your identity to the system. Examples: username + password, fingerprint, PIN. Used in multi-user systems to control access rights.'},
+  {q:'What does a DEFRAGMENTER do?',opts:['Encrypts files to protect them','Moves file clusters closer together on the disk to speed up access','Removes viruses from the disk','Compresses files to save space'],ans:1,fb:'Fragmented files have their clusters spread across the disk — the read head must move many times. A defragmenter moves clusters so files are stored contiguously, reducing seek time.'},
+  {q:'Why is defragmentation NOT useful for SSDs?',opts:['SSDs are already compressed','SSDs have no moving parts — access time is the same regardless of where data is stored','SSDs automatically defragment themselves','SSDs cannot be fragmented'],ans:1,fb:'SSDs use flash chips with no read heads that physically move. There is no "seek time" — any location is accessed just as fast as any other, so fragmentation does not slow them down.'},
+  {q:'What is a VIRUS?',opts:['Software that records keystrokes secretly','Software that controls network access','Software designed to make and distribute copies of itself, usually for a malicious purpose','Software that compresses files'],ans:2,fb:'A virus copies itself and spreads — it can crash machines, send spam, steal data or simply annoy users. Antivirus software identifies self-copying code and stops those processes.'},
+  {q:'What is SPYWARE?',opts:['Software that copies itself across the network','Software designed to be installed secretly and record private information as the user enters it','Software that controls firewall rules','Software that defragments the hard disk'],ans:1,fb:'Spyware installs secretly and records private data like keystrokes, passwords or bank details. Anti-spyware detects these hidden background processes.'},
+  {q:'What does a FIREWALL do?',opts:['Removes viruses from files','Compresses network data','Controls incoming and outgoing network traffic to prevent unauthorised access','Encrypts files on the hard disk'],ans:2,fb:'A firewall controls which network data is allowed to flow to and from a computer — both incoming and outgoing. It helps prevent virus infection and stops malware sending data out.'},
+  {q:'What is a GUI?',opts:['A Graphical Utility Interface — a type of defragmenter','A Graphical User Interface — using windows, icons, menus and a pointer (WIMP)','A General Utility Input — a command-line tool','A Global Unified Interface — used in server OSes only'],ans:1,fb:'GUI = Graphical User Interface. WIMP = Windows, Icons, Menus, Pointer. Examples: Windows, macOS, Android. Easier to use than CLI but uses more processing power.'},
+  {q:'Which type of interface is FASTER for experienced users and uses less memory?',opts:['GUI','Touchscreen','CLI (Command-Line Interface)','Voice interface'],ans:2,fb:'A CLI (Command-Line Interface) uses typed text commands. It is faster for experts, uses less memory and processing power, and allows more precise control. It has a steeper learning curve.'},
+  {q:'What is the main purpose of COMPRESSION software?',opts:['To speed up the CPU','To reduce file size so less disk space is used','To make files unreadable without a password','To detect and remove viruses'],ans:1,fb:'Compression reduces file size by encoding data more efficiently. Compressed files use less disk space and are faster to upload/email — but must be decompressed before use, making them slower to open.'},
+  {q:'What is a key LIMITATION of a computer model?',opts:['It runs too slowly to be useful','It contains assumptions and simplifications so results may not be accurate','It can only be run once','It requires special hardware that is very expensive'],ans:1,fb:'Computer models are NOT reality — they contain assumptions and simplifications. The real world is too complex to model every factor perfectly. Results are predictions, not certainties.'},
+  {q:'What is a "what if?" question in computer modelling?',opts:['A question the OS asks when an error occurs','Running a model with different inputs to see what predictions are produced','A type of security authentication question','An error message produced by antivirus software'],ans:1,fb:"'What if?' questions let scientists/engineers test scenarios (e.g. 'what if the bridge were 2x longer?') using a model, without affecting the real world."},
+  {q:'Which technique uses a large number of RANDOM samples to approximate a solution?',opts:['Heuristic algorithm','Neural network','Monte Carlo method','Round-robin scheduling'],ans:2,fb:'The Monte Carlo method uses many random samples to get approximate solutions. The larger the number of samples, the more accurate the result.'},
+  {q:'What does "concurrent" mean in the context of operating systems?',opts:['Processes that run one after the other with no overlap','Processes that appear to run at the same time due to scheduling','Processes that share the same file simultaneously','Processes that have been terminated by the OS'],ans:1,fb:'Concurrent processes are those that appear to run at the same time. On a single-core CPU this is an illusion created by scheduling — the OS rapidly switches between processes.'},
+  {q:'Which of these is NOT a function of an operating system?',opts:['File management','Process scheduling','Writing application code for the user','Managing user authentication'],ans:2,fb:'The OS does not write application code — that is done by software developers. The OS manages hardware, files, processes, user interface, authentication and memory.'},
+  {q:'What is "backup" software used for?',opts:['Compressing files to save space','Making a copy of files in another location in case the originals are damaged or lost','Removing virus infections from files','Defragmenting the hard disk'],ans:1,fb:'Backup software copies files to another location (external drive, cloud, tape) so they can be recovered if the originals are deleted, corrupted or the hardware fails.'},
+  {q:'An operating system provides an API. What does API stand for, and what is its purpose?',opts:['Automated Process Interface — automates scheduling','Application Programming Interface — lets applications communicate with hardware via the OS without knowing hardware details','Advanced Protection Interface — secures files from viruses','Access Permission Index — controls which users can log in'],ans:1,fb:'API = Application Programming Interface. It gives developers commands (e.g. OpenFile) that communicate with hardware through the OS, so apps work on any hardware without the developer needing to know the specifics.'},
+];
+
+let qIdx=0,qScore=0;
+function renderQ(){
+  if(qIdx>=quizData.length){
+    document.getElementById('quiz-area').innerHTML=`<div class="q-result"><h2>Quiz Complete! 🎉</h2><div class="big-score">${qScore}/${quizData.length}</div><p style="font-family:'Caveat',cursive;font-size:1.3rem;margin:16px 0;">${qScore===quizData.length?'Perfect score! Outstanding! 🌟':qScore>=16?'Excellent work! 💪':qScore>=12?'Good effort! Keep revising. 📖':'Keep practising — review the Topic Notes! 📚'}</p><button class="btn btn-teal" onclick="restartQuiz()">🔄 Try Again</button></div>`;return;
+  }
+  const d=quizData[qIdx];
+  document.getElementById('qnum').textContent=`Question ${qIdx+1} of ${quizData.length}`;
+  document.getElementById('qtext').textContent=d.q;
+  document.getElementById('qtotal').textContent=quizData.length;
+  const opts=document.getElementById('qopts'); opts.innerHTML='';
+  d.opts.forEach((o,i)=>{const b=document.createElement('button');b.className='q-opt';b.textContent=o;b.onclick=()=>answerQ(i);opts.appendChild(b);});
+  document.getElementById('qfb').className='q-fb';
+  document.getElementById('qfb').textContent='';
+  document.getElementById('qnext').style.display='none';
+  document.getElementById('qprog').style.width=(qIdx/quizData.length*100)+'%';
+}
+function answerQ(i){
+  const d=quizData[qIdx];
+  const opts=document.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.disabled=true);
+  opts[d.ans].classList.add('correct');
+  const fb=document.getElementById('qfb');
+  if(i===d.ans){qScore++;document.getElementById('qscore').textContent=qScore;opts[i].classList.add('correct');fb.className='q-fb show fb-ok';fb.textContent='✓ Correct! '+d.fb;}
+  else{opts[i].classList.add('wrong');fb.className='q-fb show fb-no';fb.textContent='✗ Not quite. '+d.fb;}
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){qIdx++;renderQ();}
+function restartQuiz(){qIdx=0;qScore=0;document.getElementById('qscore').textContent=0;document.getElementById('quiz-area').innerHTML=`<div class="q-card"><div class="q-num" id="qnum"></div><div class="q-text" id="qtext"></div><div class="q-opts" id="qopts"></div><div class="q-fb" id="qfb"></div><div style="text-align:right;margin-top:14px;"><button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button></div></div>`;renderQ();}
+renderQ();
+
+// ── ACTIVITY 1: MATCH ──
+const matchPairs1=[
+  {term:'Scheduling',def:'OS algorithm that gives each process a short CPU time-slice in turn'},
+  {term:'Paging',def:'Moving programs between RAM and hard disk when RAM is full'},
+  {term:'Authentication',def:'Proving who you are to the computer system (e.g. username + password)'},
+  {term:'Defragmenter',def:'Moves file clusters closer together on a disk to speed up access'},
+  {term:'Virus',def:'Software designed to copy and spread itself, usually for malicious purposes'},
+  {term:'Firewall',def:'Utility that controls incoming and outgoing network traffic'},
+];
+let match1Sel=null;
+function buildMatch1(){
+  const area=document.getElementById('match-area-1'); area.innerHTML='';
+  const terms=matchPairs1.map(p=>p.term);
+  const defs=[...matchPairs1.map(p=>p.def)].sort(()=>Math.random()-0.5);
+  terms.forEach(t=>{const el=document.createElement('div');el.className='match-item';el.textContent=t;el.dataset.term=t;el.dataset.side='term';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+  defs.forEach(d=>{const el=document.createElement('div');el.className='match-item';el.textContent=d;el.dataset.def=d;el.dataset.side='def';el.onclick=()=>selectMatch1(el);area.appendChild(el);});
+}
+function selectMatch1(el){
+  if(el.classList.contains('ok'))return;
+  if(!match1Sel){if(match1Sel)match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;}
+  else{
+    if(match1Sel===el){el.classList.remove('sel');match1Sel=null;return;}
+    if(match1Sel.dataset.side===el.dataset.side){match1Sel.classList.remove('sel');el.classList.add('sel');match1Sel=el;return;}
+    const termEl=match1Sel.dataset.side==='term'?match1Sel:el;
+    const defEl=match1Sel.dataset.side==='def'?match1Sel:el;
+    const correct=matchPairs1.find(p=>p.term===termEl.dataset.term&&p.def===defEl.dataset.def);
+    if(correct){termEl.classList.remove('sel','bad');defEl.classList.remove('sel','bad');termEl.classList.add('ok');defEl.classList.add('ok');}
+    else{termEl.classList.add('bad');defEl.classList.add('bad');setTimeout(()=>{termEl.classList.remove('bad','sel');defEl.classList.remove('bad','sel');},600);}
+    match1Sel=null;
+  }
+}
+function checkMatch1(){const ok=document.querySelectorAll('#match-area-1 .ok').length/2;const res=document.getElementById('match-res-1');res.textContent=ok===matchPairs1.length?`✓ All ${matchPairs1.length} matched! 🎉`:`${ok}/${matchPairs1.length} correct so far.`;res.style.color=ok===matchPairs1.length?'var(--teal)':'var(--orange)';}
+function resetMatch1(){match1Sel=null;buildMatch1();document.getElementById('match-res-1').textContent='';}
+buildMatch1();
+
+// ── ACTIVITY 2: CLASSIFY SOFTWARE ──
+const swItems=[
+  {name:'Microsoft Word',cat:'app'},{name:'Google Chrome',cat:'app'},{name:'Minecraft',cat:'app'},
+  {name:'Microsoft Excel',cat:'app'},{name:'Windows 11',cat:'os'},{name:'Linux',cat:'os'},
+  {name:'Android',cat:'os'},{name:'iOS',cat:'os'},{name:'Antivirus',cat:'util'},
+  {name:'Defragmenter',cat:'util'},{name:'Backup software',cat:'util'},{name:'Firewall',cat:'util'},
+  {name:'File compressor',cat:'util'},{name:'File converter',cat:'util'},
+];
+let swSel=null;
+function buildSWChips(){
+  const bank=document.getElementById('sw-chips');bank.innerHTML='';
+  swItems.forEach(item=>{
+    const c=document.createElement('div');c.className='chip';c.textContent=item.name;c.dataset.cat=item.cat;c.dataset.name=item.name;
+    c.onclick=()=>{document.querySelectorAll('#sw-chips .chip').forEach(x=>x.classList.remove('chip-sel'));c.classList.add('chip-sel');swSel=c;};
+    bank.appendChild(c);
+  });
+}
+function dropSWChip(zone){
+  if(!swSel)return;
+  const chip=document.createElement('div');chip.className='chip chip-used';chip.textContent=swSel.dataset.name;
+  chip.dataset.cat=swSel.dataset.cat;chip.dataset.expected=zone.id.replace('sdrop-','');
+  zone.appendChild(chip);swSel.classList.add('chip-used');swSel.classList.remove('chip-sel');swSel=null;
+}
+function checkSWClass(){
+  let ok=0,total=0;
+  document.querySelectorAll('.drop-zone .chip').forEach(c=>{total++;if(c.dataset.cat===c.dataset.expected){c.classList.add('chip-ok');ok++;}else{c.classList.add('chip-bad');}});
+  const res=document.getElementById('sw-class-res');
+  res.textContent=total===0?'Place some items first!':ok===total?`✓ All ${total} correct! 🎉`:`${ok}/${total} correct.`;
+  res.style.color=ok===total&&total>0?'var(--teal)':'var(--coral)';
+}
+function resetSWClass(){swSel=null;['sdrop-app','sdrop-os','sdrop-util'].forEach(id=>{document.getElementById(id).innerHTML='';});buildSWChips();document.getElementById('sw-class-res').textContent='';}
+buildSWChips();
+
+// ── ACTIVITY 3: FILL IN BLANKS ──
+const fillTemplate=`Software can be divided into two main types. __B1__ software performs a task for the user — such as a word processor or web browser. __B2__ software includes the operating system and utility software. The OS uses __B3__ to share CPU time between multiple running processes so they appear to run simultaneously — these are called __B4__ processes. When RAM is full, the OS uses __B5__ to move programs between RAM and the hard disk. Utility software that moves file clusters together to speed up disk access is called a __B6__. A __B7__ copies itself and spreads, while __B8__ secretly records the user's private data. A __B9__ controls what network traffic is allowed in and out of the computer. Computer __B10__ allow scientists to ask 'what if?' questions without affecting the real world.`;
+const fillAnswers={B1:'Application',B2:'System',B3:'scheduling',B4:'concurrent',B5:'paging',B6:'defragmenter',B7:'virus',B8:'spyware',B9:'firewall',B10:'models'};
+let fillState={},fillSel=null;
+function buildFill(){
+  const wb=document.getElementById('word-bank');wb.innerHTML='';
+  const words=Object.values(fillAnswers).sort(()=>Math.random()-0.5);
+  words.forEach(w=>{
+    const d=document.createElement('div');d.className='word';d.textContent=w;d.dataset.word=w;
+    d.onclick=()=>{if(d.classList.contains('used'))return;document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');fillSel=w;};
+    wb.appendChild(d);
+  });
+  renderFill();
+}
+function renderFill(){
+  const wrap=document.getElementById('fill-para');
+  let html=fillTemplate;
+  Object.keys(fillAnswers).forEach(k=>{html=html.replace(`__${k}__`,`<span class="blank" data-b="${k}">${fillState[k]||'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`);});
+  wrap.innerHTML=html;
+  wrap.querySelectorAll('.blank').forEach(b=>{
+    const k=b.dataset.b;
+    if(fillState[k])b.classList.add('filled');
+    b.onclick=()=>{
+      if(fillSel){fillState[k]=fillSel;fillSel=null;document.querySelectorAll('#word-bank .word').forEach(x=>x.classList.remove('sel'));renderFill();}
+      else{fillSel=k;wrap.querySelectorAll('.blank').forEach(x=>x.classList.remove('sel-b'));b.classList.add('sel-b');}
+    };
+  });
+  document.querySelectorAll('#word-bank .word').forEach(w=>{w.classList.toggle('used',Object.values(fillState).includes(w.dataset.word));});
+}
+function checkFill(){
+  let ok=0;
+  Object.keys(fillAnswers).forEach(k=>{
+    const b=document.querySelector(`#fill-para [data-b="${k}"]`);if(!b)return;
+    if(fillState[k]===fillAnswers[k]){b.classList.add('ok');b.classList.remove('bad');ok++;}
+    else if(fillState[k]){b.classList.add('bad');b.classList.remove('ok');}
+  });
+  const sc=document.getElementById('fill-score');sc.textContent=`${ok}/10`;sc.style.color=ok===10?'var(--teal)':'var(--coral)';
+}
+function revealFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]=fillAnswers[k]);renderFill();checkFill();}
+function resetFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]='');fillSel=null;renderFill();document.getElementById('fill-score').textContent='';}
+buildFill();
+
+// ── ACTIVITY 4: TRUE/FALSE ──
+const tfItems=[
+  {q:'Utility software is application software because it does a useful job for the user.',ans:false,exp:'✗ False! Utility software is SYSTEM software — not the reason you buy a computer. Application software is the reason for using the computer (e.g. word processor). Antivirus maintains the system, not performs your primary task.'},
+  {q:'Scheduling creates the illusion that multiple processes run simultaneously on a single-core CPU.',ans:true,exp:'✓ True! A single-core CPU can only do one thing at a time. The OS scheduler rapidly switches between processes giving each a short time-slice, making them appear to run concurrently.'},
+  {q:'A defragmenter should be used regularly on solid-state drives (SSDs) to maintain performance.',ans:false,exp:'✗ False! SSDs have no moving parts — access time is the same regardless of where data is stored on the chip. Defragmentation only benefits HDDs by reducing seek time. Running a defragmenter on an SSD could actually reduce its lifespan.'},
+  {q:'Paging is when the OS moves programs between RAM and the hard disk when RAM is full.',ans:true,exp:'✓ True! Paging (also called virtual memory) moves the least recently used programs from RAM to a swap area on the hard disk, freeing RAM for the program currently needed.'},
+  {q:'A virus secretly records the user\'s private information such as keystrokes and passwords.',ans:false,exp:'✗ False! That is SPYWARE. A virus copies and spreads itself (to other files or computers). Spyware is specifically designed to record private data without the user knowing.'},
+  {q:'A firewall controls what network traffic is allowed to flow in and out of a computer.',ans:true,exp:'✓ True! A firewall is a network security utility that monitors and controls incoming and outgoing network traffic based on rules, helping to prevent unauthorised access and virus infection.'},
+  {q:'Computer models are always accurate because they are based on real data.',ans:false,exp:'✗ False! Computer models contain ASSUMPTIONS and SIMPLIFICATIONS. The real world is far too complex to model every factor perfectly. Results are predictions, not certainties — they should be treated with caution.'},
+  {q:'A CLI (command-line interface) is generally harder to learn but faster and uses less memory than a GUI.',ans:true,exp:'✓ True! CLI requires commands to be memorised and has a steeper learning curve. However, for experienced users it is faster, uses less processing power and memory, and offers more precise control than a GUI.'},
+];
+function buildTF(){
+  const area=document.getElementById('tf-area');area.innerHTML='';
+  tfItems.forEach((item,i)=>{
+    const div=document.createElement('div');div.className='tf-card';
+    div.innerHTML=`<div class="tf-q">${i+1}. ${item.q}</div><div class="tf-btns"><button class="tf-btn" onclick="checkTF(this,${i},true)">TRUE</button><button class="tf-btn" onclick="checkTF(this,${i},false)">FALSE</button></div><div class="tf-exp" id="tf-exp-${i}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkTF(btn,i,ans){
+  const item=tfItems[i];
+  const btns=btn.closest('.tf-card').querySelectorAll('.tf-btn');btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById(`tf-exp-${i}`);
+  if(ans===item.ans){btn.classList.add('correct');exp.className='tf-exp show';exp.style.cssText='background:#e0faf1;border-left:4px solid var(--teal);';}
+  else{btn.classList.add('wrong');btns.forEach(b=>{if((b.textContent==='TRUE')===item.ans)b.classList.add('correct');});exp.className='tf-exp show';exp.style.cssText='background:var(--light-coral);border-left:4px solid var(--coral);';}
+  exp.textContent=item.exp;
+}
+buildTF();
+
+// ── ACTIVITY 5: OS FUNCTION SORT ──
+const osSortSteps=[
+  'Hardware Management — the OS manages access to the CPU, RAM and all I/O devices',
+  'File Management — the OS controls the directory structure, file creation, deletion and access',
+  'Process Scheduling — the OS shares CPU time between concurrent processes using time-slices',
+  'Memory Management / Paging — the OS moves programs between RAM and the hard disk when RAM is full',
+  'User Interface — the OS provides a GUI (WIMP) or CLI for the user to interact with the computer',
+  'Authentication — the OS verifies user identity and manages access rights on multi-user systems',
+];
+let osSortOrder=[...osSortSteps];
+function buildOSSort(){
+  const list=document.getElementById('os-sort');list.innerHTML='';
+  osSortOrder.forEach((step,i)=>{
+    const item=document.createElement('div');item.className='sort-item';item.draggable=true;
+    item.innerHTML=`<span class="sort-grip">⠿</span><span>${step}</span>`;
+    item.dataset.idx=i;
+    item.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(i));item.classList.add('dragging');});
+    item.addEventListener('dragend',()=>item.classList.remove('dragging'));
+    item.addEventListener('dragover',e=>e.preventDefault());
+    item.addEventListener('drop',e=>{e.preventDefault();const from=parseInt(e.dataTransfer.getData('text/plain')),to=i;if(from===to)return;[osSortOrder[from],osSortOrder[to]]=[osSortOrder[to],osSortOrder[from]];buildOSSort();});
+    list.appendChild(item);
+  });
+}
+function checkOSSort(){
+  const wrong=osSortOrder.filter((s,i)=>s!==osSortSteps[i]).length;
+  const res=document.getElementById('os-sort-result');
+  res.style.color=wrong===0?'var(--teal)':'var(--coral)';
+  res.textContent=wrong===0?'✓ Perfect order!':wrong===1?'Almost! 1 out of place.':wrong<=3?`${wrong} out of order — keep adjusting!`:`${wrong} to fix — try again!`;
+}
+function revealOSSort(){osSortOrder=[...osSortSteps];buildOSSort();document.getElementById('os-sort-result').style.color='var(--teal)';document.getElementById('os-sort-result').textContent='✓ Correct order shown!';}
+function shuffleOSSort(){osSortOrder=[...osSortSteps].sort(()=>Math.random()-0.5);buildOSSort();document.getElementById('os-sort-result').textContent='';}
+shuffleOSSort();
+
+// ── SVG ZOOM MODAL ──
+let modalScale=1,currentSVGEl=null;
+function openModal(wrapEl,title){
+  const svgEl=wrapEl.querySelector('svg');if(!svgEl)return;
+  currentSVGEl=svgEl;modalScale=1;
+  const clone=svgEl.cloneNode(true);clone.removeAttribute('style');clone.style.width='100%';clone.style.height='auto';clone.style.display='block';
+  const content=document.getElementById('svg-modal-content');content.innerHTML='';content.appendChild(clone);content.style.transform='scale(1)';content.style.transformOrigin='top center';
+  document.getElementById('modal-title').textContent=title||'Diagram';
+  document.getElementById('zoom-lbl').textContent='100%';
+  document.getElementById('svg-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('svg-modal').classList.remove('open');document.body.style.overflow='';currentSVGEl=null;}
+function handleModalClick(e){if(e.target===document.getElementById('svg-modal'))closeModal();}
+function modalZoom(delta){modalScale=Math.max(0.4,Math.min(4,modalScale+delta));const content=document.getElementById('svg-modal-content');content.style.transform=`scale(${modalScale})`;content.style.transformOrigin='top center';document.getElementById('zoom-lbl').textContent=Math.round(modalScale*100)+'%';}
+function modalResetZoom(){modalScale=1;document.getElementById('svg-modal-content').style.transform='scale(1)';document.getElementById('zoom-lbl').textContent='100%';}
+function downloadSVG(){
+  const svgEl=document.getElementById('svg-modal-content').querySelector('svg');if(!svgEl)return;
+  const varMap={'--ink':'#1a1a2e','--paper':'#fdf8f0','--yellow':'#ffd166','--coral':'#ef476f','--teal':'#06d6a0','--blue':'#118ab2','--purple':'#7b2d8b','--orange':'#f77f00','--green':'#2d6a4f','--light-yellow':'#fff9c4','--light-coral':'#fce4ec','--light-teal':'#e0f7f2','--light-blue':'#e3f2fd','--light-purple':'#f3e5f5','--light-green':'#d8f3dc'};
+  let svgStr=svgEl.outerHTML;
+  Object.entries(varMap).forEach(([v,val])=>{svgStr=svgStr.replaceAll(`var(${v})`,val);});
+  svgStr=svgStr.replace('<svg',`<svg xmlns="http://www.w3.org/2000/svg"`);
+  const vb=svgEl.getAttribute('viewBox')||'0 0 560 120';const parts=vb.split(' ');const w=parseFloat(parts[2])||560;const h=parseFloat(parts[3])||120;
+  svgStr=svgStr.replace(/>/, `><rect width="${w}" height="${h}" fill="#fffdf5"/>`);
+  const blob=new Blob([svgStr],{type:'image/svg+xml'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=(document.getElementById('modal-title').textContent||'diagram').replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.svg';a.click();URL.revokeObjectURL(url);
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal();
+  if((e.key==='+'||e.key==='=')&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(0.2);
+  if(e.key==='-'&&document.getElementById('svg-modal').classList.contains('open'))modalZoom(-0.2);
+});
+</script>
+</body>
+</html>

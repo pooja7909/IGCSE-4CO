@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 6 – The Bigger Picture – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #fdf8f0;
+    --yellow: #ffd166;
+    --coral: #ef476f;
+    --teal: #06d6a0;
+    --blue: #118ab2;
+    --purple: #7b2d8b;
+    --orange: #f77f00;
+    --green: #2d6a4f;
+    --light-yellow: #fff9c4;
+    --light-coral: #fce4ec;
+    --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd;
+    --light-purple: #f3e5f5;
+    --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 20px 30px 60px 90px; position: relative; z-index: 1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+
+  /* HERO */
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero-title { font-family: 'Permanent Marker', cursive; font-size: 3rem; color: var(--ink); text-shadow: 3px 3px 0 var(--teal); letter-spacing: 2px; transform: rotate(-1.5deg); display: inline-block; position: relative; }
+  .hero-title::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px; background: var(--blue); border-radius: 2px; transform: rotate(0.5deg); }
+  .hero-subtitle { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--blue); margin-top: 18px; transform: rotate(0.5deg); }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+  .hero-tag { font-family: 'Caveat', cursive; font-size: 0.9rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; border: 2px solid; }
+
+  /* TABS */
+  .tabs-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 30px 0 20px; justify-content: center; }
+  .tab-btn { font-family: 'Caveat', cursive; font-size: 1.15rem; font-weight: 700; padding: 8px 20px; border: 3px solid var(--ink); border-radius: 6px; background: white; cursor: pointer; transition: all 0.2s; box-shadow: 3px 3px 0 var(--ink); }
+  .tab-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab-btn.active { background: var(--ink); color: white; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background: var(--blue); box-shadow: 1px 1px 0 var(--blue); }
+  .tab-btn[data-tab="notes"].active { background: var(--green); box-shadow: 1px 1px 0 var(--green); }
+  .tab-btn[data-tab="quiz"].active { background: var(--teal); box-shadow: 1px 1px 0 var(--teal); }
+  .tab-btn[data-tab="exam"].active { background: var(--purple); box-shadow: 1px 1px 0 var(--purple); }
+  .tab-btn[data-tab="activities"].active { background: var(--orange); box-shadow: 1px 1px 0 var(--orange); }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);} }
+
+  /* NOTES SECTIONS */
+  .notes-section { margin-bottom: 14px; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .notes-header { padding: 13px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; transition: opacity 0.15s; }
+  .notes-header:hover { opacity: 0.9; }
+  .notes-header-left { display: flex; align-items: center; gap: 12px; }
+  .notes-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .notes-title { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; color: white; letter-spacing: 0.5px; }
+  .notes-tog { font-family: 'Caveat', cursive; font-size: 1.2rem; color: white; transition: transform 0.3s; flex-shrink: 0; }
+  .notes-body { display: none; padding: 20px 22px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.65; color: var(--ink); }
+  .notes-body.open { display: block; animation: fadeIn 0.25s ease; }
+
+  .notes-def-box { border: 2px solid; border-radius: 8px; padding: 12px 14px; margin: 12px 0; position: relative; padding-top: 20px; background: white; font-size: 0.92rem; line-height: 1.55; }
+  .notes-def-label { position: absolute; top: -11px; left: 12px; color: white; font-family: 'Caveat', cursive; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+  .notes-tip { background: #fff9c4; border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 14px 0 4px; font-size: 0.9rem; font-family: 'Kalam', cursive; }
+  .notes-example { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; font-style: italic; font-family: 'Kalam', cursive; }
+  .notes-list-item { display: flex; align-items: flex-start; gap: 10px; margin: 7px 0; font-size: 0.92rem; line-height: 1.5; }
+  .nl-dot { width: 24px; height: 24px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .notes-subheading { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+  .notes-subheading::after { content: ''; flex: 1; height: 2px; background: currentColor; opacity: 0.2; }
+  .notes-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  @media(max-width:600px){ .notes-grid-2{grid-template-columns:1fr;} }
+  .notes-grid-3 { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; margin: 12px 0; }
+  .n-card { border: 2.5px solid; border-radius: 10px; overflow: hidden; box-shadow: 2px 2px 0 var(--ink); }
+  .n-card-hdr { padding: 8px 14px; font-family: 'Permanent Marker', cursive; font-size: 0.95rem; color: white; }
+  .n-card-bdy { padding: 12px 14px; background: white; font-size: 0.9rem; line-height: 1.5; }
+  .hl-blue { color: var(--blue); font-weight: 700; }
+  .hl-coral { color: var(--coral); font-weight: 700; }
+  .hl-teal { color: #059669; font-weight: 700; }
+  .hl-purple { color: var(--purple); font-weight: 700; }
+  .hl-orange { color: var(--orange); font-weight: 700; }
+  .hl-green { color: var(--green); font-weight: 700; }
+
+  /* MIND MAP */
+  .mindmap-wrap { background: #fffdf5; border: 3px solid var(--ink); border-radius: 12px; padding: 28px; box-shadow: 6px 6px 0 var(--ink); }
+  .mindmap-title { font-family: 'Permanent Marker', cursive; font-size: 2rem; text-align: center; margin-bottom: 20px; color: var(--ink); transform: rotate(-0.5deg); }
+  .mm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .mm-grid{grid-template-columns:1fr;} }
+  .mm-card { border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 3px 3px 0 var(--ink); }
+  .mm-card-hdr { padding: 10px 16px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; display: flex; align-items: center; gap: 8px; }
+  .mm-card-bdy { padding: 12px 16px; background: white; font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.7; }
+  .mm-pill { display: inline-block; padding: 2px 10px; border-radius: 20px; font-family: 'Caveat', cursive; font-size: 0.82rem; font-weight: 700; border: 1.5px solid; margin: 2px; }
+  .mm-center { background: var(--ink); color: white; border-radius: 12px; padding: 14px 20px; text-align: center; margin-bottom: 16px; font-family: 'Permanent Marker', cursive; font-size: 1.3rem; }
+
+  /* QUIZ */
+  .tip-box { background: var(--light-blue); border: 2px solid var(--blue); border-left: 5px solid var(--blue); border-radius: 8px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.95rem; }
+  .quiz-progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .quiz-progress-bar { flex: 1; height: 10px; background: #eee; border-radius: 20px; border: 1.5px solid #ccc; overflow: hidden; }
+  .quiz-progress-fill { height: 100%; background: linear-gradient(90deg,var(--teal),var(--blue)); border-radius: 20px; transition: width 0.4s ease; }
+  .quiz-score-badge { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; color: var(--blue); white-space: nowrap; }
+  .quiz-card { background: white; border: 3px solid var(--ink); border-radius: 12px; padding: 24px; box-shadow: 5px 5px 0 var(--ink); }
+  .quiz-q-num { font-family: 'Caveat', cursive; font-size: 0.95rem; color: #888; margin-bottom: 10px; }
+  .quiz-question { font-family: 'Permanent Marker', cursive; font-size: 1.15rem; line-height: 1.5; margin-bottom: 18px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:550px){ .quiz-options{grid-template-columns:1fr;} }
+  .quiz-opt { padding: 12px 16px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; cursor: pointer; text-align: left; transition: all 0.15s; box-shadow: 2px 2px 0 var(--ink); }
+  .quiz-opt:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--ink); background: var(--light-yellow); }
+  .quiz-opt.correct { background: var(--light-teal); border-color: #059669; color: #059669; box-shadow: none; }
+  .quiz-opt.wrong { background: var(--light-coral); border-color: var(--coral); color: var(--coral); box-shadow: none; }
+  .quiz-feedback { margin-top: 14px; padding: 10px 14px; border-radius: 8px; font-family: 'Kalam', cursive; font-size: 1rem; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: var(--light-teal); border: 2px solid #059669; color: #059669; }
+  .quiz-feedback.wrong-fb { background: var(--light-coral); border: 2px solid var(--coral); color: var(--coral); }
+  .quiz-nav { display: flex; justify-content: flex-end; margin-top: 14px; }
+  .quiz-result-screen { text-align: center; padding: 40px 20px; background: white; border: 3px solid var(--ink); border-radius: 12px; box-shadow: 5px 5px 0 var(--ink); }
+  .big-score { font-family: 'Permanent Marker', cursive; font-size: 3.5rem; color: var(--blue); }
+
+  /* EXAM Q */
+  .eq-wrap { background: white; border: 2.5px solid var(--ink); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; box-shadow: 3px 3px 0 var(--ink); }
+  .eq-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .eq-num { font-family: 'Permanent Marker', cursive; font-size: 1rem; }
+  .eq-marks { font-family: 'Caveat', cursive; font-size: 0.95rem; color: #888; }
+  .eq-ctx { background: var(--light-blue); border-left: 4px solid var(--blue); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 10px; font-family: 'Kalam', cursive; font-size: 0.9rem; }
+  .eq-q { font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; }
+  .ans-box { width: 100%; min-height: 80px; border: 2px solid #ccc; border-radius: 6px; padding: 10px 12px; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; resize: vertical; }
+  .show-ms { margin-top: 10px; background: var(--light-purple); border: 2px solid var(--purple); border-radius: 6px; padding: 6px 16px; font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; color: var(--purple); cursor: pointer; }
+  .ms { display: none; background: #fafafa; border: 2px solid #ccc; border-radius: 6px; padding: 12px 16px; margin-top: 10px; font-family: 'Kalam', cursive; font-size: 0.9rem; line-height: 1.7; }
+  .ms.show { display: block; }
+  .ms ul { margin-left: 18px; }
+  .ms li { margin: 4px 0; }
+  .ms-lbl { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; color: var(--green); margin-bottom: 6px; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700; margin-right: 6px; border: 1.5px solid; }
+  .tag-hard { color: var(--coral); border-color: var(--coral); background: var(--light-coral); }
+  .tag-med { color: var(--orange); border-color: var(--orange); background: #fff3e0; }
+  .tag-easy { color: #059669; border-color: var(--teal); background: var(--light-teal); }
+
+  /* ACTIVITIES */
+  .act-card { background: white; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; margin-bottom: 16px; box-shadow: 4px 4px 0 var(--ink); }
+  .act-hdr { padding: 12px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 2.5px solid var(--ink); }
+  .act-icon { font-size: 1.6rem; }
+  .act-title { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; }
+  .act-bdy { padding: 18px 20px; }
+  .scen-box { border: 2px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; margin: 10px 0; background: #fafafa; }
+  .scen-reveal { background: var(--light-teal); border: 2px solid #059669; border-radius: 6px; padding: 10px 14px; margin-top: 10px; font-family: 'Kalam', cursive; font-size: 0.9rem; display: none; }
+  .scen-reveal.show { display: block; }
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .match-item { border: 2px solid var(--ink); border-radius: 8px; padding: 10px 12px; background: white; cursor: pointer; font-family: 'Kalam', cursive; font-size: 0.88rem; text-align: center; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; }
+  .match-item:hover { transform: translate(-1px,-1px); }
+  .match-item.sel { background: var(--light-yellow); border-color: var(--orange); }
+  .match-item.ok { background: var(--light-teal); border-color: #059669; color: #059669; pointer-events: none; }
+  .match-item.bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* BUTTONS */
+  .btn { display: inline-block; padding: 9px 20px; border-radius: 6px; font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; border: 2.5px solid var(--ink); cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; background: white; }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-teal { background: var(--teal); color: var(--ink); border-color: #059669; }
+  .btn-blue { background: var(--blue); color: white; border-color: var(--blue); }
+  .tf-btn { padding: 7px 18px; border-radius: 6px; font-family: 'Caveat', cursive; font-size: 0.95rem; font-weight: 700; border: 2px solid var(--ink); cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); }
+  .tf-btn.correct { background: var(--light-teal); border-color: #059669; color: #059669; }
+  .tf-btn.wrong { background: var(--light-coral); border-color: var(--coral); color: var(--coral); }
+
+  /* TABLE */
+  .gen-table { width:100%; border-collapse:collapse; font-family:'Kalam',cursive; font-size:0.87rem; margin: 10px 0; }
+  .gen-table th { padding:9px 10px; text-align:left; border:1px solid #ddd; background:#f5f5f5; font-family:'Permanent Marker',cursive; font-size:0.85rem; }
+  .gen-table td { padding:8px 10px; border:1px solid #ddd; vertical-align:top; }
+  .gen-table tr:nth-child(even) td { background:#fafafa; }
+
+  /* ── DIAGRAM ZOOM LIGHTBOX ──────────────────────── */
+  .svg-zoom-wrap { position: relative; cursor: zoom-in; display: block; margin: 0 auto; }
+  .svg-zoom-wrap::after { content: '🔍 Click to zoom'; position: absolute; bottom: 6px; right: 8px; background: rgba(26,26,46,0.75); color: #fff; font-family: 'Caveat', cursive; font-size: 0.8rem; padding: 3px 10px; border-radius: 20px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+  .svg-zoom-wrap:hover::after { opacity: 1; }
+  .svg-zoom-wrap svg { display: block; width: 100%; }
+  #svg-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 9999; align-items: center; justify-content: center; padding: 20px; cursor: zoom-out; }
+  #svg-lightbox.open { display: flex; }
+  #svg-lightbox-inner { background: #fff; border-radius: 14px; padding: 18px; max-width: 95vw; max-height: 92vh; overflow: auto; box-shadow: 0 8px 40px rgba(0,0,0,0.5); position: relative; cursor: default; }
+  #svg-lightbox-inner svg { width: 100%; height: auto; max-height: 80vh; display: block; }
+  #svg-lightbox-close { position: absolute; top: 10px; right: 14px; font-size: 1.6rem; cursor: pointer; background: none; border: none; color: #555; line-height: 1; z-index: 10000; }
+  #svg-lightbox-close:hover { color: #000; }
+  #svg-lightbox-dl { display: block; margin: 12px auto 0; text-align: center; font-family: 'Caveat', cursive; font-size: 1rem; color: #118ab2; background: #e3f2fd; border: 2px solid #118ab2; border-radius: 8px; padding: 6px 20px; cursor: pointer; width: fit-content; }
+  #svg-lightbox-dl:hover { background: #118ab2; color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(194,24,91,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#c2185b;font-weight:700;font-size:1.05rem;text-decoration:none;font-family:'Caveat',cursive;">
+      ← Back to all topics
+    </a>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="hero">
+    <h1 class="hero-title">🌍 Unit 6 – The Bigger Picture</h1>
+    <p class="hero-subtitle">IGCSE Computer Science · Unit 6 · Everything you need to know ✏️</p>
+    <div class="hero-tags">
+      <span class="hero-tag" style="color:var(--green);border-color:var(--green);background:var(--light-green);">24 Environmental Impact</span>
+      <span class="hero-tag" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">25 Privacy</span>
+      <span class="hero-tag" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">26 Digital Inclusion</span>
+      <span class="hero-tag" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">27 Professionalism</span>
+      <span class="hero-tag" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">28 Legal Impact</span>
+      <span class="hero-tag" style="color:var(--teal);border-color:var(--teal);background:var(--light-teal);">29 Emerging Trends</span>
+    </div>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">📋 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+    <button class="tab-btn" data-tab="activities">🎮 Activities</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- MIND MAP TAB                              -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+    <div class="mindmap-wrap">
+      <div class="mm-center">🌍 Unit 6 – The Bigger Picture — IGCSE Overview</div>
+      <div class="mm-grid">
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--green);">24 🌱 Environmental Impact</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:var(--green);border-color:var(--green);background:var(--light-green);">Manufacture</span>
+            <span class="mm-pill" style="color:var(--green);border-color:var(--green);background:var(--light-green);">Usage</span>
+            <span class="mm-pill" style="color:var(--green);border-color:var(--green);background:var(--light-green);">Disposal / e-waste</span>
+            <span class="mm-pill" style="color:var(--green);border-color:var(--green);background:var(--light-green);">Green computing</span>
+            <div style="margin-top:6px;">Raw material extraction · hazardous substances (RoHS) · carbon footprint · data centre energy · recycling targets · computing preserving environment.</div>
+          </div>
+        </div>
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--blue);">25 🔒 Privacy</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Personal data</span>
+            <span class="mm-pill" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Big data</span>
+            <span class="mm-pill" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Surveillance</span>
+            <span class="mm-pill" style="color:var(--blue);border-color:var(--blue);background:var(--light-blue);">Identity theft</span>
+            <div style="margin-top:6px;">Cookies · spyware · location-based services · encryption · data protection legislation · privacy-enhancing tools.</div>
+          </div>
+        </div>
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--purple);">26 📱 Digital Inclusion</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Digital divide</span>
+            <span class="mm-pill" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Tech-empowered</span>
+            <span class="mm-pill" style="color:var(--purple);border-color:var(--purple);background:var(--light-purple);">Tech-excluded</span>
+            <div style="margin-top:6px;">Employment · democracy · economic growth · govt initiatives · mobile phones bridging gaps · Project Loon.</div>
+          </div>
+        </div>
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--orange);">27 💼 Professionalism</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">BCS Code</span>
+            <span class="mm-pill" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">Ethics</span>
+            <span class="mm-pill" style="color:var(--orange);border-color:var(--orange);background:#fff3e0;">Responsibility</span>
+            <div style="margin-top:6px;">Respect wellbeing, privacy &amp; security · continuous learning · ethical dilemmas in real-world CS work.</div>
+          </div>
+        </div>
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--coral);">28 ⚖️ Legal Impact</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Copyright</span>
+            <span class="mm-pill" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Patents</span>
+            <span class="mm-pill" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Licensing</span>
+            <span class="mm-pill" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Open-source</span>
+            <span class="mm-pill" style="color:var(--coral);border-color:var(--coral);background:var(--light-coral);">Computer Misuse Act</span>
+            <div style="margin-top:6px;">IP protection · proprietary vs open-source · Creative Commons · cybersecurity laws.</div>
+          </div>
+        </div>
+
+        <div class="mm-card">
+          <div class="mm-card-hdr" style="background:var(--teal);color:var(--ink);">29 🚀 Emerging Trends</div>
+          <div class="mm-card-bdy">
+            <span class="mm-pill" style="color:#059669;border-color:#059669;background:var(--light-teal);">AI</span>
+            <span class="mm-pill" style="color:#059669;border-color:#059669;background:var(--light-teal);">DNA Computing</span>
+            <span class="mm-pill" style="color:#059669;border-color:#059669;background:var(--light-teal);">Nanotechnology</span>
+            <span class="mm-pill" style="color:#059669;border-color:#059669;background:var(--light-teal);">Quantum Computing</span>
+            <div style="margin-top:6px;">Machine learning · qubits &amp; superposition · entanglement · carbon nanotubes · DNA as data storage.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Overview SVG diagram -->
+      <div style="margin-top:20px;">
+        <svg viewBox="0 0 700 120" style="width:100%;max-width:700px;display:block;margin:0 auto;font-family:'Caveat',cursive;">
+          <rect width="700" height="120" fill="#fffdf5" rx="8"/>
+          <!-- centre node -->
+          <rect x="270" y="40" width="160" height="40" rx="8" fill="#1a1a2e"/>
+          <text x="350" y="65" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Unit 6: Bigger Picture</text>
+          <!-- branches -->
+          <line x1="270" y1="60" x2="180" y2="30" stroke="#2d6a4f" stroke-width="2"/>
+          <rect x="80" y="14" width="100" height="28" rx="6" fill="#2d6a4f"/>
+          <text x="130" y="32" text-anchor="middle" fill="white" font-size="10">24 Environment</text>
+
+          <line x1="270" y1="60" x2="180" y2="90" stroke="#118ab2" stroke-width="2"/>
+          <rect x="80" y="76" width="100" height="28" rx="6" fill="#118ab2"/>
+          <text x="130" y="94" text-anchor="middle" fill="white" font-size="10">25 Privacy</text>
+
+          <line x1="350" y1="40" x2="350" y2="14" stroke="#7b2d8b" stroke-width="2"/>
+          <rect x="295" y="0" width="110" height="24" rx="6" fill="#7b2d8b"/>
+          <text x="350" y="16" text-anchor="middle" fill="white" font-size="10">26 Digital Inclusion</text>
+
+          <line x1="430" y1="60" x2="520" y2="30" stroke="#f77f00" stroke-width="2"/>
+          <rect x="520" y="14" width="110" height="28" rx="6" fill="#f77f00"/>
+          <text x="575" y="32" text-anchor="middle" fill="white" font-size="10">27 Professionalism</text>
+
+          <line x1="430" y1="60" x2="520" y2="90" stroke="#ef476f" stroke-width="2"/>
+          <rect x="520" y="76" width="110" height="28" rx="6" fill="#ef476f"/>
+          <text x="575" y="94" text-anchor="middle" fill="white" font-size="10">28 Legal Impact</text>
+
+          <line x1="350" y1="80" x2="350" y2="100" stroke="#06d6a0" stroke-width="2"/>
+          <rect x="295" y="98" width="110" height="22" rx="6" fill="#06d6a0"/>
+          <text x="350" y="113" text-anchor="middle" fill="#1a1a2e" font-size="10">29 Emerging Trends</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- NOTES TAB                                 -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-notes">
+    <!-- 24 ENVIRONMENTAL IMPACT -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--green);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">24</span><span class="notes-title">🌱 Computing & the Environmental Impact of Technology</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-body">
+        <div class="notes-def-box" style="border-color:var(--green);">
+          <span class="notes-def-label" style="background:var(--green);">KEY TERMS</span>
+          <strong class="hl-green">Computing technology</strong> – hardware, software and infrastructure underpinning current and emerging computer systems.<br>
+          <strong class="hl-green">E-waste</strong> – any form of discarded electronic equipment, including all computing technology.<br>
+          <strong class="hl-green">Non-renewable materials</strong> – resources that cannot be replaced naturally; only a certain amount exists.<br>
+          <strong class="hl-green">Carbon footprint</strong> – the amount of CO₂ an individual or organisation produces as a result of the energy they consume.
+        </div>
+
+        <div class="notes-subheading" style="color:var(--green);">🔄 The Lifecycle of Computing Technology</div>
+        <p>The environmental impact spans the <strong>entire lifecycle</strong> — from extracting raw materials right through to disposal. The average smartphone lifespan is <strong>less than 2 years</strong>, meaning rapid cycles of new manufacturing and e-waste.</p>
+
+        <svg viewBox="0 0 680 100" style="width:100%;max-width:680px;display:block;margin:10px auto;font-family:'Caveat',cursive;">
+          <rect width="680" height="100" fill="#f9fdf9" rx="8" stroke="#2d6a4f" stroke-width="1.5"/>
+          <rect x="10" y="25" width="120" height="50" rx="8" fill="#2d6a4f"/><text x="70" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">1. Raw Material</text><text x="70" y="63" text-anchor="middle" fill="white" font-size="11">Extraction</text>
+          <polygon points="130,50 148,40 148,60" fill="#1a1a2e"/>
+          <rect x="148" y="25" width="120" height="50" rx="8" fill="#118ab2"/><text x="208" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">2. Manufacturing</text><text x="208" y="63" text-anchor="middle" fill="white" font-size="11">&amp; Assembly</text>
+          <polygon points="268,50 286,40 286,60" fill="#1a1a2e"/>
+          <rect x="286" y="25" width="120" height="50" rx="8" fill="#f77f00"/><text x="346" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">3. Usage &amp;</text><text x="346" y="63" text-anchor="middle" fill="white" font-size="11">Energy Use</text>
+          <polygon points="406,50 424,40 424,60" fill="#1a1a2e"/>
+          <rect x="424" y="25" width="120" height="50" rx="8" fill="#ef476f"/><text x="484" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">4. Disposal</text><text x="484" y="63" text-anchor="middle" fill="white" font-size="11">E-waste</text>
+          <polygon points="544,50 562,40 562,60" fill="#1a1a2e"/>
+          <rect x="562" y="25" width="108" height="50" rx="8" fill="#06d6a0"/><text x="616" y="47" text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="bold">5. Recycling</text><text x="616" y="63" text-anchor="middle" fill="#1a1a2e" font-size="11">&amp; Recovery</text>
+        </svg>
+
+        <div class="notes-subheading" style="color:var(--green);">⛏️ Stage 1 &amp; 2: Raw Materials &amp; Manufacturing</div>
+        <p>Computing devices require many different raw materials: <strong>sand</strong> (glass for screens), <strong>oil</strong> (plastics for casings), and various metals including gold, copper, silver and palladium. Some metals used (uranium, thorium) are <strong>radioactive</strong> and can contaminate air, soil and groundwater. Rare-earth metals (China produces 90%+) have unique magnetic and electrochemical properties that improve computing performance.</p>
+        <div class="notes-tip">⚠️ <strong>Exam tip — Know ALL 6 hazardous materials restricted by the RoHS Directive:</strong><br>Cadmium · Lead · Mercury · Hexavalent chromium · PCBs (Polychlorinated biphenyls) · PBDEs (Polybrominated diphenylethers)</div>
+
+        <table class="gen-table" style="margin-top:10px;">
+          <tr><th>Hazardous Material</th><th>Use in Computing</th><th>Health Risk</th></tr>
+          <tr><td><strong>Cadmium</strong></td><td>Rechargeable batteries, printer inks &amp; toners</td><td>Kidney damage, lung cancer</td></tr>
+          <tr><td><strong>Lead</strong></td><td>Circuit boards, cable sheathing</td><td>Neurological damage (especially children)</td></tr>
+          <tr><td><strong>Mercury</strong></td><td>LCD screens</td><td>Brain and nervous system damage</td></tr>
+          <tr><td><strong>Hexavalent chromium</strong></td><td>Metal casings</td><td>Carcinogenic (cancer-causing)</td></tr>
+          <tr><td><strong>PCBs</strong></td><td>Fire-retardant plastics, circuit boards, connectors</td><td>Cancer, immune system damage</td></tr>
+          <tr><td><strong>PBDEs</strong></td><td>Fire-retardant plastics, circuit boards</td><td>Thyroid disruption, developmental issues</td></tr>
+        </table>
+
+        <div class="notes-grid-2" style="margin-top:12px;">
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">💧 Semiconductor Water Use</div>
+            <div class="n-card-bdy">A factory producing <strong>40,000 semiconductors/month</strong> uses ~<strong>20 million litres of water per day</strong> — equivalent to a city of 60,000 people. Untreated wastewater causes environmental pollution.</div>
+          </div>
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">⚗️ Energy to Make a Computer</div>
+            <div class="n-card-bdy">Making a <strong>24kg computer + monitor</strong> requires <strong>240kg of fossil fuels</strong> (10× its weight), ~<strong>1,500 litres of water</strong>, and significant chemicals — all before it's even switched on.</div>
+          </div>
+        </div>
+
+        <div class="notes-tip">📋 <strong>Global Regulations:</strong> EU <strong>RoHS Directive</strong> restricts all 6 hazardous materials. <strong>China RoHS2</strong> (2019) introduced voluntary certification. USA uses <strong>Toxic Substances Control Act (TSCA)</strong>. Governments also impose <strong>recycling targets</strong> to conserve limited resources.</div>
+
+        <div class="notes-subheading" style="color:var(--green);">⚡ Stage 3: Usage &amp; Energy Consumption</div>
+        <p>The energy used in manufacturing is <em>insignificant</em> compared to the energy consumed <strong>keeping devices running day after day</strong>. Despite efficiency improvements, the scale of connected devices means enormous total consumption.</p>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--green);">
+            <div class="n-card-hdr" style="background:var(--green);">📊 Scale</div>
+            <div class="n-card-bdy">• ~<strong>2 billion</strong> connected PCs &amp; laptops<br>• ~<strong>6 billion</strong> mobile devices<br>• Data centres use <strong>more energy than aviation</strong><br>• High-end apps, 3D modelling, video games = very high power</div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">🏢 Data Centres</div>
+            <div class="n-card-bdy">• Worst offenders: small inefficient private/govt centres<br>• Best practice: Facebook's Arctic Circle centre uses <strong>renewable hydroelectricity + cold climate</strong><br>• <strong>Sleep mode</strong> reduces idle power by 50%+</div>
+          </div>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--green);">🗑️ Stage 4: E-Waste Disposal</div>
+
+        <svg viewBox="0 0 660 110" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="110" fill="#fce4ec" rx="10" stroke="#ef476f" stroke-width="1.5"/>
+          <text x="330" y="20" text-anchor="middle" fill="#ef476f" font-size="13" font-weight="bold">The E-Waste Crisis — Key Facts</text>
+          <rect x="15" y="32" width="195" height="68" rx="8" fill="white" stroke="#ef476f" stroke-width="1.5"/>
+          <text x="113" y="54" text-anchor="middle" fill="#ef476f" font-size="11" font-weight="bold">⚖️ Scale</text>
+          <text x="113" y="70" text-anchor="middle" fill="#333" font-size="9">Will weigh as much as</text>
+          <text x="113" y="86" text-anchor="middle" fill="#333" font-size="9">11 Egyptian Pyramids (UN)</text>
+          <rect x="225" y="32" width="195" height="68" rx="8" fill="white" stroke="#ef476f" stroke-width="1.5"/>
+          <text x="323" y="54" text-anchor="middle" fill="#ef476f" font-size="11" font-weight="bold">♻️ Recycling Rate</text>
+          <text x="323" y="70" text-anchor="middle" fill="#333" font-size="9">Only 20% properly</text>
+          <text x="323" y="86" text-anchor="middle" fill="#333" font-size="9">collected and recycled</text>
+          <rect x="435" y="32" width="210" height="68" rx="8" fill="white" stroke="#ef476f" stroke-width="1.5"/>
+          <text x="540" y="54" text-anchor="middle" fill="#ef476f" font-size="11" font-weight="bold">💰 Hidden Value</text>
+          <text x="540" y="70" text-anchor="middle" fill="#333" font-size="9">Per 1M phones: 24kg gold</text>
+          <text x="540" y="86" text-anchor="middle" fill="#333" font-size="9">250kg silver, 9t copper</text>
+        </svg>
+
+
+        <!-- E-WASTE LANDFILL VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 220" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="ewbg" cx="30%" cy="80%" r="80%"><stop offset="0%" stop-color="#1a0a00"/><stop offset="100%" stop-color="#0a0500"/></radialGradient>
+              <radialGradient id="toxic_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#84cc16" stop-opacity="0.8"/><stop offset="100%" stop-color="#84cc16" stop-opacity="0"/></radialGradient>
+              <filter id="tfilt"><feGaussianBlur stdDeviation="5"/></filter>
+            </defs>
+            <rect width="660" height="220" fill="url(#ewbg)" rx="12"/>
+            <!-- Sky gradient -->
+            <rect x="0" y="0" width="660" height="100" fill="#1c1c0a" opacity="0.5" rx="12"/>
+            <!-- Toxic glow from pile -->
+            <ellipse cx="330" cy="160" rx="120" ry="40" fill="url(#toxic_glow)" filter="url(#tfilt)"/>
+            <!-- Ground -->
+            <rect x="0" y="165" width="660" height="55" fill="#2d1a00" rx="0"/>
+            <rect x="0" y="155" width="660" height="15" fill="#3d2200"/>
+            <!-- E-waste pile -->
+            <rect x="180" y="120" width="40" height="40" rx="4" fill="#374151" stroke="#6b7280" stroke-width="1"/>
+            <rect x="185" y="125" width="30" height="8" rx="2" fill="#4b5563"/>
+            <text x="200" y="148" text-anchor="middle" fill="#9ca3af" font-size="9">PC</text>
+            <rect x="230" y="110" width="50" height="50" rx="4" fill="#1f2937" stroke="#374151" stroke-width="1"/>
+            <rect x="233" y="113" width="44" height="30" rx="2" fill="#111827"/>
+            <circle cx="255" cy="128" r="5" fill="#374151"/>
+            <text x="255" y="153" text-anchor="middle" fill="#9ca3af" font-size="9">Monitor</text>
+            <rect x="290" y="125" width="30" height="35" rx="3" fill="#374151" stroke="#4b5563" stroke-width="1"/>
+            <text x="305" y="148" text-anchor="middle" fill="#9ca3af" font-size="8">Phone</text>
+            <rect x="330" y="115" width="45" height="45" rx="4" fill="#292524" stroke="#57534e" stroke-width="1"/>
+            <text x="353" y="145" text-anchor="middle" fill="#9ca3af" font-size="9">Laptop</text>
+            <rect x="385" y="125" width="35" height="35" rx="3" fill="#1c1917" stroke="#44403c" stroke-width="1"/>
+            <text x="403" y="148" text-anchor="middle" fill="#9ca3af" font-size="8">Printer</text>
+            <rect x="430" y="120" width="40" height="40" rx="4" fill="#374151" stroke="#6b7280" stroke-width="1"/>
+            <text x="450" y="145" text-anchor="middle" fill="#9ca3af" font-size="9">Tablet</text>
+            <!-- Toxic drips/leaks -->
+            <path d="M 255 160 Q 240 175 245 190" fill="none" stroke="#84cc16" stroke-width="2" opacity="0.7"/>
+            <circle cx="245" cy="193" r="4" fill="#84cc16" opacity="0.7"/>
+            <path d="M 330 160 Q 335 178 325 192" fill="none" stroke="#84cc16" stroke-width="2" opacity="0.6"/>
+            <circle cx="325" cy="195" r="3" fill="#84cc16" opacity="0.6"/>
+            <path d="M 400 160 Q 415 175 410 190" fill="none" stroke="#84cc16" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="410" cy="193" r="3" fill="#84cc16" opacity="0.5"/>
+            <!-- Toxic cloud -->
+            <ellipse cx="280" cy="95" rx="50" ry="22" fill="#365314" opacity="0.5"/>
+            <ellipse cx="320" cy="85" rx="40" ry="18" fill="#3f6212" opacity="0.4"/>
+            <ellipse cx="360" cy="92" rx="45" ry="20" fill="#365314" opacity="0.45"/>
+            <text x="320" y="94" text-anchor="middle" fill="#bef264" font-size="10" font-weight="bold">☠ Toxic Gases</text>
+            <!-- Arrow to water -->
+            <path d="M 300 195 Q 200 200 150 200" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,3" opacity="0.7"/>
+            <text x="120" y="204" fill="#93c5fd" font-size="9">💧 Water</text>
+            <text x="112" y="216" fill="#93c5fd" font-size="9">contamination</text>
+            <!-- Labels -->
+            <text x="60" y="130" fill="#fbbf24" font-size="11" font-weight="bold">E-Waste</text>
+            <text x="60" y="148" fill="#fbbf24" font-size="11" font-weight="bold">Landfill</text>
+            <text x="60" y="164" fill="#f87171" font-size="9">Toxic materials</text>
+            <text x="60" y="178" fill="#f87171" font-size="9">leak into soil</text>
+            <!-- Right side stats -->
+            <rect x="540" y="75" width="108" height="110" rx="8" fill="#1c1917" stroke="#44403c" stroke-width="1" opacity="0.9"/>
+            <text x="594" y="96" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">📊 Key Facts</text>
+            <text x="594" y="114" text-anchor="middle" fill="#fcd34d" font-size="9">52M tonnes/year</text>
+            <text x="594" y="130" text-anchor="middle" fill="#86efac" font-size="9">Only 20% recycled</text>
+            <text x="594" y="146" text-anchor="middle" fill="#f87171" font-size="9">= 11 Pyramids!</text>
+            <text x="594" y="162" text-anchor="middle" fill="#a78bfa" font-size="9">Per 1M phones:</text>
+            <text x="594" y="176" text-anchor="middle" fill="#a78bfa" font-size="9">24kg gold inside</text>
+            <!-- Title -->
+            <rect x="0" y="0" width="660" height="34" fill="#1a0a00" opacity="0.8" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#fcd34d" font-size="13" font-weight="bold">♻️ E-Waste Crisis — What Happens When We Dump Old Tech</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <p>E-waste dumped in landfill allows <strong>toxic substances to leak into ground, contaminate water supplies, infiltrate the food chain and pollute the air</strong>. Large amounts are illegally shipped to developing countries. People who informally scrap devices risk exposure to mercury, lead and toxic fumes.</p>
+
+        <div class="notes-subheading" style="color:var(--green);">♻️ Stage 5: Recycling &amp; Green Computing</div>
+        <div class="notes-list-item"><span class="nl-dot" style="background:var(--green);">✓</span><div>Most countries set regulations and targets for e-waste collection and recovery</div></div>
+        <div class="notes-list-item"><span class="nl-dot" style="background:var(--green);">✓</span><div>Major manufacturers (Apple, Samsung, Dell) run <strong>take-back programmes</strong></div></div>
+        <div class="notes-list-item"><span class="nl-dot" style="background:var(--green);">✓</span><div>State-of-the-art recycling plants in developing countries turn e-waste into an <strong>e-opportunity</strong></div></div>
+        <div class="notes-list-item"><span class="nl-dot" style="background:var(--green);">✓</span><div>Schemes that refurbish and redistribute pre-owned devices extend lifespan and reduce waste</div></div>
+
+        <div class="notes-subheading" style="color:var(--green);">🌿 How Computing Helps Preserve the Environment</div>
+
+        <svg viewBox="0 0 680 220" style="width:100%;max-width:680px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="680" height="220" fill="#f9fdf9" rx="8" stroke="#2d6a4f" stroke-width="1.5"/>
+          <text x="340" y="22" text-anchor="middle" fill="#2d6a4f" font-size="14" font-weight="bold">Computing Technology Protecting Our Planet</text>
+          <rect x="20" y="36" width="150" height="170" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+          <text x="95" y="58" text-anchor="middle" fill="#118ab2" font-size="12" font-weight="bold">🌡️ Climate</text>
+          <text x="95" y="74" text-anchor="middle" fill="#118ab2" font-size="12" font-weight="bold">Change</text>
+          <text x="95" y="96" text-anchor="middle" fill="#333" font-size="10">NASA: satellite sea</text>
+          <text x="95" y="112" text-anchor="middle" fill="#333" font-size="10">surface temperatures</text>
+          <text x="95" y="132" text-anchor="middle" fill="#333" font-size="10">Glacier sensor probes</text>
+          <text x="95" y="148" text-anchor="middle" fill="#333" font-size="10">(measure ice melt)</text>
+          <text x="95" y="168" text-anchor="middle" fill="#333" font-size="10">Oxford: distributed</text>
+          <text x="95" y="184" text-anchor="middle" fill="#333" font-size="10">home PCs flood research</text>
+          <rect x="185" y="36" width="150" height="170" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+          <text x="260" y="58" text-anchor="middle" fill="#f77f00" font-size="12" font-weight="bold">🚨 Early</text>
+          <text x="260" y="74" text-anchor="middle" fill="#f77f00" font-size="12" font-weight="bold">Warning</text>
+          <text x="260" y="96" text-anchor="middle" fill="#333" font-size="10">Tsunami sensor</text>
+          <text x="260" y="112" text-anchor="middle" fill="#333" font-size="10">networks detect waves</text>
+          <text x="260" y="132" text-anchor="middle" fill="#333" font-size="10">Communications</text>
+          <text x="260" y="148" text-anchor="middle" fill="#333" font-size="10">trigger coastal</text>
+          <text x="260" y="168" text-anchor="middle" fill="#333" font-size="10">evacuations in time</text>
+          <rect x="350" y="36" width="150" height="170" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+          <text x="425" y="58" text-anchor="middle" fill="#2d6a4f" font-size="12" font-weight="bold">🐘 Conservation</text>
+          <text x="425" y="80" text-anchor="middle" fill="#333" font-size="10">GPS collars track</text>
+          <text x="425" y="96" text-anchor="middle" fill="#333" font-size="10">Malaysian elephants</text>
+          <text x="425" y="116" text-anchor="middle" fill="#333" font-size="10">Transponders on bees</text>
+          <text x="425" y="132" text-anchor="middle" fill="#333" font-size="10">study disease effects</text>
+          <text x="425" y="152" text-anchor="middle" fill="#333" font-size="10">Phones detect illegal</text>
+          <text x="425" y="168" text-anchor="middle" fill="#333" font-size="10">rainforest logging</text>
+          <rect x="515" y="36" width="150" height="170" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+          <text x="590" y="58" text-anchor="middle" fill="#ef476f" font-size="12" font-weight="bold">⚡ Smart</text>
+          <text x="590" y="74" text-anchor="middle" fill="#ef476f" font-size="12" font-weight="bold">Energy</text>
+          <text x="590" y="96" text-anchor="middle" fill="#333" font-size="10">Sensors: light, temp,</text>
+          <text x="590" y="112" text-anchor="middle" fill="#333" font-size="10">people, electricity use</text>
+          <text x="590" y="132" text-anchor="middle" fill="#333" font-size="10">Auto-adjust electricity</text>
+          <text x="590" y="148" text-anchor="middle" fill="#333" font-size="10">in buildings (MMU)</text>
+          <text x="590" y="168" text-anchor="middle" fill="#333" font-size="10">Solar panel tracking</text>
+          <text x="590" y="184" text-anchor="middle" fill="#333" font-size="10">motors + battery store</text>
+        </svg>
+
+        <div class="notes-def-box" style="border-color:var(--teal);">
+          <span class="notes-def-label" style="background:#059669;">GREEN COMPUTING</span>
+          <strong>Green computing</strong> = efficient use of resources in computing, making companies and individuals responsible for producing and using technology with a <strong>minimal carbon footprint</strong>. Focus areas: energy efficiency · safer manufacturing materials · environmentally friendly systems.
+        </div>
+      </div>
+    </div>
+
+    <!-- 25 PRIVACY -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--blue);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">25</span><span class="notes-title">🔒 Privacy</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-body">
+        <div class="notes-def-box" style="border-color:var(--blue);">
+          <span class="notes-def-label" style="background:var(--blue);">KEY TERMS</span>
+          <strong class="hl-blue">Ethics</strong> – a set of moral principles that govern a person's behaviour (what is right vs wrong).<br>
+          <strong class="hl-blue">Privacy</strong> – the right to be left alone and free from unwanted scrutiny and intrusion.<br>
+          <strong class="hl-blue">Personal data</strong> – information that is personal and unique to an individual.<br>
+          <strong class="hl-blue">Identity theft</strong> – stealing another person's personal details (bank account, passport) to make purchases or run up debts in their name.<br>
+          <strong class="hl-blue">Invasion of privacy</strong> – when your right to be alone is taken away without your permission.<br>
+          <strong class="hl-blue">Surveillance technology</strong> – CCTV, drones, number plate recognition, bugging and tracking devices used to monitor people, often without their knowledge.<br>
+          <strong class="hl-blue">Whistle-blower</strong> – someone who draws attention to the activities of an organisation believed to be acting illegally or unethically.
+        </div>
+
+        <div class="notes-subheading" style="color:var(--blue);">📊 How Personal Data is Collected</div>
+        <p>Every time you post on social media, sign up for an online account, use a web-based email service or search engine, you add to a store of personal data: where you live, what you look like, who your friends are, your likes/dislikes, bank details, browsing habits. This data is stored on servers belonging to <em>online services, not you</em>.</p>
+
+        <svg viewBox="0 0 660 170" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="170" fill="#e3f2fd" rx="10" stroke="#118ab2" stroke-width="2"/>
+          <text x="330" y="22" text-anchor="middle" fill="#118ab2" font-size="13" font-weight="bold">Your Personal Data Trail</text>
+          <circle cx="330" cy="98" r="34" fill="#118ab2"/>
+          <text x="330" y="94" text-anchor="middle" fill="white" font-size="12" font-weight="bold">YOUR</text>
+          <text x="330" y="110" text-anchor="middle" fill="white" font-size="12" font-weight="bold">DATA</text>
+          <line x1="302" y1="84" x2="215" y2="55" stroke="#118ab2" stroke-width="1.5"/>
+          <rect x="100" y="37" width="115" height="36" rx="6" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="158" y="55" text-anchor="middle" fill="#118ab2" font-size="10" font-weight="bold">📱 Social Media</text>
+          <text x="158" y="69" text-anchor="middle" fill="#555" font-size="9">Photos, likes, friends</text>
+          <line x1="338" y1="64" x2="338" y2="38" stroke="#118ab2" stroke-width="1.5"/>
+          <rect x="275" y="22" width="126" height="36" rx="6" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="338" y="40" text-anchor="middle" fill="#118ab2" font-size="10" font-weight="bold">🔍 Search Engines</text>
+          <text x="338" y="54" text-anchor="middle" fill="#555" font-size="9">Queries, location data</text>
+          <line x1="358" y1="84" x2="445" y2="55" stroke="#118ab2" stroke-width="1.5"/>
+          <rect x="445" y="37" width="115" height="36" rx="6" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="503" y="55" text-anchor="middle" fill="#118ab2" font-size="10" font-weight="bold">🛒 Online Shopping</text>
+          <text x="503" y="69" text-anchor="middle" fill="#555" font-size="9">Purchases, bank data</text>
+          <line x1="302" y1="112" x2="215" y2="141" stroke="#118ab2" stroke-width="1.5"/>
+          <rect x="100" y="123" width="115" height="36" rx="6" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="158" y="141" text-anchor="middle" fill="#118ab2" font-size="10" font-weight="bold">📧 Email Services</text>
+          <text x="158" y="155" text-anchor="middle" fill="#555" font-size="9">Content, contacts</text>
+          <line x1="358" y1="112" x2="445" y2="141" stroke="#118ab2" stroke-width="1.5"/>
+          <rect x="445" y="123" width="115" height="36" rx="6" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="503" y="141" text-anchor="middle" fill="#118ab2" font-size="10" font-weight="bold">📍 Location Services</text>
+          <text x="503" y="155" text-anchor="middle" fill="#555" font-size="9">Movements, GPS data</text>
+        </svg>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">⚠️ Security Risks</div>
+            <div class="n-card-bdy">
+              • <strong>Weak security</strong> → data falls into wrong hands<br>
+              • Vulnerable to <strong>phishing</strong> attacks and scams<br>
+              • <strong>Identity theft</strong> → fraud in your name<br>
+              • Data breaches (e.g. WannaCry ransomware, 2017 — 150 countries infected including NHS)<br>
+              • Inaccurate data can follow a person throughout their life
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">💰 Benefits of Sharing</div>
+            <div class="n-card-bdy">
+              • Organisations provide <strong>personalised services</strong><br>
+              • Faster and more convenient online transactions<br>
+              • Big data identifies drug side effects, tracks disease spread<br>
+              • Relevant product recommendations save time<br>
+              • Public health insights from population-wide data
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-tip">📌 <strong>Data Protection Principles</strong> (most countries):<br>
+          1️⃣ Processed fairly and lawfully &nbsp; 2️⃣ Only for the specific purpose collected &nbsp; 3️⃣ Adequate, relevant and not excessive<br>
+          4️⃣ Accurate and up to date &nbsp; 5️⃣ Not kept longer than necessary &nbsp; 6️⃣ Kept secure
+        </div>
+
+        <div class="notes-subheading" style="color:var(--blue);">🍪 Cookies vs Spyware</div>
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">🍪 Cookies</div>
+            <div class="n-card-bdy">Small data files stored in your browser. Record: websites visited, products viewed or bought, preferences. Enable personalised services. <strong>EU law gives right to opt out.</strong></div>
+          </div>
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">🕵️ Spyware</div>
+            <div class="n-card-bdy">A program stored on your hard drive <strong>without you realising</strong>. Collects personal info and transmits it to a third party. Unlike cookies, you have not consented. A serious threat to privacy.</div>
+          </div>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--blue);">🔭 Big Data</div>
+        <p>Individual pieces of data seem harmless (phone number, music download, hobbies). But when combined, they produce a <strong>very accurate, detailed profile</strong> revealing far more than you intended to disclose. This could lead to identity theft or social engineering.</p>
+
+        <div class="notes-subheading" style="color:var(--blue);">📡 Surveillance Technology</div>
+        <p>Police can track vehicle movements in real time using ANPR (records kept 2 years for intelligence). CCTV + facial recognition enables police to identify and track specific individuals. In 2013, <strong>Edward Snowden (whistle-blower)</strong> revealed the extent to which governments worldwide were monitoring and spying on their citizens.</p>
+
+
+        <!-- SURVEILLANCE VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 230" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="svbg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0a0a1a"/><stop offset="100%" stop-color="#050508"/></radialGradient>
+              <radialGradient id="cam_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.6"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+              <filter id="sfilt"><feGaussianBlur stdDeviation="5"/></filter>
+            </defs>
+            <rect width="660" height="230" fill="url(#svbg)" rx="12"/>
+            <!-- Grid lines - surveillance aesthetic -->
+            <line x1="0" y1="50" x2="660" y2="50" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="0" y1="100" x2="660" y2="100" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="0" y1="150" x2="660" y2="150" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="0" y1="200" x2="660" y2="200" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="165" y1="0" x2="165" y2="230" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="330" y1="0" x2="330" y2="230" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <line x1="495" y1="0" x2="495" y2="230" stroke="#1e3a5f" stroke-width="0.5" opacity="0.5"/>
+            <!-- CCTV camera icon -->
+            <rect x="80" y="65" width="50" height="30" rx="4" fill="#374151" stroke="#4b5563" stroke-width="1.5"/>
+            <polygon points="130,70 160,60 160,105 130,95" fill="#374151" stroke="#4b5563" stroke-width="1.5"/>
+            <circle cx="90" cy="80" r="6" fill="#ef4444" opacity="0.8"/>
+            <circle cx="90" cy="80" r="3" fill="#fca5a5"/>
+            <!-- Camera scan beam -->
+            <path d="M 160 82 L 330 30 L 330 134 Z" fill="#ef4444" opacity="0.07"/>
+            <path d="M 160 82 L 330 30" stroke="#ef4444" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+            <path d="M 160 82 L 330 134" stroke="#ef4444" stroke-width="1" stroke-dasharray="6,4" opacity="0.5"/>
+            <!-- CCTV glow -->
+            <ellipse cx="90" cy="80" rx="30" ry="30" fill="url(#cam_glow)" filter="url(#sfilt)"/>
+            <!-- Person being watched -->
+            <circle cx="330" cy="82" r="16" fill="#4b5563"/>
+            <ellipse cx="330" cy="82" rx="16" ry="16" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,2"/>
+            <text x="330" y="87" text-anchor="middle" fill="white" font-size="16">👤</text>
+            <!-- Targeting reticle -->
+            <circle cx="330" cy="82" r="28" fill="none" stroke="#ef4444" stroke-width="1" opacity="0.6"/>
+            <line x1="302" y1="82" x2="318" y2="82" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+            <line x1="342" y1="82" x2="358" y2="82" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+            <line x1="330" y1="54" x2="330" y2="68" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+            <line x1="330" y1="96" x2="330" y2="110" stroke="#ef4444" stroke-width="1" opacity="0.8"/>
+            <!-- Data tags floating -->
+            <rect x="370" y="40" width="110" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+            <text x="425" y="55" text-anchor="middle" fill="#93c5fd" font-size="9">📍 Location: 51.5074°N</text>
+            <rect x="380" y="72" width="100" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+            <text x="430" y="87" text-anchor="middle" fill="#93c5fd" font-size="9">🕐 Time: 08:42:17</text>
+            <rect x="370" y="104" width="115" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+            <text x="428" y="119" text-anchor="middle" fill="#93c5fd" font-size="9">🚗 Plate: AB12 CDE</text>
+            <rect x="375" y="136" width="105" height="22" rx="4" fill="#1e3a5f" stroke="#3b82f6" stroke-width="1" opacity="0.9"/>
+            <text x="428" y="151" text-anchor="middle" fill="#93c5fd" font-size="9">😀 Face Match: 94%</text>
+            <!-- Lines from person to tags -->
+            <line x1="346" y1="72" x2="370" y2="51" stroke="#3b82f6" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+            <line x1="346" y1="82" x2="380" y2="83" stroke="#3b82f6" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+            <line x1="346" y1="90" x2="370" y2="115" stroke="#3b82f6" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.5"/>
+            <!-- Drone icon top right -->
+            <text x="570" y="60" font-size="28" text-anchor="middle">🚁</text>
+            <path d="M 556 68 L 400 90" stroke="#f59e0b" stroke-width="1" stroke-dasharray="5,3" opacity="0.5"/>
+            <text x="580" y="78" fill="#fbbf24" font-size="9">Drone</text>
+            <!-- Bottom stats -->
+            <rect x="20" y="165" width="620" height="50" rx="8" fill="#0f172a" stroke="#1e3a5f" stroke-width="1" opacity="0.9"/>
+            <text x="40" y="185" fill="#ef4444" font-size="10" font-weight="bold">CCTV</text>
+            <text x="40" y="200" fill="#9ca3af" font-size="9">Cameras in UK cities</text>
+            <text x="40" y="212" fill="#fca5a5" font-size="9">~1 per 13 people</text>
+            <text x="180" y="185" fill="#f59e0b" font-size="10" font-weight="bold">ANPR</text>
+            <text x="180" y="200" fill="#9ca3af" font-size="9">Number plate scans</text>
+            <text x="180" y="212" fill="#fcd34d" font-size="9">kept 2 years</text>
+            <text x="320" y="185" fill="#a78bfa" font-size="10" font-weight="bold">Facial Recognition</text>
+            <text x="320" y="200" fill="#9ca3af" font-size="9">Identifies specific individuals</text>
+            <text x="320" y="212" fill="#c4b5fd" font-size="9">from CCTV footage</text>
+            <text x="490" y="185" fill="#34d399" font-size="10" font-weight="bold">Snowden (2013)</text>
+            <text x="490" y="200" fill="#9ca3af" font-size="9">Revealed scale of</text>
+            <text x="490" y="212" fill="#6ee7b7" font-size="9">govt surveillance</text>
+            <!-- Title -->
+            <rect x="0" y="0" width="660" height="34" fill="#0a0a1a" opacity="0.85" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#fca5a5" font-size="13" font-weight="bold">👁️ Surveillance Technology — Are You Being Watched?</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--blue);">📍 Location-Based Services</div>
+        <p>Location-based services use GPS/Wi-Fi to allow people to share current location, meet up nearby, check in to venues. The disadvantage: they allow other people to <strong>track your movements, find out where you live, and what you are doing</strong> — a huge invasion of privacy if misused.</p>
+
+        <div class="notes-subheading" style="color:var(--blue);">🛡️ Privacy-Enhancing Tools</div>
+        <table class="gen-table">
+          <tr><th>Tool</th><th>How it Protects You</th></tr>
+          <tr><td><strong>Encryption</strong></td><td>Scrambles data so only authorised parties can read it — intercepted data is unreadable</td></tr>
+          <tr><td><strong>Cookie cleaners / Ad blockers</strong></td><td>Detects and removes tracking cookies, spyware and adware installed on your device</td></tr>
+          <tr><td><strong>Identity management service</strong></td><td>A trusted third party holds proof of your identity and issues you an identifier — transact without revealing personal info</td></tr>
+          <tr><td><strong>Password manager</strong></td><td>Stores all website login credentials in an encrypted database; you only need one master password</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 26 DIGITAL INCLUSION -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--purple);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">26</span><span class="notes-title">📱 Digital Inclusion</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-body">
+        <div class="notes-def-box" style="border-color:var(--purple);">
+          <span class="notes-def-label" style="background:var(--purple);">KEY TERMS</span>
+          <strong class="hl-purple">Digital inclusion</strong> – ensuring everyone has <em>affordable</em> access to computing technology <em>and</em> the necessary skills to take advantage of it.<br>
+          <strong class="hl-purple">Digital divide</strong> – the gap between people who are technology-empowered and those who are technology-excluded. Exists both between nations AND within the same country.<br>
+          <strong class="hl-purple">Technology-empowered</strong> – people who have access to computing technology and the skills to use it.<br>
+          <strong class="hl-purple">Technology-excluded</strong> – people who lack access to, or skills to use, computing technology.
+        </div>
+
+        <svg viewBox="0 0 660 120" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="120" fill="#f3e5f5" rx="10" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="330" y="22" text-anchor="middle" fill="#7b2d8b" font-size="13" font-weight="bold">The Digital Divide</text>
+          <rect x="20" y="34" width="260" height="72" rx="10" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+          <text x="150" y="58" text-anchor="middle" fill="#2d6a4f" font-size="13" font-weight="bold">✅ Technology-EMPOWERED</text>
+          <text x="150" y="78" text-anchor="middle" fill="#2d6a4f" font-size="10">Access to information, better jobs,</text>
+          <text x="150" y="94" text-anchor="middle" fill="#2d6a4f" font-size="10">democratic voice, economic growth</text>
+          <text x="330" y="80" text-anchor="middle" fill="#7b2d8b" font-size="24" font-weight="bold">↔</text>
+          <rect x="380" y="34" width="260" height="72" rx="10" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+          <text x="510" y="58" text-anchor="middle" fill="#ef476f" font-size="13" font-weight="bold">❌ Technology-EXCLUDED</text>
+          <text x="510" y="78" text-anchor="middle" fill="#ef476f" font-size="10">Poor job prospects, social isolation,</text>
+          <text x="510" y="94" text-anchor="middle" fill="#ef476f" font-size="10">no voice, financial disadvantage</text>
+        </svg>
+
+        <div class="notes-subheading" style="color:var(--purple);">⚠️ Impact of Being Technology-Excluded</div>
+        <table class="gen-table">
+          <tr><th>Area of Life</th><th>Impact of Being Technology-Excluded</th></tr>
+          <tr><td><strong>Information &amp; Services</strong></td><td>Internet is the <em>default</em> option for accessing information, public services and entertainment</td></tr>
+          <tr><td><strong>Employment</strong></td><td>Poor digital literacy makes finding a job harder; limited to poorly paid work with little progression</td></tr>
+          <tr><td><strong>Democracy</strong></td><td>Internet gives people a voice and lets them express views to a worldwide audience — vital where citizens have limited freedom of expression</td></tr>
+          <tr><td><strong>Economic Growth</strong></td><td>Businesses that exploit computing have a competitive advantage — widens the economic gap</td></tr>
+          <tr><td><strong>Saving Money</strong></td><td>Paying bills and shopping online is often cheaper and gives better consumer protection</td></tr>
+          <tr><td><strong>Social Isolation</strong></td><td>Internet keeps people in touch with friends and family — exclusion leads to loneliness</td></tr>
+        </table>
+
+        <div class="notes-subheading" style="color:var(--purple);">🌐 Initiatives Towards Digital Inclusion</div>
+        <svg viewBox="0 0 660 200" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="200" fill="#f3e5f5" rx="10" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="330" y="22" text-anchor="middle" fill="#7b2d8b" font-size="13" font-weight="bold">Global Digital Inclusion Initiatives</text>
+          <rect x="15" y="34" width="145" height="152" rx="8" fill="white" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="88" y="56" text-anchor="middle" fill="#7b2d8b" font-size="12" font-weight="bold">🇨🇴 Colombia</text>
+          <text x="88" y="74" text-anchor="middle" fill="#333" font-size="9">Govt subsidies for</text>
+          <text x="88" y="90" text-anchor="middle" fill="#333" font-size="9">low-income families</text>
+          <text x="88" y="110" text-anchor="middle" fill="#333" font-size="9">Satellite connections</text>
+          <text x="88" y="126" text-anchor="middle" fill="#333" font-size="9">for remote schools</text>
+          <rect x="170" y="34" width="145" height="152" rx="8" fill="white" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="243" y="56" text-anchor="middle" fill="#7b2d8b" font-size="12" font-weight="bold">🇮🇳 India</text>
+          <text x="243" y="74" text-anchor="middle" fill="#333" font-size="9">Online gateway for</text>
+          <text x="243" y="90" text-anchor="middle" fill="#333" font-size="9">national ID, tax,</text>
+          <text x="243" y="106" text-anchor="middle" fill="#333" font-size="9">pension &amp; passport</text>
+          <text x="243" y="122" text-anchor="middle" fill="#333" font-size="9">services for citizens</text>
+          <rect x="325" y="34" width="145" height="152" rx="8" fill="white" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="398" y="56" text-anchor="middle" fill="#7b2d8b" font-size="12" font-weight="bold">🇰🇪 Kenya</text>
+          <text x="398" y="74" text-anchor="middle" fill="#333" font-size="9">Digital learning</text>
+          <text x="398" y="90" text-anchor="middle" fill="#333" font-size="9">programme to drive</text>
+          <text x="398" y="106" text-anchor="middle" fill="#333" font-size="9">primary education</text>
+          <text x="398" y="122" text-anchor="middle" fill="#333" font-size="9">and quality improvement</text>
+          <rect x="480" y="34" width="165" height="152" rx="8" fill="white" stroke="#7b2d8b" stroke-width="1.5"/>
+          <text x="563" y="56" text-anchor="middle" fill="#7b2d8b" font-size="12" font-weight="bold">🇹🇭 Thailand</text>
+          <text x="563" y="74" text-anchor="middle" fill="#333" font-size="9">20+ rural Internet</text>
+          <text x="563" y="90" text-anchor="middle" fill="#333" font-size="9">centres nationwide</text>
+          <text x="563" y="106" text-anchor="middle" fill="#333" font-size="9">ICT skills for youth</text>
+          <text x="563" y="122" text-anchor="middle" fill="#333" font-size="9">&amp; local communities</text>
+        </svg>
+
+        <div class="notes-tip">💡 <strong>Project Loon (Google)</strong> — Internet via stratospheric balloons flying <strong>20km above the earth</strong>. Uses redesigned cell tower components powered by solar panels, carried by balloons to provide coverage in remote areas where ground infrastructure is impractical.<br><br>
+        📱 <strong>Mobile phones as a bridge:</strong> 77% of the world already lives within range of a mobile network (World Bank). In areas with limited landline infrastructure, mobile technology fills the gap — having a huge impact even at lower device density than in developed countries.</div>
+      </div>
+    </div>
+
+    <!-- 27 PROFESSIONALISM -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--orange);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">27</span><span class="notes-title">💼 Professionalism</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-body">
+        <div class="notes-def-box" style="border-color:var(--orange);">
+          <span class="notes-def-label" style="background:var(--orange);">KEY TERMS</span>
+          <strong class="hl-orange">Professionalism</strong> – the skill and competence expected of a person in a professional setting.<br>
+          <strong class="hl-orange">Ethics</strong> – a set of moral principles that govern behaviour (what is right vs wrong).<br>
+          <strong class="hl-orange">Start-up</strong> – a company in the first stage of developing a product or service for which there is demand.
+        </div>
+
+        <p>Computer scientists work across many settings — <strong>multinational companies</strong> (Microsoft, Apple), <strong>start-ups</strong>, <strong>hospitals</strong>, <strong>universities</strong>, and as <strong>self-employed individuals</strong>. Their work can literally put lives at risk (e.g. embedded systems in cars, medical devices), making ethics especially critical.</p>
+
+        <div class="notes-def-box" style="border-color:var(--orange);">
+          <span class="notes-def-label" style="background:var(--orange);">BCS CODE OF CONDUCT</span>
+          The <strong>BCS (British Computer Society)</strong> is the <em>Chartered Institute for IT</em>. Members pay annual fees to access specialist conferences, training and publications. The BCS Code of Conduct specifies members must:
+          <ul style="margin-left:16px;margin-top:8px;line-height:1.8;">
+            <li>Always respect the <strong>wellbeing, privacy and security</strong> of the environment and people they work with</li>
+            <li><strong>Never stop learning</strong> — continuously gain skills and professional knowledge</li>
+            <li>Behave <strong>ethically and with integrity</strong> at all times</li>
+            <li>Abide by all relevant <strong>laws and regulations</strong></li>
+            <li>Act in the <strong>public interest</strong> — not just their employer's</li>
+          </ul>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--orange);">🚗 Ethical Dilemmas — Car Brakes Embedded System</div>
+        <p>A computer scientist developing an embedded system to control car brakes may face situations where legal and ethical considerations clash:</p>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">Scenario 1: Bug Found</div>
+            <div class="n-card-bdy">She spots a bug but fixing it will <strong>delay the project deadline</strong>. She MUST report it — shipping unsafe brakes could cause deaths. <strong>Public safety must come before deadlines.</strong></div>
+          </div>
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">Scenario 2: Security Flaw</div>
+            <div class="n-card-bdy">She discovers someone could remotely hack the brakes. Even if the probability is low, she <strong>MUST disclose this risk</strong> — a professional cannot hide a safety vulnerability from the public.</div>
+          </div>
+          <div class="n-card" style="border-color:var(--purple);">
+            <div class="n-card-hdr" style="background:var(--purple);">Scenario 3: Bribed by Competitor</div>
+            <div class="n-card-bdy">A competitor offers to pay for the code. She <strong>MUST refuse</strong> — sharing proprietary code breaches her employment contract, confidentiality agreements, and is likely illegal under IP law.</div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">Scenario 4: False Claims</div>
+            <div class="n-card-bdy">Her employer makes <strong>untrue claims</strong> about the system's safety capabilities. She must challenge this — allowing false claims would be unethical and potentially illegal under consumer protection law.</div>
+          </div>
+        </div>
+
+        <div class="notes-tip">💡 An action can be <strong>legal but not ethical</strong>. E.g. it's legal to leave an old computer in the attic. But if someone in a developing country would benefit from it, the ethical thing is to pass it on. Computer scientists must make judgements that go beyond just following the law.</div>
+      </div>
+    </div>
+
+    <!-- 28 LEGAL IMPACT -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--coral);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">28</span><span class="notes-title">⚖️ Computing & the Legal Impact of Technology</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-body">
+        <div class="notes-def-box" style="border-color:var(--coral);">
+          <span class="notes-def-label" style="background:var(--coral);">KEY TERMS</span>
+          <strong class="hl-coral">Intellectual property (IP)</strong> – a unique creative product of a human mind that has commercial value (software, music, designs, etc.).<br>
+          <strong class="hl-coral">Patent</strong> – an exclusive right granted to an inventor to make, use and sell an invention for a fixed period of time (<strong>20 years</strong>).<br>
+          <strong class="hl-coral">Open-source software</strong> – software that is free to edit and redistribute; source code is publicly available.<br>
+          <strong class="hl-coral">Proprietary software</strong> – software that belongs to an individual or company; users cannot modify the source code.<br>
+          <strong class="hl-coral">Creative Commons</strong> – an organisation that allows people to set flexible copyright terms for their IP, e.g. allowing non-commercial copying.
+        </div>
+
+        <div class="notes-subheading" style="color:var(--coral);">© Copyright vs ™ Patent</div>
+
+        <svg viewBox="0 0 660 160" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="160" fill="#fce4ec" rx="10" stroke="#ef476f" stroke-width="1.5"/>
+          <text x="330" y="22" text-anchor="middle" fill="#ef476f" font-size="14" font-weight="bold">Copyright vs Patent — Key Differences</text>
+          <rect x="20" y="36" width="295" height="110" rx="10" fill="white" stroke="#118ab2" stroke-width="2"/>
+          <text x="168" y="58" text-anchor="middle" fill="#118ab2" font-size="14" font-weight="bold">© Copyright</text>
+          <text x="168" y="78" text-anchor="middle" fill="#333" font-size="10">Protects the EXPRESSION of an idea</text>
+          <text x="168" y="94" text-anchor="middle" fill="#333" font-size="10">(e.g. the actual source code written)</text>
+          <text x="168" y="114" text-anchor="middle" fill="#333" font-size="10">NOT the idea itself — someone else can</text>
+          <text x="168" y="130" text-anchor="middle" fill="#333" font-size="10">write code that does the same task</text>
+          <text x="330" y="115" text-anchor="middle" fill="#ef476f" font-size="24" font-weight="bold">vs</text>
+          <rect x="345" y="36" width="295" height="110" rx="10" fill="white" stroke="#ef476f" stroke-width="2"/>
+          <text x="493" y="58" text-anchor="middle" fill="#ef476f" font-size="14" font-weight="bold">Patent</text>
+          <text x="493" y="78" text-anchor="middle" fill="#333" font-size="10">Protects the IDEA or DESIGN of</text>
+          <text x="493" y="94" text-anchor="middle" fill="#333" font-size="10">an invention — the concept itself</text>
+          <text x="493" y="114" text-anchor="middle" fill="#333" font-size="10">Must prove the invention is DISTINCT</text>
+          <text x="493" y="130" text-anchor="middle" fill="#333" font-size="10">Gives exclusive rights for 20 YEARS</text>
+        </svg>
+
+        <div class="notes-tip">📌 <strong>The Pirate Bay</strong> — its creators received prison sentences and fines over <strong>US$4,000,000</strong> for hosting hyperlinks to illegally obtained software and media. Illegal downloading means programmers don't receive payment for their work.<br><br>
+        ⚠️ <strong>Patent Wars:</strong> Apple claimed Samsung stole the 'look and feel' of the iPhone for the Galaxy smartphone. Courts worldwide had to resolve this. Patent wars could discourage innovation — companies spending money on lawsuits rather than new inventions.</div>
+
+        <div class="notes-subheading" style="color:var(--coral);">📄 Software Licensing</div>
+        <p>Every piece of software — even free software — has a <strong>licence</strong>. Even though you purchase software, the licence states you <strong>don't actually own it</strong> — you purchase the right to use it under the licence terms. The manufacturer retains ownership.</p>
+
+        <p>A software licence specifies: how many copies you can use · whether installable on multiple computers · which type of organisation can use it (some are for charities, students or home users only) · how long it can be used (perpetual licences last forever; subscription licences expire unless renewed).</p>
+
+        <div class="notes-subheading" style="color:var(--coral);">🆓 Open-Source vs Proprietary Software</div>
+        <table class="gen-table">
+          <tr><th></th><th>✅ Open-Source</th><th>🔒 Proprietary</th></tr>
+          <tr><td><strong>Cost</strong></td><td>Free to use and download</td><td>Paid — licence fee required</td></tr>
+          <tr><td><strong>Source code</strong></td><td>Publicly available — anyone can view</td><td>Hidden — protected source code</td></tr>
+          <tr><td><strong>Modifiable?</strong></td><td>✅ Yes — edit and share</td><td>❌ No — cannot modify</td></tr>
+          <tr><td><strong>Support</strong></td><td>Community-based (may be limited)</td><td>Official technical support available</td></tr>
+          <tr><td><strong>Quality</strong></td><td>May not be user-friendly or professional looking</td><td>Extensively tested before release</td></tr>
+          <tr><td><strong>Security risk</strong></td><td>Criminals can exploit visible vulnerabilities in code</td><td>Source hidden but bugs still exist</td></tr>
+          <tr><td><strong>Flexibility</strong></td><td>Can customise to exact needs</td><td>Cannot change if it doesn't do what you need</td></tr>
+          <tr><td><strong>Examples</strong></td><td>Python, Linux, LibreOffice, Firefox</td><td>Windows, Adobe Photoshop, iTunes, Mac OSX</td></tr>
+        </table>
+
+        <div class="notes-subheading" style="color:var(--coral);">🔐 Computer Misuse Acts &amp; Cybersecurity</div>
+        <p>Many countries have <strong>Computer Misuse Acts (CMAs)</strong> making it illegal to access computer systems without permission. These include countries in Europe, the GCC, Australia and Singapore. Penalties increase for: deleting data · using info for further fraud · identity theft · attacks on critical national infrastructure.</p>
+      </div>
+    </div>
+
+    <!-- 29 EMERGING TRENDS -->
+    <div class="notes-section">
+      <div class="notes-header" style="background:var(--teal);" onclick="toggleNotes(this)">
+        <div class="notes-header-left"><span class="notes-num">29</span><span class="notes-title" style="color:var(--ink);">🚀 Current &amp; Emerging Trends</span></div>
+        <span class="notes-tog" style="color:var(--ink);">▼</span>
+      </div>
+      <div class="notes-body">
+
+        <div class="notes-def-box" style="border-color:#059669;">
+          <span class="notes-def-label" style="background:#059669;">KEY TERMS</span>
+          <strong class="hl-teal">Machine learning</strong> – the ability of computers to learn without being explicitly programmed.<br>
+          <strong class="hl-teal">Neuron</strong> – a nerve cell; the brain contains billions, which think and learn by establishing electrical connections between them.<br>
+          <strong class="hl-teal">Nanotechnology</strong> – manipulation of matter with a size of 1–100 nanometres (1 nm = 10⁻⁹ m), at atomic/molecular scale.<br>
+          <strong class="hl-teal">DNA (deoxyribonucleic acid)</strong> – self-replicating material present in all living organisms; the carrier of genetic information.
+        </div>
+
+        <div class="notes-subheading" style="color:#059669;">🤖 1. Artificial Intelligence (AI)</div>
+        <div class="notes-def-box" style="border-color:#059669;">
+          <span class="notes-def-label" style="background:#059669;">DEFINITION</span>
+          <em>"The ability of a digital computer or computer-controlled robot to perform tasks <strong>commonly associated with intelligent beings</strong> — those that can adapt to changing circumstances."</em>
+          AI solves <strong>cognitive problems</strong> associated with human intelligence: learning, reasoning, problem-solving, perception, planning, and manipulating objects.
+        </div>
+
+
+        <!-- AI NEURAL NETWORK VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 230" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="aibg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#0d001a"/><stop offset="100%" stop-color="#050008"/></radialGradient>
+              <radialGradient id="node_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.7"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+              <filter id="afilt"><feGaussianBlur stdDeviation="4"/></filter>
+            </defs>
+            <rect width="660" height="230" fill="url(#aibg)" rx="12"/>
+            <!-- Input layer -->
+            <text x="80" y="30" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">INPUT</text>
+            <text x="80" y="42" text-anchor="middle" fill="#a78bfa" font-size="9">LAYER</text>
+            <!-- Input nodes -->
+            <circle cx="80" cy="65" r="14" fill="#4c1d95" opacity="0.8"/>
+            <circle cx="80" cy="65" r="14" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+            <circle cx="80" cy="65" r="8" fill="#8b5cf6" opacity="0.9"/>
+            <text x="80" y="69" text-anchor="middle" fill="white" font-size="8">🖼</text>
+
+            <circle cx="80" cy="115" r="14" fill="#4c1d95" opacity="0.8"/>
+            <circle cx="80" cy="115" r="14" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+            <circle cx="80" cy="115" r="8" fill="#8b5cf6" opacity="0.9"/>
+            <text x="80" y="119" text-anchor="middle" fill="white" font-size="8">📊</text>
+
+            <circle cx="80" cy="165" r="14" fill="#4c1d95" opacity="0.8"/>
+            <circle cx="80" cy="165" r="14" fill="none" stroke="#8b5cf6" stroke-width="1.5"/>
+            <circle cx="80" cy="165" r="8" fill="#8b5cf6" opacity="0.9"/>
+            <text x="80" y="169" text-anchor="middle" fill="white" font-size="8">🔤</text>
+
+            <!-- Hidden layer 1 -->
+            <text x="230" y="30" text-anchor="middle" fill="#06b6d4" font-size="10" font-weight="bold">HIDDEN</text>
+            <text x="230" y="42" text-anchor="middle" fill="#06b6d4" font-size="9">LAYER 1</text>
+            <circle cx="230" cy="58" r="14" fill="#0e7490" opacity="0.8"/>
+            <circle cx="230" cy="58" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+            <circle cx="230" cy="58" r="8" fill="#06b6d4" opacity="0.9"/>
+            <circle cx="230" cy="100" r="14" fill="#0e7490" opacity="0.8"/>
+            <circle cx="230" cy="100" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+            <circle cx="230" cy="100" r="8" fill="#06b6d4" opacity="0.9"/>
+            <circle cx="230" cy="142" r="14" fill="#0e7490" opacity="0.8"/>
+            <circle cx="230" cy="142" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+            <circle cx="230" cy="142" r="8" fill="#06b6d4" opacity="0.9"/>
+            <circle cx="230" cy="184" r="14" fill="#0e7490" opacity="0.8"/>
+            <circle cx="230" cy="184" r="14" fill="none" stroke="#06b6d4" stroke-width="1.5"/>
+            <circle cx="230" cy="184" r="8" fill="#06b6d4" opacity="0.9"/>
+
+            <!-- Hidden layer 2 -->
+            <text x="380" y="30" text-anchor="middle" fill="#10b981" font-size="10" font-weight="bold">HIDDEN</text>
+            <text x="380" y="42" text-anchor="middle" fill="#10b981" font-size="9">LAYER 2</text>
+            <circle cx="380" cy="75" r="14" fill="#065f46" opacity="0.8"/>
+            <circle cx="380" cy="75" r="14" fill="none" stroke="#10b981" stroke-width="1.5"/>
+            <circle cx="380" cy="75" r="8" fill="#10b981" opacity="0.9"/>
+            <circle cx="380" cy="125" r="14" fill="#065f46" opacity="0.8"/>
+            <circle cx="380" cy="125" r="14" fill="none" stroke="#10b981" stroke-width="1.5"/>
+            <circle cx="380" cy="125" r="8" fill="#10b981" opacity="0.9"/>
+            <circle cx="380" cy="175" r="14" fill="#065f46" opacity="0.8"/>
+            <circle cx="380" cy="175" r="14" fill="none" stroke="#10b981" stroke-width="1.5"/>
+            <circle cx="380" cy="175" r="8" fill="#10b981" opacity="0.9"/>
+
+            <!-- Output layer -->
+            <text x="530" y="30" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">OUTPUT</text>
+            <text x="530" y="42" text-anchor="middle" fill="#f59e0b" font-size="9">LAYER</text>
+            <circle cx="530" cy="85" r="14" fill="#92400e" opacity="0.8"/>
+            <circle cx="530" cy="85" r="14" fill="none" stroke="#f59e0b" stroke-width="2"/>
+            <circle cx="530" cy="85" r="8" fill="#f59e0b" opacity="0.9"/>
+            <text x="570" y="89" fill="#fbbf24" font-size="9">😺 Cat (92%)</text>
+            <circle cx="530" cy="145" r="14" fill="#92400e" opacity="0.8"/>
+            <circle cx="530" cy="145" r="14" fill="none" stroke="#f59e0b" stroke-width="1.5"/>
+            <circle cx="530" cy="145" r="8" fill="#f59e0b" opacity="0.4"/>
+            <text x="570" y="149" fill="#9ca3af" font-size="9">🐕 Dog (6%)</text>
+
+            <!-- Connections (simplified) -->
+            <line x1="94" y1="67" x2="216" y2="60" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="94" y1="67" x2="216" y2="100" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="94" y1="115" x2="216" y2="100" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="94" y1="115" x2="216" y2="142" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="94" y1="165" x2="216" y2="142" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="94" y1="165" x2="216" y2="184" stroke="#8b5cf6" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="60" x2="366" y2="75" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="100" x2="366" y2="75" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="100" x2="366" y2="125" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="142" x2="366" y2="125" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="142" x2="366" y2="175" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="244" y1="184" x2="366" y2="175" stroke="#06b6d4" stroke-width="0.7" opacity="0.4"/>
+            <line x1="394" y1="75" x2="516" y2="87" stroke="#10b981" stroke-width="1" opacity="0.6"/>
+            <line x1="394" y1="125" x2="516" y2="87" stroke="#10b981" stroke-width="1" opacity="0.4"/>
+            <line x1="394" y1="175" x2="516" y2="87" stroke="#10b981" stroke-width="0.7" opacity="0.3"/>
+            <line x1="394" y1="75" x2="516" y2="145" stroke="#10b981" stroke-width="0.7" opacity="0.3"/>
+            <line x1="394" y1="125" x2="516" y2="145" stroke="#10b981" stroke-width="0.7" opacity="0.3"/>
+            <!-- Bottom label -->
+            <text x="330" y="215" text-anchor="middle" fill="#a78bfa" font-size="10">Neural network learns from millions of examples — just like the human brain!</text>
+            <!-- Title -->
+            <rect x="0" y="0" width="660" height="0" fill="none"/>
+            <rect x="0" y="0" width="660" height="34" fill="#0d001a" opacity="0.85" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#c4b5fd" font-size="13" font-weight="bold">🤖 Artificial Intelligence — How a Neural Network Learns</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:#059669;">
+            <div class="n-card-hdr" style="background:#059669;">🧠 Core AI Challenges</div>
+            <div class="n-card-bdy">
+              • <strong>Knowledge</strong> representation<br>
+              • <strong>Reasoning</strong> and logic<br>
+              • <strong>Problem solving</strong> in new situations<br>
+              • <strong>Perception</strong> (vision, speech recognition)<br>
+              • <strong>Learning</strong> from experience<br>
+              • <strong>Planning</strong> future actions<br>
+              • Ability to <strong>manipulate and move objects</strong>
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">🔄 Machine Learning</div>
+            <div class="n-card-bdy">
+              Computers that can <strong>modify and write their own programs</strong>. Instead of being told exactly what to do:<br>
+              • If something works → remember and use it<br>
+              • If something fails → try something else<br>
+              • Learn new things <strong>without human reprogramming</strong>
+            </div>
+          </div>
+        </div>
+
+        <svg viewBox="0 0 660 190" style="width:100%;max-width:660px;display:block;margin:14px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="190" fill="#f0fdf4" rx="10" stroke="#059669" stroke-width="1.5"/>
+          <text x="330" y="22" text-anchor="middle" fill="#059669" font-size="13" font-weight="bold">AI in Use Today — Real Examples</text>
+          <rect x="15" y="36" width="195" height="140" rx="8" fill="white" stroke="#059669" stroke-width="1.5"/>
+          <text x="113" y="58" text-anchor="middle" fill="#059669" font-size="12" font-weight="bold">🏥 Medicine</text>
+          <text x="113" y="76" text-anchor="middle" fill="#333" font-size="9">Digital consultations — apps</text>
+          <text x="113" y="90" text-anchor="middle" fill="#333" font-size="9">diagnose from symptom input</text>
+          <text x="113" y="108" text-anchor="middle" fill="#333" font-size="9">Scan analysis — trained on</text>
+          <text x="113" y="122" text-anchor="middle" fill="#333" font-size="9">millions; spots markers</text>
+          <text x="113" y="140" text-anchor="middle" fill="#333" font-size="9">Wearables monitor heart</text>
+          <text x="113" y="156" text-anchor="middle" fill="#333" font-size="9">rate; send data to doctors</text>
+          <rect x="225" y="36" width="210" height="140" rx="8" fill="white" stroke="#118ab2" stroke-width="1.5"/>
+          <text x="330" y="58" text-anchor="middle" fill="#118ab2" font-size="12" font-weight="bold">🏠 Everyday Life</text>
+          <text x="330" y="76" text-anchor="middle" fill="#333" font-size="9">Netflix/Amazon recommendations</text>
+          <text x="330" y="90" text-anchor="middle" fill="#333" font-size="9">(learn from past history)</text>
+          <text x="330" y="108" text-anchor="middle" fill="#333" font-size="9">Siri/Cortana predict needs</text>
+          <text x="330" y="122" text-anchor="middle" fill="#333" font-size="9">from usage patterns</text>
+          <text x="330" y="140" text-anchor="middle" fill="#333" font-size="9">Finance: fraud detection</text>
+          <text x="330" y="156" text-anchor="middle" fill="#333" font-size="9">spots unusual transactions</text>
+          <rect x="450" y="36" width="195" height="140" rx="8" fill="white" stroke="#f77f00" stroke-width="1.5"/>
+          <text x="548" y="58" text-anchor="middle" fill="#f77f00" font-size="12" font-weight="bold">✈️ Transport</text>
+          <text x="548" y="76" text-anchor="middle" fill="#333" font-size="9">Airbus autopilot — pilots</text>
+          <text x="548" y="90" text-anchor="middle" fill="#333" font-size="9">manually fly only 3-4 mins</text>
+          <text x="548" y="108" text-anchor="middle" fill="#333" font-size="9">GPS + motion sensors track</text>
+          <text x="548" y="122" text-anchor="middle" fill="#333" font-size="9">position; can land aircraft</text>
+          <text x="548" y="140" text-anchor="middle" fill="#333" font-size="9">Self-driving cars use AI</text>
+          <text x="548" y="156" text-anchor="middle" fill="#333" font-size="9">perception and decisions</text>
+        </svg>
+
+        <div class="notes-subheading" style="color:var(--purple);">🧬 2. DNA Computing</div>
+        <p>DNA uses <strong>4 bases</strong> (A, T, G, C) — Adenine, Thymine, Guanine, Cytosine — instead of binary's 2 (0, 1). A DNA codon = 3 bases = <strong>64 possible values</strong> (vs 256 for a binary byte). <strong>Half a kilogram of DNA</strong> can store more data than all electronic computers ever built.</p>
+
+
+        <!-- DNA COMPUTING VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 240" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="dnabg" cx="50%" cy="50%" r="70%"><stop offset="0%" stop-color="#001a0d"/><stop offset="100%" stop-color="#020c05"/></radialGradient>
+              <filter id="dglow"><feGaussianBlur stdDeviation="4"/></filter>
+            </defs>
+            <rect width="660" height="240" fill="url(#dnabg)" rx="12"/>
+            <!-- Stars -->
+            <circle cx="30" cy="25" r="1" fill="white" opacity="0.4"/><circle cx="100" cy="10" r="0.8" fill="white" opacity="0.5"/>
+            <circle cx="560" cy="20" r="1" fill="white" opacity="0.4"/><circle cx="630" cy="45" r="0.8" fill="white" opacity="0.6"/>
+            <!-- HELIX - two strands as sine waves -->
+            <!-- Strand 1 (green) -->
+            <path d="M 60 120 C 85 60, 115 60, 140 120 C 165 180, 195 180, 220 120 C 245 60, 275 60, 300 120 C 325 180, 355 180, 380 120 C 405 60, 435 60, 460 120 C 485 180, 515 180, 540 120 C 565 60, 595 60, 620 120" fill="none" stroke="#4ade80" stroke-width="3" opacity="0.9"/>
+            <path d="M 60 120 C 85 60, 115 60, 140 120 C 165 180, 195 180, 220 120 C 245 60, 275 60, 300 120 C 325 180, 355 180, 380 120 C 405 60, 435 60, 460 120 C 485 180, 515 180, 540 120 C 565 60, 595 60, 620 120" fill="none" stroke="#4ade80" stroke-width="8" opacity="0.15" filter="url(#dglow)"/>
+            <!-- Strand 2 (blue) -->
+            <path d="M 60 120 C 85 180, 115 180, 140 120 C 165 60, 195 60, 220 120 C 245 180, 275 180, 300 120 C 325 60, 355 60, 380 120 C 405 180, 435 180, 460 120 C 485 60, 515 60, 540 120 C 565 180, 595 180, 620 120" fill="none" stroke="#60a5fa" stroke-width="3" opacity="0.9"/>
+            <path d="M 60 120 C 85 180, 115 180, 140 120 C 165 60, 195 60, 220 120 C 245 180, 275 180, 300 120 C 325 60, 355 60, 380 120 C 405 180, 435 180, 460 120 C 485 60, 515 60, 540 120 C 565 180, 595 180, 620 120" fill="none" stroke="#60a5fa" stroke-width="8" opacity="0.15" filter="url(#dglow)"/>
+            <!-- Base pairs (rungs) -->
+            <line x1="100" y1="90" x2="100" y2="150" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <line x1="140" y1="120" x2="140" y2="120" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <line x1="180" y1="150" x2="180" y2="90" stroke="#a78bfa" stroke-width="2.5" opacity="0.8"/>
+            <line x1="220" y1="120" x2="220" y2="120" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <line x1="260" y1="90" x2="260" y2="150" stroke="#fb7185" stroke-width="2.5" opacity="0.8"/>
+            <line x1="300" y1="120" x2="300" y2="120" stroke="#a78bfa" stroke-width="2.5" opacity="0.8"/>
+            <line x1="340" y1="150" x2="340" y2="90" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <line x1="380" y1="120" x2="380" y2="120" stroke="#fb7185" stroke-width="2.5" opacity="0.8"/>
+            <line x1="420" y1="90" x2="420" y2="150" stroke="#4ade80" stroke-width="2.5" opacity="0.8"/>
+            <line x1="460" y1="120" x2="460" y2="120" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <line x1="500" y1="150" x2="500" y2="90" stroke="#a78bfa" stroke-width="2.5" opacity="0.8"/>
+            <line x1="540" y1="120" x2="540" y2="120" stroke="#fb7185" stroke-width="2.5" opacity="0.8"/>
+            <line x1="580" y1="90" x2="580" y2="150" stroke="#f59e0b" stroke-width="2.5" opacity="0.8"/>
+            <!-- Base labels on rungs -->
+            <text x="100" y="88" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">A</text>
+            <text x="100" y="162" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">T</text>
+            <text x="180" y="162" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">G</text>
+            <text x="180" y="88" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">C</text>
+            <text x="260" y="88" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold">T</text>
+            <text x="260" y="162" text-anchor="middle" fill="#fb7185" font-size="10" font-weight="bold">A</text>
+            <text x="340" y="162" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">A</text>
+            <text x="340" y="88" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">T</text>
+            <text x="420" y="88" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold">G</text>
+            <text x="420" y="162" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold">C</text>
+            <text x="500" y="162" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">C</text>
+            <text x="500" y="88" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">G</text>
+            <text x="580" y="88" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">T</text>
+            <text x="580" y="162" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="bold">A</text>
+            <!-- Legend -->
+            <rect x="30" y="185" width="12" height="12" rx="2" fill="#f59e0b" opacity="0.9"/>
+            <text x="46" y="196" fill="#f59e0b" font-size="10">A = Adenine</text>
+            <rect x="130" y="185" width="12" height="12" rx="2" fill="#fb7185" opacity="0.9"/>
+            <text x="146" y="196" fill="#fb7185" font-size="10">T = Thymine</text>
+            <rect x="230" y="185" width="12" height="12" rx="2" fill="#4ade80" opacity="0.9"/>
+            <text x="246" y="196" fill="#4ade80" font-size="10">G = Guanine</text>
+            <rect x="330" y="185" width="12" height="12" rx="2" fill="#a78bfa" opacity="0.9"/>
+            <text x="346" y="196" fill="#a78bfa" font-size="10">C = Cytosine</text>
+            <!-- Info box -->
+            <text x="330" y="218" text-anchor="middle" fill="#86efac" font-size="10">Unlike binary (0 or 1), DNA uses 4 bases → each codon (3 bases) = 64 possible values</text>
+            <!-- Title -->
+            <rect x="0" y="0" width="660" height="34" fill="#001a0d" opacity="0.8" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#86efac" font-size="13" font-weight="bold">🧬 DNA Double Helix — The Blueprint of DNA Computing</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--teal);">
+            <div class="n-card-hdr" style="background:var(--teal);color:var(--ink);">✅ Advantages of DNA Computing</div>
+            <div class="n-card-bdy">
+              • DNA always available (from cellular organisms)<br>
+              • Large supply = <strong>cheap resource</strong><br>
+              • DNA biochips made cleanly — unlike toxic silicon manufacturing<br>
+              • Many times <strong>smaller</strong> than silicon computers<br>
+              • Can survive cool, dry environments for <strong>hundreds of thousands of years</strong>
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">❌ Limitations of DNA Computing</div>
+            <div class="n-card-bdy">
+              • 1994 experiment: solved route problem but took <strong>several days to analyse</strong><br>
+              • Requires <strong>human assistance</strong> to read results<br>
+              • Major theoretical and practical barriers remain<br>
+              • Unlikely to rival silicon for general computation<br>
+              • Most promising as a future <strong>data storage medium</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--blue);">🔬 3. Nanotechnology</div>
+        <p><strong>Nanotechnology</strong> = manipulation of matter 1–100 nm in size. One nm = 10⁻⁹ of a metre — the atomic/molecular scale. It is interdisciplinary: biology, chemistry, physics and engineering.</p>
+        <p>Intel currently produces transistors that are <strong>14nm wide</strong>. A Core i7 processor has <strong>1.75 billion transistors</strong>. Below <strong>7nm</strong> silicon fails due to quantum effects when transistors are too close together. Scientists experiment with <strong>carbon nanotubes</strong> — could be <strong>5× faster</strong> using less energy than silicon.</p>
+
+
+        <!-- NANOTECHNOLOGY VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 230" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="nbg" cx="30%" cy="30%" r="80%"><stop offset="0%" stop-color="#00101a"/><stop offset="100%" stop-color="#000508"/></radialGradient>
+              <radialGradient id="atom_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.5"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/></radialGradient>
+              <filter id="nfilt"><feGaussianBlur stdDeviation="6"/></filter>
+            </defs>
+            <rect width="660" height="230" fill="url(#nbg)" rx="12"/>
+            <!-- Atom 1 - carbon nanotube cross section -->
+            <ellipse cx="140" cy="120" rx="60" ry="60" fill="url(#atom_glow)" filter="url(#nfilt)"/>
+            <!-- Electron orbits -->
+            <ellipse cx="140" cy="120" rx="55" ry="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.6"/>
+            <ellipse cx="140" cy="120" rx="55" ry="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.4" transform="rotate(60,140,120)"/>
+            <ellipse cx="140" cy="120" rx="55" ry="20" fill="none" stroke="#38bdf8" stroke-width="1.5" opacity="0.4" transform="rotate(120,140,120)"/>
+            <!-- Nucleus -->
+            <circle cx="140" cy="120" r="14" fill="#0369a1" opacity="0.9"/>
+            <circle cx="140" cy="120" r="8" fill="#38bdf8" opacity="0.9"/>
+            <circle cx="140" cy="120" r="4" fill="white" opacity="0.9"/>
+            <!-- Electrons -->
+            <circle cx="195" cy="120" r="4" fill="#7dd3fc" opacity="0.9"/>
+            <circle cx="113" cy="101" r="4" fill="#7dd3fc" opacity="0.9"/>
+            <circle cx="113" cy="139" r="4" fill="#7dd3fc" opacity="0.9"/>
+            <text x="140" y="195" text-anchor="middle" fill="#38bdf8" font-size="10">Carbon Atom</text>
+            <text x="140" y="210" text-anchor="middle" fill="#7dd3fc" font-size="9">1nm diameter nanotube</text>
+            <!-- Scale bar -->
+            <line x1="30" y1="155" x2="80" y2="155" stroke="white" stroke-width="1.5"/>
+            <line x1="30" y1="150" x2="30" y2="160" stroke="white" stroke-width="1.5"/>
+            <line x1="80" y1="150" x2="80" y2="160" stroke="white" stroke-width="1.5"/>
+            <text x="55" y="170" text-anchor="middle" fill="white" font-size="9">14 nm</text>
+            <text x="55" y="182" text-anchor="middle" fill="#fbbf24" font-size="8">Intel transistor</text>
+            <!-- Nanotube -->
+            <path d="M 240 70 L 240 170" stroke="#a3e635" stroke-width="3"/>
+            <path d="M 260 70 L 260 170" stroke="#a3e635" stroke-width="3"/>
+            <!-- Hexagonal carbon structure on tube -->
+            <polygon points="240,90 250,85 260,90 260,100 250,105 240,100" fill="none" stroke="#65a30d" stroke-width="1" opacity="0.8"/>
+            <polygon points="240,100 250,105 260,100 260,110 250,115 240,110" fill="none" stroke="#65a30d" stroke-width="1" opacity="0.8"/>
+            <polygon points="240,110 250,115 260,110 260,120 250,125 240,120" fill="none" stroke="#65a30d" stroke-width="1" opacity="0.8"/>
+            <polygon points="240,120 250,125 260,120 260,130 250,135 240,130" fill="none" stroke="#65a30d" stroke-width="1" opacity="0.8"/>
+            <polygon points="240,130 250,135 260,130 260,140 250,145 240,140" fill="none" stroke="#65a30d" stroke-width="1" opacity="0.8"/>
+            <text x="250" y="188" text-anchor="middle" fill="#a3e635" font-size="10">Carbon</text>
+            <text x="250" y="202" text-anchor="middle" fill="#a3e635" font-size="9">Nanotube</text>
+            <text x="250" y="214" text-anchor="middle" fill="#bef264" font-size="8">5× faster than Si</text>
+            <!-- Applications panel -->
+            <rect x="300" y="45" width="340" height="160" rx="8" fill="#0c1a2e" stroke="#1e40af" stroke-width="1.5" opacity="0.95"/>
+            <text x="470" y="68" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="bold">🔬 Nanotechnology Applications</text>
+            <!-- App 1 -->
+            <rect x="315" y="78" width="145" height="55" rx="6" fill="#0f2a1a" stroke="#16a34a" stroke-width="1"/>
+            <text x="388" y="97" text-anchor="middle" fill="#86efac" font-size="10" font-weight="bold">🪟 Self-Cleaning Glass</text>
+            <text x="388" y="112" text-anchor="middle" fill="#9ca3af" font-size="9">Nanoparticles break down</text>
+            <text x="388" y="124" text-anchor="middle" fill="#9ca3af" font-size="9">dirt using UV light</text>
+            <!-- App 2 -->
+            <rect x="470" y="78" width="155" height="55" rx="6" fill="#2a0a0f" stroke="#dc2626" stroke-width="1"/>
+            <text x="548" y="97" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="bold">💊 Cancer Treatment</text>
+            <text x="548" y="112" text-anchor="middle" fill="#9ca3af" font-size="9">Drug delivered to tumour</text>
+            <text x="548" y="124" text-anchor="middle" fill="#9ca3af" font-size="9">via white blood cells</text>
+            <!-- App 3 -->
+            <rect x="315" y="142" width="145" height="55" rx="6" fill="#1a1a0a" stroke="#ca8a04" stroke-width="1"/>
+            <text x="388" y="161" text-anchor="middle" fill="#fde68a" font-size="10" font-weight="bold">👕 UV Clothing</text>
+            <text x="388" y="176" text-anchor="middle" fill="#9ca3af" font-size="9">Zinc oxide nanoparticles</text>
+            <text x="388" y="188" text-anchor="middle" fill="#9ca3af" font-size="9">coat fibres for UV protection</text>
+            <!-- App 4 -->
+            <rect x="470" y="142" width="155" height="55" rx="6" fill="#0a1a2a" stroke="#0284c7" stroke-width="1"/>
+            <text x="548" y="161" text-anchor="middle" fill="#7dd3fc" font-size="10" font-weight="bold">🛡️ Scratch-Resistant</text>
+            <text x="548" y="176" text-anchor="middle" fill="#9ca3af" font-size="9">Aluminium silicate stops</text>
+            <text x="548" y="188" text-anchor="middle" fill="#9ca3af" font-size="9">chipping on surfaces</text>
+            <!-- Title -->
+            <rect x="0" y="0" width="660" height="34" fill="#00101a" opacity="0.85" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#7dd3fc" font-size="13" font-weight="bold">🔬 Nanotechnology — Engineering at the Atomic Scale</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <div class="notes-grid-2">
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">🪟 Self-Cleaning Glass</div>
+            <div class="n-card-bdy">Nanoparticles in glass break down and loosen organic molecules (dirt) using UV light from sunlight</div>
+          </div>
+          <div class="n-card" style="border-color:var(--teal);">
+            <div class="n-card-hdr" style="background:var(--teal);color:var(--ink);">👕 UV-Protective Clothing</div>
+            <div class="n-card-bdy">Zinc oxide nanoparticles coat fabric fibres, giving better protection against UV light</div>
+          </div>
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">🛡️ Scratch-Resistant Coatings</div>
+            <div class="n-card-bdy">Aluminium silicate nanoparticles added to polymer coatings — more resistant to chipping and scratching</div>
+          </div>
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">💊 Targeted Cancer Treatment</div>
+            <div class="n-card-bdy">Anti-cancer drugs attached to nanoparticles and delivered directly to the tumour via white blood cells — reducing harm to healthy tissue</div>
+          </div>
+        </div>
+
+        <div class="notes-subheading" style="color:var(--orange);">⚛️ 4. Quantum Computing</div>
+        <div class="notes-def-box" style="border-color:var(--orange);">
+          <span class="notes-def-label" style="background:var(--orange);">KEY TERMS</span>
+          <strong class="hl-orange">Quantum mechanics</strong> – the branch of physics describing behaviour of subatomic particles where normal physics laws don't apply.<br>
+          <strong class="hl-orange">Superposition</strong> – a quantum system can be in multiple states at the same time, until it is measured.<br>
+          <strong class="hl-orange">Qubit</strong> – a quantum bit; can be 0, 1, or <em>both simultaneously</em> (unlike a classical bit which is either 0 or 1).<br>
+          <strong class="hl-orange">Entanglement</strong> – pairs of qubits share a quantum state; changing one immediately changes the other, even over huge distances.
+        </div>
+
+        <p>Quantum computers are <strong>not just faster classical computers</strong> — they are based on a completely different reality. They use qubits which can be 0, 1, or both at the same time (superposition). IBM and Google use <strong>superconducting circuits</strong> cooled to temperatures colder than deep space to generate qubits.</p>
+
+        <svg viewBox="0 0 660 160" style="width:100%;max-width:660px;display:block;margin:12px auto;font-family:'Caveat',cursive;">
+          <rect width="660" height="160" fill="#fffdf5" rx="8"/>
+          <text x="330" y="18" text-anchor="middle" fill="#1a1a2e" font-size="13" font-weight="bold">Classical Bit vs Quantum Qubit — The Key Difference</text>
+          <rect x="20" y="30" width="290" height="116" rx="10" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+          <text x="165" y="52" text-anchor="middle" fill="#118ab2" font-size="13" font-weight="bold">Classical — BIT</text>
+          <rect x="50" y="64" width="36" height="36" rx="4" fill="#118ab2"/>
+          <text x="68" y="87" text-anchor="middle" fill="white" font-size="16" font-weight="bold">0</text>
+          <text x="96" y="87" font-size="14" fill="#1a1a2e" font-weight="bold">OR</text>
+          <rect x="122" y="64" width="36" height="36" rx="4" fill="#118ab2"/>
+          <text x="140" y="87" text-anchor="middle" fill="white" font-size="16" font-weight="bold">1</text>
+          <text x="165" y="118" text-anchor="middle" font-size="10" fill="#555">Only ONE state at a time</text>
+          <text x="165" y="134" text-anchor="middle" font-size="10" fill="#555">4 bits → test 16 combos one by one</text>
+          <rect x="350" y="30" width="290" height="116" rx="10" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+          <text x="495" y="52" text-anchor="middle" fill="#f77f00" font-size="13" font-weight="bold">Quantum — QUBIT</text>
+          <rect x="380" y="64" width="72" height="36" rx="4" fill="#f77f00"/>
+          <text x="416" y="87" text-anchor="middle" fill="white" font-size="13" font-weight="bold">0 AND 1</text>
+          <text x="462" y="82" font-size="12" fill="#1a1a2e">simultaneously!</text>
+          <text x="495" y="118" text-anchor="middle" font-size="10" fill="#555">BOTH states at the same time</text>
+          <text x="495" y="134" text-anchor="middle" font-size="10" fill="#f77f00">4 qubits → test ALL 16 at once!</text>
+        </svg>
+
+
+        <!-- QUANTUM ENTANGLEMENT VISUAL -->
+        <div class="svg-zoom-wrap" style="margin:16px auto;max-width:660px;" onclick="openLightbox(this)" title="Click to zoom">
+          <svg viewBox="0 0 660 260" style="width:100%;display:block;font-family:'Caveat',cursive;">
+            <defs>
+              <radialGradient id="qbg" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1a0533"/><stop offset="100%" stop-color="#050510"/></radialGradient>
+              <radialGradient id="glow1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ff6ec7" stop-opacity="0.9"/><stop offset="100%" stop-color="#ff6ec7" stop-opacity="0"/></radialGradient>
+              <radialGradient id="glow2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4dc8ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#4dc8ff" stop-opacity="0"/></radialGradient>
+              <radialGradient id="center_glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#a855f7" stop-opacity="0.6"/><stop offset="100%" stop-color="#a855f7" stop-opacity="0"/></radialGradient>
+              <filter id="blur_s"><feGaussianBlur stdDeviation="3"/></filter>
+              <filter id="blur_m"><feGaussianBlur stdDeviation="6"/></filter>
+              <filter id="blur_l"><feGaussianBlur stdDeviation="12"/></filter>
+            </defs>
+            <!-- Dark space background -->
+            <rect width="660" height="260" fill="url(#qbg)" rx="12"/>
+            <!-- Stars -->
+            <circle cx="40" cy="20" r="1" fill="white" opacity="0.6"/><circle cx="120" cy="45" r="1.2" fill="white" opacity="0.4"/>
+            <circle cx="200" cy="15" r="0.8" fill="white" opacity="0.7"/><circle cx="330" cy="30" r="1" fill="white" opacity="0.5"/>
+            <circle cx="450" cy="12" r="1.2" fill="white" opacity="0.6"/><circle cx="580" cy="35" r="0.8" fill="white" opacity="0.4"/>
+            <circle cx="620" cy="18" r="1" fill="white" opacity="0.7"/><circle cx="70" cy="200" r="1" fill="white" opacity="0.3"/>
+            <circle cx="590" cy="220" r="1.2" fill="white" opacity="0.5"/><circle cx="300" cy="240" r="0.8" fill="white" opacity="0.4"/>
+            <!-- Glow halos -->
+            <ellipse cx="175" cy="140" rx="80" ry="80" fill="url(#glow1)" filter="url(#blur_l)"/>
+            <ellipse cx="485" cy="140" rx="80" ry="80" fill="url(#glow2)" filter="url(#blur_l)"/>
+            <ellipse cx="330" cy="140" rx="40" ry="40" fill="url(#center_glow)" filter="url(#blur_m)"/>
+            <!-- Entanglement lines -->
+            <path d="M 175 140 Q 330 60 485 140" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.7"/>
+            <path d="M 175 140 Q 330 220 485 140" fill="none" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.7"/>
+            <path d="M 175 140 L 485 140" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.3"/>
+            <!-- Particle 1 (pink) -->
+            <circle cx="175" cy="140" r="28" fill="#ff6ec7" opacity="0.15" filter="url(#blur_s)"/>
+            <circle cx="175" cy="140" r="18" fill="#ff6ec7" opacity="0.3"/>
+            <circle cx="175" cy="140" r="10" fill="#ff6ec7" opacity="0.7"/>
+            <circle cx="175" cy="140" r="5" fill="white" opacity="0.9"/>
+            <!-- Orbit ring particle 1 -->
+            <ellipse cx="175" cy="140" rx="30" ry="12" fill="none" stroke="#ff6ec7" stroke-width="1.2" opacity="0.5" transform="rotate(-30,175,140)"/>
+            <ellipse cx="175" cy="140" rx="30" ry="12" fill="none" stroke="#ff6ec7" stroke-width="1.2" opacity="0.3" transform="rotate(60,175,140)"/>
+            <!-- Particle 2 (cyan) -->
+            <circle cx="485" cy="140" r="28" fill="#4dc8ff" opacity="0.15" filter="url(#blur_s)"/>
+            <circle cx="485" cy="140" r="18" fill="#4dc8ff" opacity="0.3"/>
+            <circle cx="485" cy="140" r="10" fill="#4dc8ff" opacity="0.7"/>
+            <circle cx="485" cy="140" r="5" fill="white" opacity="0.9"/>
+            <!-- Orbit ring particle 2 -->
+            <ellipse cx="485" cy="140" rx="30" ry="12" fill="none" stroke="#4dc8ff" stroke-width="1.2" opacity="0.5" transform="rotate(30,485,140)"/>
+            <ellipse cx="485" cy="140" rx="30" ry="12" fill="none" stroke="#4dc8ff" stroke-width="1.2" opacity="0.3" transform="rotate(-60,485,140)"/>
+            <!-- Arrow at centre showing instant connection -->
+            <line x1="310" y1="140" x2="350" y2="140" stroke="#a855f7" stroke-width="2" marker-end="url(#arrowR)"/>
+            <line x1="350" y1="140" x2="310" y2="140" stroke="#a855f7" stroke-width="2"/>
+            <!-- Labels -->
+            <text x="175" y="188" text-anchor="middle" fill="#ff6ec7" font-size="13" font-weight="bold">Particle A</text>
+            <text x="175" y="204" text-anchor="middle" fill="#ffb3e0" font-size="10">Spin: UP ↑</text>
+            <text x="485" y="188" text-anchor="middle" fill="#4dc8ff" font-size="13" font-weight="bold">Particle B</text>
+            <text x="485" y="204" text-anchor="middle" fill="#b3e8ff" font-size="10">Instantly: DOWN ↓</text>
+            <text x="330" y="108" text-anchor="middle" fill="#c084fc" font-size="11" font-weight="bold">Quantum Entanglement</text>
+            <text x="330" y="124" text-anchor="middle" fill="#e9d5ff" font-size="9">Measure one → the other INSTANTLY responds</text>
+            <text x="330" y="165" text-anchor="middle" fill="#e9d5ff" font-size="9">even across the universe!</text>
+            <!-- Distance label -->
+            <line x1="215" y1="230" x2="445" y2="230" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+            <text x="330" y="245" text-anchor="middle" fill="#c084fc" font-size="10">Any distance — could be light-years apart</text>
+            <!-- Title banner -->
+            <rect x="0" y="0" width="660" height="36" fill="#1a0533" opacity="0.7" rx="12"/>
+            <text x="330" y="22" text-anchor="middle" fill="#e9d5ff" font-size="13" font-weight="bold">⚛️ Quantum Entanglement — "Spooky Action at a Distance"</text>
+          </svg>
+          <div style="text-align:center;font-family:'Caveat',cursive;font-size:0.78rem;color:#888;margin-top:4px;">🔍 Click to zoom · ⬇ Download available in lightbox</div>
+        </div>
+
+        <div class="notes-tip">🐱 <strong>Schrödinger's Cat:</strong> A famous thought experiment illustrating superposition. A cat placed in a sealed box with cyanide is <em>both dead and alive simultaneously</em> until the box is opened (observed). Similarly, a qubit is both 0 and 1 until measured — then it collapses to one value.</div>
+
+        <p><strong>Entanglement:</strong> Pairs of qubits share a quantum state — changing one immediately changes the other, over any distance. Einstein called this <em>"spooky action at a distance."</em> In a quantum computer, entangled qubits produce an <strong>exponential increase in computing power</strong>.</p>
+
+        <p><strong>Challenge:</strong> Qubits are fragile — even tiny vibrations or temperature changes cause <strong>"noise"</strong>, shifting qubits out of superposition and causing errors. This is why qubits must be cooled to <strong>temperatures colder than deep space</strong>.</p>
+
+        <div class="notes-grid-2" style="margin-top:10px;">
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">Current Real Uses</div>
+            <div class="n-card-bdy">
+              • <strong>Volkswagen:</strong> simulating EV battery chemistry<br>
+              • <strong>Pharmaceuticals:</strong> analysing drug compounds<br>
+              • <strong>Airbus:</strong> calculating fuel-efficient flight paths<br>
+              • <strong>Traffic flow:</strong> optimising all routes simultaneously
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">Future Implications</div>
+            <div class="n-card-bdy">
+              • Classical computer: millions of years to crack encryption<br>
+              • Quantum computer: could crack it in <strong>seconds</strong><br>
+              • Huge implications for <strong>cybersecurity and data protection</strong><br>
+              • New quantum-safe encryption standards being developed
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end notes tab -->
+
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- QUIZ TAB                                  -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="tip-box">💡 <strong>How to use:</strong> Read each question carefully and select the best answer. Your score updates as you go. Use the results to identify topics to revise!</div>
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpf" style="width:0%"></div></div>
+      <span class="quiz-score-badge" id="qsb">0 / 20</span>
+    </div>
+    <div id="quiz-area"></div>
+    <div id="quiz-result" style="display:none;" class="quiz-result-screen">
+      <div class="big-score" id="final-score"></div>
+      <p style="font-family:'Caveat',cursive;font-size:1.3rem;margin:10px 0;" id="final-msg"></p>
+      <button class="btn btn-primary" style="margin-top:16px;" onclick="restartQuiz()">🔁 Try Again</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- EXAM QUESTIONS TAB                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <p style="font-family:'Caveat',cursive;font-size:1.1rem;margin-bottom:16px;color:#666;">Write your answers in the boxes, then reveal the mark scheme to check.</p>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q1</span><span class="eq-marks"><span class="tag tag-easy">Easy</span>[2 marks]</span></div>
+      <div class="eq-q">State <strong>two</strong> hazardous materials used in the manufacture of computing technology.</div>
+      <textarea class="ans-box" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div><ul><li>Award 1 mark each for any two from: Cadmium / Lead / Mercury / Hexavalent chromium / PCBs / Polybrominated diphenylethers [2]</li></ul></div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q2</span><span class="eq-marks"><span class="tag tag-easy">Easy</span>[2 marks]</span></div>
+      <div class="eq-q">Explain why dumping e-waste in landfill sites is harmful to the environment.</div>
+      <textarea class="ans-box" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div><ul><li>Computer products contain toxic/hazardous materials [1]</li><li>These leak into the ground and contaminate water supplies / food chain / air [1]</li></ul></div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q3</span><span class="eq-marks"><span class="tag tag-med">Medium</span>[3 marks]</span></div>
+      <div class="eq-q">Describe <strong>three</strong> ways in which computing technology is helping to preserve the environment.</div>
+      <textarea class="ans-box" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div><ul><li>Any 3 from: NASA using satellite data to monitor climate change [1] · sensor networks measuring glacier melt [1] · tsunami early warning systems [1] · GPS tracking of wildlife [1] · smart energy sensors in buildings [1] · solar panel tracking motors [1]</li></ul></div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q4</span><span class="eq-marks"><span class="tag tag-med">Medium</span>[4 marks]</span></div>
+      <div class="eq-q">Explain the difference between <strong>copyright</strong> and a <strong>patent</strong> when protecting intellectual property.</div>
+      <textarea class="ans-box" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div><ul><li>Copyright protects the <em>expression</em> of an idea (e.g. source code) [1]</li><li>Not the idea itself [1]</li><li>A patent protects the <em>idea or design</em> of an invention [1]</li><li>Patent holder has exclusive rights for 20 years [1]</li></ul></div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q5</span><span class="eq-marks"><span class="tag tag-med">Medium</span>[4 marks]</span></div>
+      <div class="eq-q">State <strong>two</strong> advantages and <strong>two</strong> disadvantages of open-source software.</div>
+      <textarea class="ans-box" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+        <strong>Advantages (any 2):</strong><ul><li>Free to use [1]</li><li>Can be modified [1]</li><li>Good for demonstrating programming concepts [1]</li></ul>
+        <strong>Disadvantages (any 2):</strong><ul><li>May not be user friendly / look unprofessional [1]</li><li>Little or no technical support [1]</li><li>Vulnerabilities visible to criminals in the code [1]</li></ul>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q6</span><span class="eq-marks"><span class="tag tag-hard">Hard</span>[4 marks]</span></div>
+      <div class="eq-q">Explain the concept of <strong>superposition</strong> in quantum computing and why it makes quantum computers more powerful than classical computers.</div>
+      <textarea class="ans-box" style="min-height:120px;" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div><ul><li>Superposition is the ability of a qubit to be in multiple states (0 AND 1) at the same time [1]</li><li>Until its state is measured [1]</li><li>Classical computer tests combinations one at a time [1]</li><li>Quantum computer can represent/test all combinations simultaneously / exponentially more solutions at once [1]</li></ul></div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr"><span class="eq-num">Q7</span><span class="eq-marks"><span class="tag tag-hard">Hard</span>[6 marks]</span></div>
+      <div class="eq-q">Discuss the <strong>privacy implications</strong> of computing technology collecting personal data. Include both benefits and drawbacks in your answer.</div>
+      <textarea class="ans-box" style="min-height:140px;" placeholder="Write your answer here..."></textarea>
+      <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+      <div class="ms"><div class="ms-lbl">✅ Mark Scheme</div>
+        <strong>Benefits (up to 3):</strong><ul><li>Personalised services / better shopping experience [1]</li><li>Faster online transactions [1]</li><li>Big data can identify drug side effects / improve healthcare [1]</li><li>Targeted advertising of relevant products [1]</li></ul>
+        <strong>Drawbacks (up to 3):</strong><ul><li>Invasion of privacy — data collected without full knowledge [1]</li><li>Risk of identity theft if data is breached [1]</li><li>Inaccurate data can follow a person throughout life [1]</li><li>Data used to target financially vulnerable people [1]</li><li>Governments and corporations can build detailed profiles [1]</li></ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- ACTIVITIES TAB                            -->
+  <!-- ══════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Match the term -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-teal);">
+        <span class="act-icon">🔗</span>
+        <span class="act-title">Activity 1: Match the Term to its Definition</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;font-size:0.9rem;margin-bottom:12px;">Click a term on the left, then click its matching definition on the right.</p>
+        <div class="match-grid">
+          <div id="match-left"></div>
+          <div id="match-right"></div>
+        </div>
+        <div style="margin-top:12px;display:flex;align-items:center;gap:12px;">
+          <span id="match-score" style="font-family:'Caveat',cursive;font-size:1.1rem;font-weight:700;color:var(--purple);">Matched: 0 / 6</span>
+          <button class="btn" onclick="resetMatch()">🔄 Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 2: True or False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-yellow);">
+        <span class="act-icon">✅</span>
+        <span class="act-title">Activity 2: True or False?</span>
+      </div>
+      <div class="act-bdy">
+        <div id="tf-area"></div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Scenario challenge -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">🧠</span>
+        <span class="act-title">Activity 3: Ethical Dilemma — What Should the Developer Do?</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;font-size:0.92rem;margin-bottom:10px;">A computer scientist is developing an embedded system to control car brakes. For each situation, click to reveal what the <em>professional</em> response should be.</p>
+
+        <div class="scen-box">
+          <strong>Situation 1:</strong> She spots a bug but fixing it will delay the project deadline.
+          <br><button class="btn" style="margin-top:8px;" onclick="this.nextElementSibling.classList.toggle('show')">💡 Reveal Answer</button>
+          <div class="scen-reveal">She must report and fix the bug. Car brakes are safety-critical — a bug could cost lives. Professionalism requires prioritising safety over schedules.</div>
+        </div>
+
+        <div class="scen-box">
+          <strong>Situation 2:</strong> She realises someone could theoretically hack the brakes remotely.
+          <br><button class="btn" style="margin-top:8px;" onclick="this.nextElementSibling.classList.toggle('show')">💡 Reveal Answer</button>
+          <div class="scen-reveal">She must escalate this security risk immediately. The BCS Code says to respect security of people. Even a remote risk must be disclosed and addressed.</div>
+        </div>
+
+        <div class="scen-box">
+          <strong>Situation 3:</strong> A competitor offers to pay her for details of the code.
+          <br><button class="btn" style="margin-top:8px;" onclick="this.nextElementSibling.classList.toggle('show')">💡 Reveal Answer</button>
+          <div class="scen-reveal">She must decline. Selling proprietary code is unethical and likely illegal (breach of contract, IP theft). This violates professional codes of conduct.</div>
+        </div>
+
+        <div class="scen-box">
+          <strong>Situation 4:</strong> Her employer makes false claims about how safe the system is.
+          <br><button class="btn" style="margin-top:8px;" onclick="this.nextElementSibling.classList.toggle('show')">💡 Reveal Answer</button>
+          <div class="scen-reveal">She should refuse to endorse false claims and report it. A professional must be honest — misleading the public about safety-critical software is both unethical and potentially criminal.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 4: Emerging Tech Classifier -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🚀</span>
+        <span class="act-title">Activity 4: Classify the Emerging Technology</span>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;font-size:0.92rem;margin-bottom:10px;">For each description, identify which emerging technology it refers to: AI, DNA Computing, Nanotechnology, or Quantum Computing.</p>
+        <div id="classify-area"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities tab -->
+
+</div><!-- end page-wrap -->
+
+<!-- Diagram Zoom Lightbox -->
+<div id="svg-lightbox" onclick="closeLightbox(event)">
+  <div id="svg-lightbox-inner" onclick="event.stopPropagation()">
+    <button id="svg-lightbox-close" onclick="closeLightbox(null)" title="Close">✕</button>
+    <div id="svg-lightbox-content"></div>
+    <button id="svg-lightbox-dl" onclick="downloadSVG()">⬇ Download diagram as PNG</button>
+  </div>
+</div>
+
+<script>
+// ── TABS ────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ── NOTES TOGGLE ────────────────────────────────────
+function toggleNotes(hdr) {
+  const body = hdr.nextElementSibling;
+  const tog = hdr.querySelector('.notes-tog');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  tog.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// ── MARK SCHEME ─────────────────────────────────────
+function toggleMS(btn) {
+  const ms = btn.nextElementSibling;
+  ms.classList.toggle('show');
+  btn.textContent = ms.classList.contains('show') ? '🙈 Hide Mark Scheme' : '👁 Show Mark Scheme';
+}
+
+// ── QUIZ ─────────────────────────────────────────────
+const quizData = [
+  { q: "What does RoHS stand for?", opts: ["Restriction of Hazardous Substances","Regulation of Hardware Operating Systems","Registry of Harmful Online Software","Reduction of High-Output Semiconductors"], ans: 0, exp: "RoHS = Restriction of Hazardous Substances. The EU directive restricts 6 dangerous materials used in computing tech manufacture." },
+  { q: "Which of these is NOT a hazardous material restricted by RoHS?", opts: ["Lead","Silicon","Mercury","Cadmium"], ans: 1, exp: "Silicon is the primary material for chips but is NOT restricted by RoHS. The 6 restricted materials are: Cadmium, Lead, Mercury, Hexavalent chromium, PCBs, and PBDEs." },
+  { q: "What is the 'digital divide'?", opts: ["The gap between wired and wireless networks","The difference in processing speed between old and new computers","The gap between technology-empowered and technology-excluded people","The split between open-source and proprietary software"], ans: 2, exp: "The digital divide is the gap between those who have affordable access to computing technology and the skills to use it (empowered) vs those who don't (excluded)." },
+  { q: "Which organisation's Code of Conduct governs UK computing professionals?", opts: ["IEEE","BCS (British Computer Society)","ACM","ISO"], ans: 1, exp: "The BCS (British Computer Society) is the Chartered Institute for IT in the UK. Its Code of Conduct sets professional and ethical standards for computer scientists." },
+  { q: "A patent protects intellectual property for how many years?", opts: ["10 years","15 years","20 years","25 years"], ans: 2, exp: "A patent gives the inventor exclusive rights to make, use and sell their invention for 20 years. After that, anyone can use it." },
+  { q: "What is the key difference between copyright and a patent?", opts: ["Copyright lasts longer","Copyright protects the expression of an idea; a patent protects the idea itself","Patent is free to obtain; copyright requires a fee","Only software can be copyrighted"], ans: 1, exp: "Copyright protects the specific expression (e.g. source code). A patent protects the underlying idea/design of an invention — much broader protection." },
+  { q: "What is a 'qubit'?", opts: ["A unit of data in DNA computing","A quantum bit that can be 0, 1 or both simultaneously","A type of nanotechnology particle","A measure of processor speed"], ans: 1, exp: "A qubit is a quantum bit — unlike a classical bit which is either 0 or 1, a qubit can be in superposition: both 0 and 1 at the same time until measured." },
+  { q: "Which property of quantum computing allows pairs of qubits to instantly affect each other over any distance?", opts: ["Superposition","Interference","Entanglement","Decoherence"], ans: 2, exp: "Entanglement means two qubits share a quantum state. Changing the state of one instantly affects the other — even across huge distances. This exponentially increases computing power." },
+  { q: "Open-source software is BEST described as:", opts: ["Software that is always free and has no restrictions","Software that can be freely used, edited and redistributed","Software developed by open teams at universities only","Software without any security vulnerabilities"], ans: 1, exp: "Open-source means the source code is freely available. Anyone can use it, modify it, and pass it on — as long as they don't charge a fee." },
+  { q: "What is 'machine learning'?", opts: ["Programming a computer with every possible instruction","The ability of computers to learn without being explicitly programmed","Using computers to teach students in schools","Translating human language to machine code"], ans: 1, exp: "Machine learning is when computers can modify and improve their own programs based on outcomes — they learn from experience without being explicitly told what to do." },
+  { q: "Which of these is an advantage of DNA computing over silicon computing?", opts: ["DNA computers are faster at all tasks","DNA computers don't require any human assistance","DNA is a cheap and abundant resource","DNA computers already outperform classical computers"], ans: 2, exp: "DNA is abundant wherever there are living organisms, making it a cheap resource. It's also tiny and can store enormous amounts of data — advantages over silicon." },
+  { q: "What does 'carbon footprint' mean?", opts: ["The physical area covered by a data centre","The amount of CO₂ produced through energy consumption","The weight of carbon used in computer chips","The number of carbon-based materials in a device"], ans: 1, exp: "Carbon footprint = the amount of carbon dioxide (CO₂) an individual or organisation produces as a result of the energy they consume." },
+  { q: "Which type of software licence is Creative Commons associated with?", opts: ["Proprietary software","Commercial software","Flexible open licences for creative works","Government-controlled software"], ans: 2, exp: "Creative Commons lets creators set flexible copyright terms for their intellectual property — allowing others to copy, share or modify work under specified conditions." },
+  { q: "What is 'identity theft' in the context of computing?", opts: ["Creating a fake online profile","Stealing another person's personal details to make purchases or run up debts","Copying someone's source code without permission","Accessing someone's email without authorisation"], ans: 1, exp: "Identity theft = stealing another person's personal details (bank account, sort code, passport number) to make purchases or run up debts in their name." },
+  { q: "Nanotechnology involves manipulation of matter at what scale?", opts: ["1 to 100 millimetres","1 to 100 micrometres","1 to 100 nanometres","1 to 100 picometres"], ans: 2, exp: "Nanotechnology = manipulation of matter with a size of 1 to 100 nanometres (nm). One nanometre = 1 millionth of a metre (10⁻⁹ m). This is the atomic/molecular scale." },
+  { q: "Why are quantum computers cooled to extremely low temperatures?", opts: ["To save energy","To prevent overheating of the large processors","To keep qubits stable — any vibration or temperature change causes 'noise' errors","To increase the speed of qubit rotation"], ans: 2, exp: "Qubits are extremely fragile. Even tiny vibrations or temperature changes cause them to leave superposition — this is called 'noise'. They must be cooled to near absolute zero (colder than deep space)." },
+  { q: "How many possible values can a DNA 'codon' (3 bases) represent?", opts: ["8","16","32","64"], ans: 3, exp: "A DNA codon = 3 bases, each with 4 possible values (A, T, G, C). 4³ = 64 possible values — compared to 256 for a binary byte (2⁸)." },
+  { q: "Which of these is a privacy-enhancing tool?", opts: ["CCTV camera","Search engine algorithm","Password manager","Location-based service"], ans: 2, exp: "A password manager stores all login details in an encrypted database with a single master password — enhancing security and protecting personal data." },
+  { q: "What is the main purpose of the Computer Misuse Act?", opts: ["To prevent people copying software","To make it illegal to access computer systems without permission","To regulate how data centres use energy","To control the use of AI in healthcare"], ans: 1, exp: "Computer Misuse Acts (in Europe, GCC, Australia, Singapore, etc.) make it illegal for anyone to gain access to computer systems without permission, with higher penalties for fraud or data theft." },
+  { q: "Which company built a data centre near the Arctic Circle to reduce energy consumption?", opts: ["Google","Apple","Amazon","Facebook"], ans: 3, exp: "Facebook built a data centre in northern Sweden, just 100km south of the Arctic Circle — to use renewable hydroelectricity and the cold climate to cool servers efficiently." },
+];
+
+let qIdx = 0, score = 0, answered = false;
+
+function buildQuiz() {
+  const area = document.getElementById('quiz-area');
+  area.innerHTML = '';
+  if (qIdx >= quizData.length) { showResult(); return; }
+  const q = quizData[qIdx];
+  answered = false;
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `
+    <div class="quiz-q-num">Question ${qIdx+1} of ${quizData.length}</div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="quiz-options" data-correct="${q.ans}" data-exp="${encodeURIComponent(q.exp)}">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(this,${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="qfb"></div>
+    <div class="quiz-nav"><button class="btn btn-blue" id="qnext" style="display:none;" onclick="nextQ()">Next →</button></div>
+  `;
+  area.appendChild(card);
+  updateProgress();
+}
+
+function answerQ(btn, chosen) {
+  if (answered) return;
+  answered = true;
+  const optsContainer = btn.parentElement;
+  const correct = parseInt(optsContainer.dataset.correct);
+  const exp = decodeURIComponent(optsContainer.dataset.exp);
+  const opts = optsContainer.querySelectorAll('.quiz-opt');
+  opts.forEach(b => b.disabled = true);
+  opts[correct].classList.add('correct');
+  const fb = document.getElementById('qfb');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    score++;
+    fb.className = 'quiz-feedback correct-fb show';
+    fb.innerHTML = '✅ Correct! ' + exp;
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'quiz-feedback wrong-fb show';
+    fb.innerHTML = '❌ Not quite. ' + exp;
+  }
+  document.getElementById('qnext').style.display = 'inline-block';
+  updateProgress();
+}
+
+function nextQ() { qIdx++; buildQuiz(); }
+
+function updateProgress() {
+  const pct = (qIdx / quizData.length) * 100;
+  document.getElementById('qpf').style.width = pct + '%';
+  document.getElementById('qsb').textContent = score + ' / ' + quizData.length;
+}
+
+function showResult() {
+  document.getElementById('quiz-area').style.display = 'none';
+  const res = document.getElementById('quiz-result');
+  res.style.display = 'block';
+  const pct = Math.round((score / quizData.length) * 100);
+  document.getElementById('final-score').textContent = score + ' / ' + quizData.length + ' (' + pct + '%)';
+  const msgs = [
+    [0, 40, "Keep revising! Re-read the notes and try again. 💪"],
+    [40, 65, "Getting there! Review the topics you missed. 📖"],
+    [65, 85, "Good work! A bit more revision and you'll ace it. 👍"],
+    [85, 101, "Excellent! You really know Unit 6. 🎉"]
+  ];
+  const msg = msgs.find(([lo,hi]) => pct >= lo && pct < hi);
+  document.getElementById('final-msg').textContent = msg ? msg[2] : '';
+}
+
+function restartQuiz() {
+  qIdx = 0; score = 0;
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  buildQuiz();
+}
+
+buildQuiz();
+
+// ── TRUE / FALSE ──────────────────────────────────────
+const tfData = [
+  { s: "The RoHS Directive restricts the use of hazardous substances in computing technology manufacture.", a: true, exp: "True! The EU Restriction of Hazardous Substances (RoHS) Directive restricts all six of the most dangerous materials (Cadmium, Lead, Mercury, Hexavalent chromium, PCBs, PBDEs) in computing technology." },
+  { s: "E-waste is fully and safely recycled around the world today.", a: false, exp: "False! Only about 20% of e-waste is properly recycled. Large amounts are still sent to developing countries and dumped in landfill sites, causing serious environmental and health problems." },
+  { s: "Copyright protects the idea behind an invention, not just the expression of it.", a: false, exp: "False! Copyright only protects the EXPRESSION of an idea (e.g. the source code itself). A PATENT is needed to protect the underlying idea or design of an invention." },
+  { s: "A qubit in superposition can represent both 0 and 1 simultaneously.", a: true, exp: "True! Superposition is the key quantum property that allows a qubit to be in multiple states at once — both 0 and 1 until its state is measured. This is what makes quantum computing so powerful." },
+  { s: "Open-source software can never have any security vulnerabilities.", a: false, exp: "False! Open-source software CAN have vulnerabilities — and because the source code is visible to everyone, criminals can also inspect it to identify and exploit those vulnerabilities." },
+  { s: "The digital divide only exists between different countries, not within the same country.", a: false, exp: "False! The digital divide exists BOTH between industrialised and developing countries AND between different groups of people within the same country." },
+  { s: "DNA computing uses four possible bit values (A, T, G, C) rather than two.", a: true, exp: "True! DNA uses adenine (A), thymine (T), guanine (G) and cytosine (C) — four possible values per digit — compared to binary which only uses 0 and 1. This allows DNA to store far more data." },
+  { s: "Proprietary software allows users to freely modify and redistribute the source code.", a: false, exp: "False! Proprietary software is CLOSED source. The licence specifically states that users are NOT allowed to modify the source code or redistribute it. Only open-source software allows this." },
+  { s: "Quantum computers simply do the same tasks as classical computers but much faster.", a: false, exp: "False! Quantum computers are NOT just faster versions of classical computers. They are based on completely different physics (quantum mechanics) and are suited to fundamentally different types of problems." },
+  { s: "Data centres consume more energy globally than the aviation industry.", a: true, exp: "True! Cloud computing and data centres are ahead of the aviation industry in terms of energy consumption. This is why energy efficiency and renewable energy use in data centres is so important." },
+];
+
+function buildTF() {
+  const area = document.getElementById('tf-area');
+  tfData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'scen-box';
+    div.innerHTML = `<div style="font-family:'Patrick Hand',cursive;font-size:0.95rem;margin-bottom:8px;">${idx+1}. ${item.s}</div>
+      <div style="display:flex;gap:10px;">
+        <button class="tf-btn" onclick="checkTF(this,true,${item.a},${idx})">✅ True</button>
+        <button class="tf-btn" onclick="checkTF(this,false,${item.a},${idx})">❌ False</button>
+      </div>
+      <div class="scen-reveal" id="tf-exp-${idx}" style="${item.a ? 'background:#e0faf1;border-color:#059669;' : 'background:#fce4ec;border-color:var(--coral);'}">${item.exp}</div>`;
+    area.appendChild(div);
+  });
+}
+
+function checkTF(btn, chosen, correct, idx) {
+  const btns = btn.parentElement.querySelectorAll('.tf-btn');
+  btns.forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if ((b.textContent.includes('True') && correct) || (b.textContent.includes('False') && !correct)) b.classList.add('correct'); });
+  }
+  document.getElementById('tf-exp-' + idx).classList.add('show');
+}
+
+// ── CLASSIFY ACTIVITY ────────────────────────────────
+const classifyData = [
+  { desc: "A computer can analyse millions of medical scans and learn to identify cancer markers more accurately than a human.", ans: "Artificial Intelligence", exp: "This describes machine learning — a branch of AI where computers improve their ability to diagnose by training on huge datasets." },
+  { desc: "Particles cooled to near absolute zero can exist in multiple states simultaneously, allowing all possible solutions to be tested at once.", ans: "Quantum Computing", exp: "Superposition in quantum computing allows qubits to represent multiple states simultaneously — solving certain problems exponentially faster than classical computers." },
+  { desc: "Half a kilogram of a biological molecule can store more information than all electronic computers ever built.", ans: "DNA Computing", exp: "DNA's four-base encoding (A, T, G, C) makes it an incredibly dense data storage medium — half a kilogram stores more data than all computers ever made." },
+  { desc: "Intel is producing transistors that are just 14nm wide — about 5,000 times thinner than a human hair.", ans: "Nanotechnology", exp: "Nanotechnology involves manipulating matter at 1–100nm scale. Modern chip transistors at 14nm represent cutting-edge nanotechnology." },
+  { desc: "Entangled particles change state instantly when their partner changes, regardless of distance — enabling exponential computing power.", ans: "Quantum Computing", exp: "Entanglement is a quantum property where paired qubits share a quantum state. Changing one instantly affects the other — producing an exponential increase in computing power." },
+  { desc: "Anti-cancer drugs are attached to tiny particles and delivered directly to tumour cells via white blood cells.", ans: "Nanotechnology", exp: "Nanoparticles can carry drugs precisely to cancer cells — a major medical application of nanotechnology that avoids damaging healthy tissue." },
+];
+
+function buildClassify() {
+  const area = document.getElementById('classify-area');
+  const techs = ["Artificial Intelligence", "DNA Computing", "Nanotechnology", "Quantum Computing"];
+  classifyData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'scen-box';
+    div.innerHTML = `
+      <p style="font-family:'Kalam',cursive;font-size:0.92rem;margin-bottom:8px;"><strong>${idx+1}.</strong> ${item.desc}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${techs.map(t => `<button class="btn" style="font-size:0.85rem;padding:5px 12px;" onclick="checkClassify(this,'${t.replace(/'/g,"\\'")}','${item.ans.replace(/'/g,"\\'")}',${idx})">${t}</button>`).join('')}
+      </div>
+      <div class="scen-reveal" id="cl-exp-${idx}" style="background:#e0faf1;border-color:#059669;">${item.exp}</div>
+    `;
+    area.appendChild(div);
+  });
+}
+
+function checkClassify(btn, chosen, correct, idx) {
+  const btns = btn.parentElement.querySelectorAll('.btn');
+  btns.forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btn.style.background = 'var(--light-teal)';
+    btn.style.borderColor = '#059669';
+    btn.style.color = '#059669';
+  } else {
+    btn.style.background = 'var(--light-coral)';
+    btn.style.borderColor = 'var(--coral)';
+    btn.style.color = 'var(--coral)';
+    btns.forEach(b => { if (b.textContent === correct) { b.style.background='var(--light-teal)'; b.style.borderColor='#059669'; b.style.color='#059669'; } });
+  }
+  document.getElementById('cl-exp-' + idx).classList.add('show');
+}
+
+buildClassify();
+
+// ── MATCH ACTIVITY ───────────────────────────────────
+const matchItems = [
+  { hw: "E-waste", desc: "Any discarded electronic equipment, including old phones, computers and printers." },
+  { hw: "Carbon footprint", desc: "The amount of CO₂ an individual or organisation produces from energy use." },
+  { hw: "Digital divide", desc: "The gap between those who are technology-empowered and those who are excluded." },
+  { hw: "Qubit", desc: "A quantum bit that can be 0, 1, or both at the same time via superposition." },
+  { hw: "Intellectual property", desc: "A unique creative product of a human mind with commercial value." },
+  { hw: "Machine learning", desc: "The ability of computers to learn and improve without being explicitly programmed." },
+];
+let selectedLeft = null, matchCount = 0;
+
+function buildMatch() {
+  const leftEl = document.getElementById('match-left');
+  const rightEl = document.getElementById('match-right');
+  const shuffled = [...matchItems].sort(() => Math.random()-0.5);
+  const shuffledDesc = [...matchItems].sort(() => Math.random()-0.5);
+  leftEl.innerHTML = ''; rightEl.innerHTML = '';
+  shuffled.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item';
+    div.textContent = item.hw;
+    div.dataset.hw = item.hw;
+    div.onclick = () => {
+      document.querySelectorAll('#match-left .match-item').forEach(d => d.classList.remove('sel'));
+      if (!div.classList.contains('ok')) { div.classList.add('sel'); selectedLeft = item.hw; }
+    };
+    leftEl.appendChild(div);
+  });
+  shuffledDesc.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item';
+    div.textContent = item.desc;
+    div.dataset.hw = item.hw;
+    div.style.textAlign = 'left';
+    div.style.fontSize = '0.82rem';
+    div.onclick = () => {
+      if (!selectedLeft) return;
+      if (selectedLeft === item.hw) {
+        div.classList.add('ok');
+        document.querySelectorAll('#match-left .match-item').forEach(d => { if (d.dataset.hw === selectedLeft) { d.classList.add('ok'); d.classList.remove('sel'); } });
+        matchCount++;
+        document.getElementById('match-score').textContent = `Matched: ${matchCount} / 6`;
+        if (matchCount === 6) document.getElementById('match-score').textContent = '🎉 All matched! Unit 6 expert!';
+      } else {
+        div.classList.add('bad');
+        document.querySelectorAll('#match-left .match-item').forEach(d => d.classList.remove('sel'));
+        setTimeout(() => div.classList.remove('bad'), 500);
+      }
+      selectedLeft = null;
+    };
+    rightEl.appendChild(div);
+  });
+}
+
+function resetMatch() { matchCount = 0; selectedLeft = null; document.getElementById('match-score').textContent = 'Matched: 0 / 6'; buildMatch(); }
+
+buildMatch();
+buildTF();
+
+// ── LIGHTBOX ──────────────────────────────────────────
+let _currentSVGContent = '';
+function openLightbox(el) {
+  const svgEl = el.querySelector('svg');
+  if (!svgEl) return;
+  _currentSVGContent = svgEl.outerHTML;
+  document.getElementById('svg-lightbox-content').innerHTML = _currentSVGContent;
+  document.getElementById('svg-lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('svg-lightbox')) return;
+  document.getElementById('svg-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') { document.getElementById('svg-lightbox').classList.remove('open'); document.body.style.overflow=''; } });
+
+function downloadSVG() {
+  const svgEl = document.querySelector('#svg-lightbox-content svg');
+  if (!svgEl) return;
+  const clone = svgEl.cloneNode(true);
+  const vb = svgEl.viewBox.baseVal;
+  const W = vb.width || 680, H = vb.height || 400;
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  clone.querySelectorAll('text, tspan').forEach(el => el.setAttribute('font-family', 'Arial, sans-serif'));
+  const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  bg.setAttribute('width', W); bg.setAttribute('height', H); bg.setAttribute('fill', 'white');
+  clone.insertBefore(bg, clone.firstChild);
+  const svgData = new XMLSerializer().serializeToString(clone);
+  const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+  const scale = 3;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * scale; canvas.height = H * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+  const img = new Image();
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'diagram.png';
+    a.href = canvas.toDataURL('image/png');
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+  img.onerror = function() {
+    const a = document.createElement('a');
+    a.download = 'diagram.svg'; a.href = dataUrl;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+  img.src = dataUrl;
+}
+
+// Wrap all SVGs
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.notes-body svg, .mindmap-wrap svg, .act-bdy svg').forEach(function(svg) {
+    if (svg.closest('.svg-zoom-wrap')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'svg-zoom-wrap';
+    if (svg.style.maxWidth) wrap.style.maxWidth = svg.style.maxWidth;
+    wrap.style.margin = svg.style.margin || '0 auto';
+    svg.parentNode.insertBefore(wrap, svg);
+    wrap.appendChild(svg);
+    wrap.onclick = function() { openLightbox(wrap); };
+    wrap.setAttribute('title', 'Click to zoom diagram');
+  });
+});
+</script>
+</body>
+</html>

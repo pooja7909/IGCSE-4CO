@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 16: Machines & Computational Models – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 20px 30px 60px 90px; position: relative; z-index: 1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+
+  /* HERO */
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero-title {
+    font-family: 'Permanent Marker', cursive; font-size: 2.8rem; color: var(--ink);
+    text-shadow: 3px 3px 0 var(--teal); letter-spacing: 2px; transform: rotate(-1.5deg);
+    display: inline-block; position: relative;
+  }
+  .hero-title::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px; background: var(--blue); border-radius: 2px; }
+  .hero-sub { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--blue); margin-top: 18px; }
+
+  /* TABS */
+  .tabs-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 20px; justify-content: center; }
+  .tab-btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 8px 18px; border: 3px solid var(--ink); border-radius: 6px;
+    background: white; cursor: pointer; transition: all 0.2s; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .tab-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab-btn.active { background: var(--ink); color: white; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background: var(--blue); }
+  .tab-btn[data-tab="notes"].active { background: var(--green); }
+  .tab-btn[data-tab="quiz"].active { background: #059669; }
+  .tab-btn[data-tab="activities"].active { background: var(--orange); }
+  .tab-btn[data-tab="exam"].active { background: var(--purple); }
+
+  /* EXAM QUESTIONS */
+  .eq-wrap { margin-bottom: 26px; border: 2.5px solid var(--ink); border-radius: 10px; background: white; box-shadow: 4px 4px 0 var(--ink); overflow: hidden; }
+  .eq-hdr { padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);} .eq-hdr.c2{background:var(--light-blue);} .eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;} .eq-hdr.c5{background:var(--light-yellow);} .eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);} .eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; }
+  .eq-marks { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; background: var(--ink); color: white; padding: 2px 10px; border-radius: 20px; }
+  .eq-bdy { padding: 14px 16px; }
+  .eq-txt { font-size: 1.02rem; line-height: 1.6; margin-bottom: 12px; }
+  .eq-ctx { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 10px 14px; margin-bottom: 12px; font-size: 0.93rem; line-height: 1.5; border-radius: 0 6px 6px 0; font-style: italic; font-family: 'Kalam', cursive; }
+  .ans-ta { width: 100%; border: 1.5px solid #b0bec5; border-radius: 6px; background: transparent; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; padding: 8px; outline: none; resize: vertical; min-height: 80px; }
+  .show-ms { font-family: 'Caveat', cursive; font-size: 1rem; padding: 6px 16px; border: 2px solid var(--purple); border-radius: 20px; background: white; color: var(--purple); cursor: pointer; margin-top: 10px; transition: all 0.15s; }
+  .show-ms:hover { background: var(--purple); color: white; }
+  .ms { display: none; margin-top: 10px; background: var(--light-purple); border: 2px solid var(--purple); border-radius: 8px; padding: 12px 16px; font-size: 0.93rem; line-height: 1.6; }
+  .ms.show { display: block; animation: fadeIn 0.3s ease; }
+  .ms ul { padding-left: 20px; margin-top: 6px; }
+  .ms li { margin: 4px 0; }
+  .ms-lbl { font-family: 'Permanent Marker', cursive; font-size: 1rem; color: var(--purple); margin-bottom: 6px; }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+  /* SHARED */
+  .tip-box {
+    background: var(--light-yellow); border: 2px solid var(--yellow); border-left: 5px solid var(--orange);
+    border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-family: 'Kalam', cursive; font-size: 0.95rem;
+  }
+  .btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 9px 22px; border: 2.5px solid var(--ink); border-radius: 8px;
+    cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s;
+  }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-teal { background: var(--teal); color: var(--ink); border-color: #059669; box-shadow: 3px 3px 0 #059669; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 4px; font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700; border: 1.5px solid; margin-right: 4px; }
+  .tag-hard { color: var(--coral); border-color: var(--coral); background: var(--light-coral); }
+  .tag-med { color: var(--orange); border-color: var(--orange); background: #fff3e0; }
+  .tag-easy { color: #059669; border-color: var(--teal); background: var(--light-teal); }
+
+  /* IMPORTANCE BANNER */
+  .imp-banner { margin-bottom: 20px; border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .imp-header {
+    background: var(--blue); color: white; padding: 10px 18px;
+    font-family: 'Permanent Marker', cursive; font-size: 1.2rem;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .imp-body { display: none; background: white; }
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); }
+  .imp-cell { padding: 14px 16px; border-right: 2px solid #eee; border-bottom: 2px solid #eee; }
+  .imp-cell-title { font-family: 'Permanent Marker', cursive; font-size: 0.95rem; margin-bottom: 6px; }
+  .imp-cell p { font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.5; }
+  .imp-footer { background: #fff9c4; border-top: 2px solid var(--ink); padding: 10px 16px; font-family: 'Kalam', cursive; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+
+  /* MINDMAP */
+  .ig-wrap { background: #fffdf5; border: 3px solid var(--ink); border-radius: 12px; padding: 28px; box-shadow: 6px 6px 0 var(--ink); }
+  .ig-title { font-family: 'Permanent Marker', cursive; font-size: 2rem; text-align: center; margin-bottom: 20px; }
+  .ig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width:600px){ .ig-grid{grid-template-columns:1fr;} }
+  .ig-sec { border: 2.5px solid var(--ink); border-radius: 10px; padding: 16px; background: white; position: relative; }
+  .ig-label { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; position: absolute; top: -13px; left: 14px; background: white; padding: 0 8px; }
+  .ig-item { display: flex; align-items: flex-start; gap: 9px; margin: 7px 0; font-family: 'Kalam', cursive; font-size: 0.92rem; line-height: 1.4; }
+  .ig-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .highlight-box { background: var(--light-teal); border: 2.5px solid var(--ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-family: 'Kalam', cursive; font-size: 1rem; text-align: center; transform: rotate(-0.3deg); }
+  .step-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 10px; padding: 16px; }
+  .step-card { text-align: center; padding: 12px 8px; border: 2px solid; border-radius: 8px; }
+  .step-emoji { font-size: 1.5rem; }
+  .step-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; margin: 4px 0 2px; }
+  .step-txt { font-family: 'Kalam', cursive; font-size: 0.8rem; }
+
+  /* NOTES */
+  .notes-sec { margin-bottom: 14px; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .notes-hdr { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .notes-hdr:hover { opacity: 0.9; }
+  .notes-hdr-left { display: flex; align-items: center; gap: 12px; }
+  .notes-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .notes-title { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; color: white; }
+  .notes-tog { font-family: 'Caveat', cursive; font-size: 1.2rem; color: white; transition: transform 0.3s; }
+  .notes-bdy { display: none; padding: 18px 20px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.65; }
+  .notes-bdy.open { display: block; animation: fadeIn 0.25s ease; }
+  .def-box { border: 2px solid; border-radius: 8px; padding: 12px 14px 10px; margin: 12px 0; position: relative; padding-top: 22px; font-size: 0.92rem; line-height: 1.55; }
+  .def-label { position: absolute; top: -11px; left: 12px; color: white; font-family: 'Caveat', cursive; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+  .notes-tip { background: #fff9c4; border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 12px 0 4px; font-size: 0.9rem; font-family: 'Kalam', cursive; }
+  .notes-eg { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; font-style: italic; font-family: 'Kalam', cursive; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:580px){ .g2{grid-template-columns:1fr;} }
+  .nl { display: flex; align-items: flex-start; gap: 9px; margin: 6px 0; font-size: 0.92rem; line-height: 1.5; }
+  .nd { width: 24px; height: 24px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .subh { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+  .subh::after { content: ''; flex: 1; height: 2px; background: currentColor; opacity: 0.2; }
+  .n-card { border: 2.5px solid; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+  .n-card-hdr { padding: 8px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; }
+  .n-card-bdy { padding: 12px 14px; background: white; font-size: 0.92rem; line-height: 1.55; }
+  .hl-b { color: var(--blue); font-weight: 700; } .hl-t { color: #059669; font-weight: 700; }
+  .hl-c { color: var(--coral); font-weight: 700; } .hl-p { color: var(--purple); font-weight: 700; }
+  .hl-o { color: var(--orange); font-weight: 700; } .hl-g { color: var(--green); font-weight: 700; }
+
+  /* QUIZ */
+  .q-prog-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .q-prog-bar { flex: 1; height: 14px; background: #e0e0e0; border: 2px solid var(--ink); border-radius: 20px; overflow: hidden; }
+  .q-prog-fill { height: 100%; background: var(--teal); border-radius: 20px; transition: width 0.4s; }
+  .q-score { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; background: var(--yellow); border: 2px solid var(--ink); padding: 4px 12px; border-radius: 20px; }
+  .q-card { border: 3px solid var(--ink); border-radius: 12px; padding: 22px; background: white; box-shadow: 5px 5px 0 var(--ink); }
+  .q-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; color: var(--teal); margin-bottom: 8px; }
+  .q-text { font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 600; margin-bottom: 16px; line-height: 1.4; }
+  .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media(max-width:480px){ .q-opts{grid-template-columns:1fr;} }
+  .q-opt { padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.98rem; cursor: pointer; transition: all 0.15s; text-align: left; box-shadow: 2px 2px 0 var(--ink); }
+  .q-opt:hover:not(:disabled) { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .q-opt.correct { background: var(--teal) !important; color: white; border-color: #059669; box-shadow: none; }
+  .q-opt.wrong { background: var(--coral) !important; color: white; border-color: #c0392b; box-shadow: none; animation: shake 0.3s; }
+  .q-opt:disabled { cursor: default; }
+  .q-fb { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600; border: 2px solid; display: none; }
+  .q-fb.show { display: block; }
+  .q-fb.fb-ok { background: #e0faf1; border-color: var(--teal); color: #059669; }
+  .q-fb.fb-no { background: var(--light-coral); border-color: var(--coral); color: var(--coral); }
+  .q-result { text-align: center; padding: 30px; }
+  .q-result h2 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin-bottom: 10px; }
+  .big-score { font-family: 'Permanent Marker', cursive; font-size: 4rem; color: var(--teal); }
+
+  /* ACTIVITIES */
+  .act-card { border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; margin-bottom: 22px; box-shadow: 5px 5px 0 var(--ink); }
+  .act-hdr { padding: 13px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid var(--ink); }
+  .act-icon { font-size: 1.8rem; }
+  .act-title { font-family: 'Permanent Marker', cursive; font-size: 1.25rem; }
+  .act-bdy { background: white; padding: 18px; font-size: 0.95rem; line-height: 1.6; }
+
+  /* chip-drag activities */
+  .chip-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; padding: 12px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; min-height: 48px; }
+  .chip { padding: 6px 14px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Patrick Hand', cursive; font-size: 0.9rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .chip:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .chip.chip-sel { background: var(--yellow); border-color: var(--orange); box-shadow: none; }
+  .chip.chip-used { opacity: 0.35; pointer-events: none; }
+  .chip.chip-ok { background: var(--light-teal); border-color: #059669; }
+  .chip.chip-bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+
+  /* drop zones */
+  .drop-zone-wrap { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; margin: 12px 0; }
+  .drop-col { border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+  .drop-col-hdr { padding: 9px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; text-align: center; }
+  .drop-zone { min-height: 80px; padding: 8px; background: white; display: flex; flex-direction: column; gap: 6px; }
+  .drop-zone.dragover { background: var(--light-yellow); }
+
+  /* match activity */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:500px){ .match-grid{grid-template-columns:1fr;} }
+  .match-item { padding: 10px 13px; border: 2.5px solid var(--ink); border-radius: 8px; font-family: 'Patrick Hand', cursive; font-size: 0.88rem; cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; min-height: 46px; display: flex; align-items: center; }
+  .match-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .match-item.sel { background: var(--yellow); border-color: var(--orange); }
+  .match-item.ok { background: #e0faf1; border-color: var(--teal); pointer-events: none; }
+  .match-item.bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+
+  /* sort activity */
+  .sort-list { display: flex; flex-direction: column; gap: 7px; }
+  .sort-item { padding: 10px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.92rem; cursor: grab; display: flex; align-items: center; gap: 10px; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; user-select: none; }
+  .sort-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .sort-item.dragging { opacity: 0.3; }
+  .sort-grip { color: #bbb; font-size: 1.1rem; }
+
+  /* fill blanks */
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .word { padding: 5px 13px; background: white; border: 2px solid var(--ink); border-radius: 20px; font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; }
+  .word:hover:not(.used) { background: var(--light-yellow); }
+  .word.sel { background: var(--yellow); border-color: var(--orange); }
+  .word.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+  .fill-para { line-height: 2.6; font-size: 0.95rem; padding: 14px; background: #fafafa; border: 2px solid #ddd; border-radius: 8px; }
+  .blank { display: inline-block; min-width: 90px; border-bottom: 2.5px solid var(--blue); padding: 2px 8px; font-family: 'Caveat', cursive; font-size: 0.98rem; font-weight: 700; text-align: center; margin: 0 3px; cursor: pointer; transition: all 0.15s; border-radius: 4px 4px 0 0; }
+  .blank:hover { background: rgba(255,209,102,0.25); }
+  .blank.filled { color: var(--blue); }
+  .blank.sel-b { background: rgba(255,209,102,0.4); border-color: var(--orange); }
+  .blank.ok { background: var(--light-teal); color: #059669; border-color: #059669; }
+  .blank.bad { background: var(--light-coral); color: var(--coral); border-color: var(--coral); }
+
+  /* tf activity */
+  .tf-card { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: white; }
+  .tf-q { font-family: 'Kalam', cursive; font-size: 0.97rem; margin-bottom: 10px; line-height: 1.5; }
+  .tf-btns { display: flex; gap: 10px; }
+  .tf-btn { font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; padding: 6px 20px; border: 2px solid var(--ink); border-radius: 20px; cursor: pointer; transition: all 0.15s; background: white; }
+  .tf-btn:hover { background: var(--light-yellow); }
+  .tf-btn.correct { background: var(--teal); color: white; border-color: #059669; }
+  .tf-btn.wrong { background: var(--coral); color: white; border-color: #c0392b; }
+  .tf-btn:disabled { cursor: default; }
+  .tf-exp { display: none; margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-family: 'Kalam', cursive; font-size: 0.88rem; }
+  .tf-exp.show { display: block; }
+
+  /* comparison table */
+  .cmp-tbl { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  .cmp-tbl th { background: var(--ink); color: white; font-family: 'Permanent Marker', cursive; padding: 10px 13px; text-align: left; }
+  .cmp-tbl td { padding: 9px 13px; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  .cmp-tbl tr:nth-child(even) td { background: #f9f9f9; }
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(123,45,139,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#7b2d8b;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-4-computers.html" style="color:#ef476f;text-decoration:none;">📑 Topic 4 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- BACK BUTTON -->
+  <a href="topic-4-computers.html" style="
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Permanent Marker', cursive; font-size: 1rem; color: #1a1a2e;
+    text-decoration: none; border: 2.5px solid #1a1a2e; border-radius: 8px;
+    padding: 8px 18px; background: #fff9c4; box-shadow: 3px 3px 0 #1a1a2e;
+    margin: 20px 0 10px; transform: rotate(-0.5deg); transition: transform 0.15s, box-shadow 0.15s;
+  " onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'"
+     onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">
+    ← Back to Cover Page
+  </a>
+
+  <div class="hero">
+    <h1 class="hero-title">🖥 Machines & Computational Models — 16</h1>
+    <p class="hero-sub">IGCSE Computer Science · Edexcel 4CP01 · Unit 4 Computers</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap">🗺 Mind Map</button>
+    <button class="tab-btn" data-tab="notes">📖 Topic Notes</button>
+    <button class="tab-btn" data-tab="quiz">⚡ Quick Quiz</button>
+    <button class="tab-btn" data-tab="activities">✏️ Activities</button>
+    <button class="tab-btn" data-tab="exam">📝 Exam Questions</button>
+  </div>
+
+  <!-- ════════════ MIND MAP TAB ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🖥 Why Do Machines and Computational Models Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏭 Embedded Everywhere</div><p>Every modern device from a car to a washing machine to a microwave contains an embedded computer following the IPO model. Understanding this is fundamental.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">⚙️ How All Computers Work</div><p>The input–process–output model explains how EVERY computer operates — regardless of its size, shape or purpose. It is the foundation of computer science.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">⚡ Faster Processing</div><p>Parallel models allow computers to solve problems much faster by using multiple processors simultaneously — essential for weather forecasting, AI, and rendering.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🤖 Artificial Intelligence</div><p>Multi-agent models form the basis of AI. Autonomous agents that negotiate and cooperate are the building blocks of smart assistants, self-driving cars, and more.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">📐 Algorithm Design</div><p>Understanding processing models helps programmers write better algorithms — knowing whether to use sequential, parallel or agent-based approaches for different problems.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">🌍 Real-World Applications</div><p>From smart home systems to online booking agents — multi-agent and parallel models are behind the most powerful computing applications in the world today.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key distinction:</strong> Sequential ≠ Parallel ≠ Multi-agent. Know the difference: sequential = one processor, one step at a time. Parallel = one task, split across processors. Multi-agent = separate autonomous agents handling separate tasks.</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">🖥 Machines & Computational Models — Big Picture</div>
+
+      <div class="highlight-box">
+        All computers: <strong>INPUT</strong> → <strong>PROCESS</strong> (algorithm) → <strong>OUTPUT</strong> &nbsp;|&nbsp; Three models of processing: <strong>Sequential</strong> · <strong>Parallel</strong> · <strong>Multi-Agent</strong>
+      </div>
+
+      <div class="ig-grid">
+
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">🖥 The IPO Model</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">I</div><div>All computers take <strong>input</strong> from surroundings (keyboard, sensors, mic)</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">P</div><div><strong>Process</strong> the input according to given rules — an <strong>algorithm</strong></div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">O</div><div>Produce some kind of <strong>output</strong> (screen, speaker, motor, heater)</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">S</div><div>Complex algorithms also need <strong>storage</strong> for intermediate values (RAM)</div></div>
+          </div>
+          <!-- IPO SVG diagram -->
+          <div style="text-align:center;margin-top:12px;">
+            <svg viewBox="0 0 300 60" style="max-width:300px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="ma" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#118ab2"/></marker></defs>
+              <rect x="5" y="12" width="72" height="36" rx="6" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+              <text x="41" y="34" font-size="11" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">INPUT</text>
+              <line x1="77" y1="30" x2="108" y2="30" stroke="#118ab2" stroke-width="2" marker-end="url(#ma)"/>
+              <rect x="108" y="12" width="84" height="36" rx="6" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+              <text x="150" y="34" font-size="11" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">PROCESS</text>
+              <line x1="192" y1="30" x2="223" y2="30" stroke="#118ab2" stroke-width="2" marker-end="url(#ma)"/>
+              <rect x="223" y="12" width="72" height="36" rx="6" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+              <text x="259" y="34" font-size="11" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">OUTPUT</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:#059669;">
+          <span class="ig-label" style="color:#059669;">🏠 Embedded Computers</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div>A computer <strong>fixed firmly</strong> into another device — not recognised as a traditional computer</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div>Still follows the <strong>IPO model</strong> completely</div></div>
+          </div>
+          <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="background:var(--light-teal);border:1.5px solid #059669;border-radius:6px;padding:7px;font-family:'Kalam',cursive;font-size:0.82rem;text-align:center;">🚗 Car ECU</div>
+            <div style="background:var(--light-teal);border:1.5px solid #059669;border-radius:6px;padding:7px;font-family:'Kalam',cursive;font-size:0.82rem;text-align:center;">🧺 Washing Machine</div>
+            <div style="background:var(--light-teal);border:1.5px solid #059669;border-radius:6px;padding:7px;font-family:'Kalam',cursive;font-size:0.82rem;text-align:center;">📺 Remote Control</div>
+            <div style="background:var(--light-teal);border:1.5px solid #059669;border-radius:6px;padding:7px;font-family:'Kalam',cursive;font-size:0.82rem;text-align:center;">🎹 Digital Keyboard</div>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">1️⃣ Sequential Model</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">▸</div><div>Follow instructions <strong>step by step</strong>, in order, start to finish</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">▸</div><div>Uses a <strong>single processor</strong></div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">▸</div><div>Each step completes before the next begins</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">▸</div><div>The most familiar and basic model</div></div>
+          </div>
+          <div style="margin-top:8px;background:var(--light-green);border-radius:6px;padding:8px;font-family:'Kalam',cursive;font-size:0.82rem;">
+            🍳 Like following a recipe — one step at a time, never jumping ahead
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--purple);">
+          <span class="ig-label" style="color:var(--purple);">⚡ Parallel Model</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">▸</div><div>Processes <strong>distributed between 2+ processors</strong> in same computer</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">▸</div><div>Each processor handles a <strong>separate part</strong> of the same task</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">▸</div><div>Results are <strong>combined</strong> at the end</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">▸</div><div>Needs: multi-processor OS + software to distribute tasks equally</div></div>
+          </div>
+          <div style="margin-top:8px;background:var(--light-purple);border-radius:6px;padding:8px;font-family:'Kalam',cursive;font-size:0.82rem;">
+            🎨 Like 4 artists each painting a quarter of the same picture simultaneously
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--coral);grid-column:1/-1;">
+          <span class="ig-label" style="color:var(--coral);">🤖 Multi-Agent Model</span>
+          <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">▸</div><div>Separate tasks processed by <strong>different independent systems (agents)</strong></div></div>
+              <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">▸</div><div>Each agent is <strong>autonomous</strong> — acts under its own control</div></div>
+              <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">▸</div><div>Agents cooperate through <strong>negotiation</strong> and <strong>coordination</strong></div></div>
+              <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">▸</div><div>Basis of <strong>Artificial Intelligence (AI)</strong></div></div>
+            </div>
+            <div style="background:var(--light-coral);border-radius:8px;padding:10px;font-family:'Kalam',cursive;font-size:0.85rem;line-height:1.6;">
+              🏖️ <strong>Holiday booking example:</strong><br>
+              You give preferences → Agent 1 finds flights → Agent 2 finds hotels → Agent 3 compares prices → Agent 4 books → all done without your involvement!
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Step-by-step comparison -->
+      <div style="margin-top:20px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:white;box-shadow:4px 4px 0 var(--ink);">
+        <div style="background:var(--ink);color:white;padding:12px 18px;font-family:'Permanent Marker',cursive;font-size:1.2rem;">📊 Three Models — Side by Side</div>
+        <div style="overflow-x:auto;">
+          <table class="cmp-tbl">
+            <tr><th></th><th style="color:#a8f0c8;">1️⃣ Sequential</th><th style="color:#c9b8ff;">⚡ Parallel</th><th style="color:#ffb3b3;">🤖 Multi-Agent</th></tr>
+            <tr><td><strong>Processors</strong></td><td>One</td><td>Two or more (same computer)</td><td>Multiple independent systems</td></tr>
+            <tr><td><strong>Task split</strong></td><td>No — one step at a time</td><td>One task split into parts</td><td>Different agents, different tasks</td></tr>
+            <tr><td><strong>Agent autonomy</strong></td><td>None</td><td>None — central control</td><td>High — each agent is autonomous</td></tr>
+            <tr><td><strong>Complexity</strong></td><td>Low ⭐</td><td>Medium ⭐⭐</td><td>High ⭐⭐⭐</td></tr>
+            <tr><td><strong>Example</strong></td><td>Recipe steps, calculator</td><td>3D rendering, weather simulation</td><td>AI booking agent, self-driving car</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🖥 Why Does the IPO Model &amp; Computational Models Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">⚙️ Everything is a Computer</div><p>From washing machines to cars to smartphones — they all follow the IPO model. Recognising this is key to understanding modern technology.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">📐 Algorithm = The Rules</div><p>The processing step is where an algorithm runs. A good algorithm is what separates a useful computer from a useless one — it's the "clever bit".</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🚀 Why Parallel Matters</div><p>Modern computers have multiple cores — they use parallel processing every second you use them. Without it, complex tasks like gaming or video editing would be impossibly slow.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">🤖 The Future: AI Agents</div><p>Multi-agent systems underpin AI assistants, recommendation algorithms, autonomous vehicles, and smart cities — the defining technologies of the 21st century.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Exam distinction:</strong> Parallel = same computer, one task split. Multi-agent = different systems, different autonomous tasks. Never confuse these two!</div>
+      </div>
+    </div>
+
+    <!-- 16.1 IPO Model -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,#118ab2,#0d6efd);">
+        <div class="notes-hdr-left"><span class="notes-num">16.1</span><span class="notes-title">The Input–Process–Output Model</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>You might be surprised to know that every device — a car, a printer, a washing machine, a smartphone and a remote control — all contain an <strong class="hl-b">embedded computer</strong>. A computer is a machine that takes some kind of <strong class="hl-b">input</strong> from its surroundings, <strong class="hl-o">processes</strong> the input according to given rules, and provides some kind of <strong class="hl-t">output</strong>.</p>
+
+        <!-- IPO diagram -->
+        <div style="text-align:center;margin:16px 0;">
+          <svg viewBox="0 0 460 70" style="max-width:460px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="mb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a1a2e"/></marker></defs>
+            <rect x="5" y="15" width="110" height="42" rx="8" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="60" y="40" font-size="13" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">INPUT</text>
+            <line x1="115" y1="36" x2="160" y2="36" stroke="#1a1a2e" stroke-width="2" marker-end="url(#mb)"/>
+            <rect x="160" y="15" width="140" height="42" rx="8" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="230" y="40" font-size="13" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">PROCESS</text>
+            <line x1="300" y1="36" x2="345" y2="36" stroke="#1a1a2e" stroke-width="2" marker-end="url(#mb)"/>
+            <rect x="345" y="15" width="110" height="42" rx="8" fill="#e0faf1" stroke="#059669" stroke-width="2.5"/>
+            <text x="400" y="40" font-size="13" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">OUTPUT</text>
+            <text x="230" y="65" font-size="9" text-anchor="middle" fill="#666" font-family="sans-serif">Figure 4.1 — A simple input–process–output diagram</text>
+          </svg>
+        </div>
+
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Input</strong> — to enter data into a computer. The raw data a computer receives from the outside world via input devices or sensors.<br><br>
+          <strong class="hl-o">Process</strong> — to change the meaning or format of some data. The CPU runs an <strong>algorithm</strong> on the input to transform it.<br><br>
+          <strong class="hl-t">Output</strong> — to display or output data that has been processed (or has been stored). The result of processing, sent to an output device.<br><br>
+          <strong class="hl-p">Embedded computer</strong> — a computer fixed firmly into another object (e.g. washing machine, car). Still follows the IPO model.</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🏭 Real Device Examples</h4>
+        <div class="g2">
+          <div class="n-card" style="border-color:var(--blue);">
+            <div class="n-card-hdr" style="background:var(--blue);">🖥 Desktop Computer</div>
+            <div class="n-card-bdy">
+              <strong>Input:</strong> Keyboard (typing), mouse (clicking), webcam, microphone<br>
+              <strong>Process:</strong> CPU runs programs — word processing, calculations, games<br>
+              <strong>Output:</strong> Monitor, speakers, printer
+            </div>
+          </div>
+          <div class="n-card" style="border-color:#059669;">
+            <div class="n-card-hdr" style="background:#059669;">🧺 Washing Machine</div>
+            <div class="n-card-bdy">
+              <strong>Input:</strong> Control panel settings (temperature, spin speed), water level sensor, door sensor<br>
+              <strong>Process:</strong> Embedded computer calculates motor speed, water heat, cycle time<br>
+              <strong>Output:</strong> Motor spinning drum, heater heating water, pump draining water
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--orange);">
+            <div class="n-card-hdr" style="background:var(--orange);">📱 Smartphone</div>
+            <div class="n-card-bdy">
+              <strong>Input:</strong> Touchscreen, microphone, camera, GPS, accelerometer<br>
+              <strong>Process:</strong> Processor runs apps, handles calls, compresses photos<br>
+              <strong>Output:</strong> Screen, speaker, vibration motor, wireless signals
+            </div>
+          </div>
+          <div class="n-card" style="border-color:var(--coral);">
+            <div class="n-card-hdr" style="background:var(--coral);">🚗 Car (Engine Management)</div>
+            <div class="n-card-bdy">
+              <strong>Input:</strong> Fuel sensors, temperature sensors, speed sensors, ignition<br>
+              <strong>Process:</strong> ECU calculates optimal fuel injection and ignition timing<br>
+              <strong>Output:</strong> Fuel injectors, ignition system, dashboard warning lights
+            </div>
+          </div>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🔧 Adding Storage to the Model</h4>
+        <p>You are familiar with a desktop computer: the keyboard provides input and the screen provides output. In a similar way, the embedded computer in a washing machine has controls that provide input and a motor and heater as outputs.</p>
+        <p style="margin-top:8px;">The clever bit in computer science is what goes on <em>between</em> the inputs and outputs — the <strong>processing</strong>. Processing means performing a series of actions on the inputs, according to a given set of rules. This set of rules is called an <strong class="hl-o">algorithm</strong>.</p>
+        <p style="margin-top:8px;">If you try to follow a more complicated algorithm, you will probably need to keep track of your working. In a similar way, anything beyond the simplest algorithm needs <strong>temporary storage or memory</strong>. We add storage to the IPO diagram:</p>
+
+        <div style="text-align:center;margin:16px 0;">
+          <svg viewBox="0 0 460 110" style="max-width:460px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="mc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#1a1a2e"/></marker></defs>
+            <rect x="5" y="30" width="110" height="42" rx="8" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="60" y="55" font-size="13" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">INPUT</text>
+            <line x1="115" y1="51" x2="160" y2="51" stroke="#1a1a2e" stroke-width="2" marker-end="url(#mc)"/>
+            <rect x="160" y="30" width="140" height="42" rx="8" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="230" y="55" font-size="13" text-anchor="middle" fill="#f77f00" font-family="sans-serif" font-weight="bold">PROCESS</text>
+            <line x1="300" y1="51" x2="345" y2="51" stroke="#1a1a2e" stroke-width="2" marker-end="url(#mc)"/>
+            <rect x="345" y="30" width="110" height="42" rx="8" fill="#e0faf1" stroke="#059669" stroke-width="2.5"/>
+            <text x="400" y="55" font-size="13" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">OUTPUT</text>
+            <!-- Storage box below Process -->
+            <line x1="230" y1="72" x2="230" y2="88" stroke="#7b2d8b" stroke-width="2"/>
+            <rect x="165" y="88" width="130" height="16" rx="4" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="1.5"/>
+            <text x="230" y="100" font-size="10" text-anchor="middle" fill="#7b2d8b" font-family="sans-serif" font-weight="bold">STORAGE (RAM)</text>
+            <text x="230" y="110" font-size="8" text-anchor="middle" fill="#666" font-family="sans-serif">Figure 4.3 — IPO model with storage</text>
+          </svg>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🔤 Function Machines</h4>
+        <p>A <strong class="hl-b">function machine</strong> is a metaphor or diagram that represents a machine that takes an input, applies a rule (such as a set of operations) and delivers an answer as output. The processing stage of any computer works the same way.</p>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#f5f5f5;border:2px solid var(--ink);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:monospace;font-size:0.95rem;">
+          <span style="background:var(--light-blue);border:2px solid var(--blue);color:var(--blue);padding:5px 12px;border-radius:6px;font-weight:700;">INPUT: 3</span>
+          <span style="color:#888;font-size:1.2rem;">→</span>
+          <span style="background:#fff3e0;border:2px solid var(--orange);color:var(--orange);padding:5px 12px;border-radius:6px;">× 2</span>
+          <span style="color:#888;font-size:1.2rem;">→</span>
+          <span style="background:#fff3e0;border:2px solid var(--orange);color:var(--orange);padding:5px 12px;border-radius:6px;">+ 2</span>
+          <span style="color:#888;font-size:1.2rem;">→</span>
+          <span style="background:var(--light-teal);border:2px solid #059669;color:#059669;padding:5px 12px;border-radius:6px;font-weight:700;">OUTPUT: 8</span>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.85rem;color:#666;text-align:center;">Figure 4.2 — A simple function machine (from the textbook)</p>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> When asked for the input, process and output of a system, think carefully about what data enters, what calculation/transformation happens, and what result comes out. The "processing" step is always an algorithm or set of rules.</div>
+      </div>
+    </div>
+
+    <!-- 16.2 Sequential -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,var(--green),#1a4a28);">
+        <div class="notes-hdr-left"><span class="notes-num">16.2</span><span class="notes-title">Sequential Computational Model</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <div class="def-box" style="border-color:var(--green);">
+          <span class="def-label" style="background:var(--green);">DEFINITION</span>
+          <p><strong class="hl-g">Computational model</strong> — describes how algorithms are executed by a machine, e.g. by processing data using inputs and outputs. There are different models of how this processing can be carried out.</p>
+        </div>
+        <p>In the <strong class="hl-g">sequential model</strong>, this is the way that we commonly imagine how computers work. This involves following instructions in an algorithm <strong>step by step, in order, from start to finish</strong>.</p>
+
+        <div style="display:flex;align-items:center;gap:0;margin:16px auto;max-width:340px;">
+          <div style="display:flex;flex-direction:column;gap:5px;align-items:center;">
+            <div style="padding:9px 20px;background:var(--light-green);border:2px solid var(--green);border-radius:6px;font-family:'Caveat',cursive;font-size:1rem;font-weight:700;color:var(--green);width:180px;text-align:center;">Step 1</div>
+            <div style="color:#bbb;font-size:1.2rem;">↓</div>
+            <div style="padding:9px 20px;background:var(--light-green);border:2px solid var(--green);border-radius:6px;font-family:'Caveat',cursive;font-size:1rem;font-weight:700;color:var(--green);width:180px;text-align:center;">Step 2</div>
+            <div style="color:#bbb;font-size:1.2rem;">↓</div>
+            <div style="padding:9px 20px;background:var(--light-green);border:2px solid var(--green);border-radius:6px;font-family:'Caveat',cursive;font-size:1rem;font-weight:700;color:var(--green);width:180px;text-align:center;">Step 3</div>
+            <div style="color:#bbb;font-size:1.2rem;">↓</div>
+            <div style="padding:9px 20px;background:var(--light-teal);border:2px solid #059669;border-radius:6px;font-family:'Caveat',cursive;font-size:1rem;font-weight:700;color:#059669;width:180px;text-align:center;">Done ✓</div>
+          </div>
+          <div style="margin-left:20px;font-family:'Kalam',cursive;font-size:0.85rem;color:#555;line-height:1.7;">
+            One processor<br>
+            One instruction<br>
+            at a time<br>
+            In order<br>
+            Start → Finish
+          </div>
+        </div>
+
+        <div class="notes-tip">📝 <strong>Key characteristics:</strong> Uses a <strong>single processor</strong> · Instructions executed in order · Each step finishes before the next begins · Simple to understand and implement · How early computers always worked</div>
+        <div class="notes-eg">🍳 <strong>Real-world analogy:</strong> Following a recipe — you cannot drain the pasta while it is still boiling. You complete each step in strict order.</div>
+      </div>
+    </div>
+
+    <!-- 16.3 Parallel -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,var(--purple),#4a1080);">
+        <div class="notes-hdr-left"><span class="notes-num">16.3</span><span class="notes-title">Parallel Computational Model</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>In the <strong class="hl-p">parallel model</strong>, computer processes are <strong>distributed between two or more processors</strong> in a computer with two or more processors installed. Each separate part of the algorithm that each processor processes can be <strong>combined together</strong>.</p>
+
+        <div class="g2" style="margin:14px 0;">
+          <div style="background:var(--light-purple);border:2px solid var(--purple);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--purple);margin-bottom:6px;">⚡ What it requires:</div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">1</span><div>An operating system capable of <strong>supporting two or more processors</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--purple);">2</span><div>Software programs capable of <strong>distributing processes between them equally</strong></div></div>
+          </div>
+          <div style="background:var(--light-yellow);border:2px solid var(--orange);border-radius:8px;padding:12px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.95rem;color:var(--orange);margin-bottom:6px;">⚙️ How it works:</div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">1</span><div>A large task is <strong>split into parts</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">2</span><div>Each part given to a <strong>different processor</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">3</span><div>All processors work <strong>simultaneously</strong></div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">4</span><div>Results are <strong>combined</strong> at the end</div></div>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 480 100" style="max-width:480px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs><marker id="md" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#7b2d8b"/></marker></defs>
+            <rect x="5" y="30" width="80" height="40" rx="6" fill="var(--light-purple)" stroke="var(--purple)" stroke-width="2"/>
+            <text x="45" y="53" font-size="10" text-anchor="middle" fill="var(--purple)" font-family="sans-serif" font-weight="bold">ONE TASK</text>
+            <line x1="85" y1="43" x2="115" y2="25" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#md)"/>
+            <line x1="85" y1="50" x2="115" y2="50" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#md)"/>
+            <line x1="85" y1="57" x2="115" y2="75" stroke="var(--purple)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#md)"/>
+            <rect x="115" y="14" width="90" height="22" rx="5" fill="#fff3e0" stroke="var(--orange)" stroke-width="1.5"/>
+            <text x="160" y="28" font-size="9" text-anchor="middle" fill="var(--orange)" font-family="sans-serif">Processor 1</text>
+            <rect x="115" y="39" width="90" height="22" rx="5" fill="#fff3e0" stroke="var(--orange)" stroke-width="1.5"/>
+            <text x="160" y="53" font-size="9" text-anchor="middle" fill="var(--orange)" font-family="sans-serif">Processor 2</text>
+            <rect x="115" y="64" width="90" height="22" rx="5" fill="#fff3e0" stroke="var(--orange)" stroke-width="1.5"/>
+            <text x="160" y="78" font-size="9" text-anchor="middle" fill="var(--orange)" font-family="sans-serif">Processor 3</text>
+            <line x1="205" y1="25" x2="235" y2="47" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#md)"/>
+            <line x1="205" y1="50" x2="235" y2="50" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#md)"/>
+            <line x1="205" y1="75" x2="235" y2="53" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#md)"/>
+            <rect x="235" y="30" width="90" height="40" rx="6" fill="var(--light-teal)" stroke="#059669" stroke-width="2"/>
+            <text x="280" y="48" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">COMBINED</text>
+            <text x="280" y="62" font-size="10" text-anchor="middle" fill="#059669" font-family="sans-serif" font-weight="bold">RESULT ✓</text>
+            <line x1="325" y1="50" x2="360" y2="50" stroke="#059669" stroke-width="2" marker-end="url(#md)"/>
+            <rect x="360" y="30" width="115" height="40" rx="6" fill="var(--light-green)" stroke="var(--green)" stroke-width="2"/>
+            <text x="417" y="53" font-size="10" text-anchor="middle" fill="var(--green)" font-family="sans-serif" font-weight="bold">OUTPUT</text>
+          </svg>
+        </div>
+
+        <div class="notes-eg">🎨 <strong>Example:</strong> Rendering a 3D animation frame — the image is divided into sections. Processor 1 renders top-left, Processor 2 renders top-right, etc. — all at the same time. The sections are combined into the final image. Much faster than one processor rendering the whole frame sequentially.</div>
+        <div class="notes-tip">✏️ <strong>Exam tip — Parallel vs Multi-Agent:</strong> In <em>parallel</em>, it is <strong>ONE task</strong> split across processors in the <strong>same computer</strong>. In <em>multi-agent</em>, it is <strong>different tasks</strong> given to <strong>different independent systems</strong>. This is the most common exam confusion — learn the difference carefully!</div>
+      </div>
+    </div>
+
+    <!-- 16.4 Multi-Agent -->
+    <div class="notes-sec" id="ns4">
+      <div class="notes-hdr" onclick="toggleSection('ns4')" style="background:linear-gradient(135deg,var(--coral),#922b21);">
+        <div class="notes-hdr-left"><span class="notes-num">16.4</span><span class="notes-title">Multi-Agent Computational Model</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>In the <strong class="hl-c">multi-agent model</strong>, separate tasks or algorithms are processed by different systems (<strong>agents</strong>) to perform a particular function. Each agent acts independently and under its own control. Each agent is <strong class="hl-c">autonomous</strong>, but they cooperate with each other through <strong>negotiation</strong> and <strong>coordination</strong>.</p>
+        <p style="margin-top:8px;">This is the basis of <strong>artificial intelligence</strong> and reflects our human society, where independent people interact, negotiate and cooperate to maintain our society.</p>
+
+        <div class="def-box" style="border-color:var(--coral);">
+          <span class="def-label" style="background:var(--coral);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-c">Agent</strong> — a computer system that can interpret its environment (through its sensors). It can act autonomously upon that environment (through its effectors).<br><br>
+          <strong class="hl-c">Autonomous</strong> — self-directed and acts without requiring any help or guidance. Can choose its own goal and uses its experience to achieve it.<br><br>
+          <strong class="hl-c">Negotiation</strong> — a discussion in order to reach an agreement (between agents).<br><br>
+          <strong class="hl-c">Coordination</strong> — organising different activities so that they all work together effectively.<br><br>
+          <strong class="hl-c">Effector</strong> — something that produces an effect by carrying out an action.</p>
+        </div>
+
+        <h4 class="subh" style="color:var(--coral);">🏖️ The Holiday Booking Example (from the textbook)</h4>
+        <p>Searching the Internet for the answer to a specific query can be a long and boring process that could be done for us by an agent — a computer program that would give the query details of what we needed to find out.</p>
+        <p style="margin-top:8px;">If we were organising a holiday, we could communicate our preferences and different agents could cooperate to search and compare different deals, negotiate for the best prices, plan transport and book airlines. They could even order sun tan lotion or book restaurants for us without our direct involvement!</p>
+
+        <div style="border:3px solid var(--coral);border-radius:12px;overflow:hidden;margin:14px 0;box-shadow:3px 3px 0 var(--ink);">
+          <div style="background:var(--coral);color:white;padding:10px 16px;font-family:'Permanent Marker',cursive;">🤖 Multi-Agent Holiday Booking System</div>
+          <div class="step-grid" style="background:white;">
+            <div class="step-card" style="border-color:var(--blue);background:var(--light-blue);">
+              <div class="step-emoji">🧑</div><div class="step-num" style="color:var(--blue);">You</div>
+              <div class="step-txt">Give holiday preferences to the system</div>
+            </div>
+            <div class="step-card" style="border-color:#059669;background:var(--light-teal);">
+              <div class="step-emoji">✈️</div><div class="step-num" style="color:#059669;">Agent 1</div>
+              <div class="step-txt">Searches and compares all flights</div>
+            </div>
+            <div class="step-card" style="border-color:var(--orange);background:#fff3e0;">
+              <div class="step-emoji">🏨</div><div class="step-num" style="color:var(--orange);">Agent 2</div>
+              <div class="step-txt">Searches and compares hotels</div>
+            </div>
+            <div class="step-card" style="border-color:var(--purple);background:var(--light-purple);">
+              <div class="step-emoji">💰</div><div class="step-num" style="color:var(--purple);">Agent 3</div>
+              <div class="step-txt">Negotiates best prices between agents</div>
+            </div>
+            <div class="step-card" style="border-color:var(--coral);background:var(--light-coral);">
+              <div class="step-emoji">📋</div><div class="step-num" style="color:var(--coral);">Agent 4</div>
+              <div class="step-txt">Books flights, hotels, restaurants</div>
+            </div>
+            <div class="step-card" style="border-color:var(--green);background:var(--light-green);">
+              <div class="step-emoji">🎉</div><div class="step-num" style="color:var(--green);">Result</div>
+              <div class="step-txt">Complete holiday booked for you!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> For multi-agent questions, make sure you use the keywords: <strong>autonomous</strong> (acts independently), <strong>negotiation</strong> (agents discuss/agree), <strong>coordination</strong> (agents organise together), <strong>effectors</strong> (how agents act on the environment). These are the mark-scoring words.</div>
+      </div>
+    </div>
+
+  </div><!-- end notes -->
+
+  <!-- ════════════ QUIZ TAB ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span>/<span id="qtotal">20</span></div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card">
+        <div class="q-num" id="qnum">Question 1 of 20</div>
+        <div class="q-text" id="qtext"></div>
+        <div class="q-opts" id="qopts"></div>
+        <div class="q-fb" id="qfb"></div>
+        <div style="text-align:right;margin-top:14px;">
+          <button class="btn btn-teal" id="qnext" onclick="nextQ()" style="display:none;">Next Question →</button>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-result" style="display:none;">
+      <div class="q-result">
+        <div style="font-size:3rem;margin-bottom:10px;">🖥</div>
+        <h2>Section 16 Complete!</h2>
+        <div class="big-score" id="qfinal"></div>
+        <p style="font-family:'Kalam',cursive;font-size:1rem;margin:12px 0 20px;" id="qmsg"></p>
+        <button class="btn btn-primary" onclick="restartQuiz()">↺ Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACTIVITIES TAB ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+
+    <!-- Activity 1: Drag to IPO columns -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);">
+        <span class="act-icon">🏷</span>
+        <div>
+          <div class="act-title" style="color:var(--blue);">Activity 1 — Classify as Input, Process or Output</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.9rem;color:#555;">Drag each item into the correct column</div>
+        </div>
+      </div>
+      <div class="act-bdy">
+        <div class="chip-bank" id="ipo-pool"></div>
+        <div class="drop-zone-wrap" id="ipo-cols"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+          <button class="btn btn-primary" onclick="checkIPO()">✓ Check</button>
+          <button class="btn btn-teal" onclick="revealIPO()">👁 Reveal</button>
+          <button class="btn" onclick="resetIPO()" style="background:white;">↺ Reset</button>
+          <span id="ipo-result" style="font-family:'Permanent Marker',cursive;font-size:1.1rem;color:var(--teal);align-self:center;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Match the model -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <span class="act-icon">🔗</span>
+        <div>
+          <div class="act-title" style="color:var(--purple);">Activity 2 — Match Models to Descriptions</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.9rem;color:#555;">Click a term on the left, then click its match on the right</div>
+        </div>
+      </div>
+      <div class="act-bdy">
+        <div class="match-grid">
+          <div id="match-left"></div>
+          <div id="match-right"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px;align-items:center;">
+          <button class="btn" onclick="resetMatch()" style="background:white;">↺ Reset</button>
+          <span id="match-score" style="font-family:'Permanent Marker',cursive;font-size:1.1rem;color:var(--teal);"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 3: Fill in the blanks -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-teal);">
+        <span class="act-icon">✍️</span>
+        <div>
+          <div class="act-title" style="color:#059669;">Activity 3 — Fill in the Blanks</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.9rem;color:#555;">Click a word from the bank, then click a blank to place it</div>
+        </div>
+      </div>
+      <div class="act-bdy">
+        <div class="word-bank" id="word-bank"></div>
+        <div class="fill-para" id="fill-para"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+          <button class="btn btn-primary" onclick="checkFill()">✓ Check</button>
+          <button class="btn btn-teal" onclick="revealFill()">👁 Reveal</button>
+          <button class="btn" onclick="resetFill()" style="background:white;">↺ Reset</button>
+          <span id="fill-score" style="font-family:'Permanent Marker',cursive;font-size:1.1rem;color:var(--teal);align-self:center;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 4: True / False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:#fff3e0;">
+        <span class="act-icon">🧠</span>
+        <div>
+          <div class="act-title" style="color:var(--orange);">Activity 4 — True or False?</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.9rem;color:#555;">Click True or False for each statement</div>
+        </div>
+      </div>
+      <div class="act-bdy" id="tf-area"></div>
+    </div>
+
+    <!-- Activity 5: Sort the steps -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <span class="act-icon">🔀</span>
+        <div>
+          <div class="act-title" style="color:var(--coral);">Activity 5 — Put the Steps in Order</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.9rem;color:#555;">Drag to arrange the password checker algorithm in correct IPO order</div>
+        </div>
+      </div>
+      <div class="act-bdy">
+        <p style="font-family:'Kalam',cursive;margin-bottom:12px;">The algorithm: <em>"Ask the user to enter their password. If the password is 8+ characters AND has at least one uppercase AND at least one symbol → display 'Strong', otherwise display 'Weak'."</em> — put the steps in the correct order:</p>
+        <div class="sort-list" id="sort-list"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+          <button class="btn btn-primary" onclick="checkSort()">✓ Check Order</button>
+          <button class="btn btn-teal" onclick="revealSort()">👁 Show Correct</button>
+          <button class="btn" onclick="shuffleSort()" style="background:white;">↺ Shuffle</button>
+        </div>
+        <div id="sort-result" style="margin-top:10px;font-family:'Caveat',cursive;font-size:1.1rem;"></div>
+      </div>
+    </div>
+
+  </div><!-- end activities -->
+
+  <!-- ════════════ EXAM QUESTIONS TAB ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+
+    <div class="tip-box">📝 <strong>Exam Questions — Section 16:</strong> Write your answer in the box, then reveal the mark scheme. Use precise technical vocabulary — examiners award marks for key terms. Self-mark honestly!</div>
+
+    <!-- Q1 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c1">
+        <div class="eq-num"><span class="tag tag-easy">EASY</span> Question 1</div>
+        <div class="eq-marks">[2 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">State what is meant by the term 'input–process–output model'. [2 marks]</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>A computer takes some kind of <strong>input</strong> from its surroundings / receives data from input devices or sensors (1)</li>
+          <li><strong>Processes</strong> the input according to a given set of rules (an algorithm) / and produces some kind of <strong>output</strong> (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c2">
+        <div class="eq-num"><span class="tag tag-easy">EASY</span> Question 2</div>
+        <div class="eq-marks">[2 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">State what is meant by an 'embedded computer' and give one example. [2 marks]</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>A computer that is fixed firmly into / built into another object/device (1)</li>
+          <li>Example: washing machine / car / microwave / printer / remote control / digital keyboard / any other valid device (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c3">
+        <div class="eq-num"><span class="tag tag-easy">EASY</span> Question 3</div>
+        <div class="eq-marks">[3 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A washing machine contains an embedded computer. The user selects a 60°C wash at a medium spin speed.</div>
+        <div class="eq-txt">Identify one input, one process and one output for the embedded computer in this washing machine. [3 marks]</div>
+        <textarea class="ans-ta" placeholder="Input: ...&#10;Process: ...&#10;Output: ..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark each):</div><ul>
+          <li><strong>Input:</strong> temperature setting (60°C) / spin speed setting / water level sensor reading / door sensor / any other valid input (1)</li>
+          <li><strong>Process:</strong> embedded computer calculates how long to heat water / calculates motor speed / determines wash cycle timing based on settings (1)</li>
+          <li><strong>Output:</strong> heater heating the water / motor spinning the drum / pump draining water / display showing cycle progress (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c4">
+        <div class="eq-num"><span class="tag tag-easy">EASY</span> Question 4</div>
+        <div class="eq-marks">[2 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Explain why storage needs to be added to the basic input–process–output model for more complex algorithms. [2 marks]</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>Complex algorithms need to store intermediate / temporary values during processing (1)</li>
+          <li>Storage (e.g. RAM) holds these working values so the processor can access them / without losing them as the algorithm runs (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c5">
+        <div class="eq-num"><span class="tag tag-med">MED</span> Question 5</div>
+        <div class="eq-marks">[3 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Describe the sequential computational model. [3 marks]</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 3):</div><ul>
+          <li>Instructions in an algorithm are followed step by step / in order / from start to finish (1)</li>
+          <li>Uses a single processor (1)</li>
+          <li>Each instruction / step is fully completed before the next one begins (1)</li>
+          <li>This is the simplest / most basic computational model / how most computers commonly appear to work (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c6">
+        <div class="eq-num"><span class="tag tag-med">MED</span> Question 6</div>
+        <div class="eq-marks">[4 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Describe the parallel computational model, including what it requires to work. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 4):</div><ul>
+          <li>Computer processes are distributed between two or more processors (1)</li>
+          <li>Each processor handles a separate part of the same task / algorithm simultaneously (1)</li>
+          <li>The separate results are combined together at the end (1)</li>
+          <li>Requires an operating system capable of supporting two or more processors (1)</li>
+          <li>Requires software capable of distributing processes between processors equally (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c7">
+        <div class="eq-num"><span class="tag tag-med">MED</span> Question 7</div>
+        <div class="eq-marks">[4 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A software company is rendering a 3D animated film. Each frame of the film is very complex and takes a long time to process.</div>
+        <div class="eq-txt">Explain how the parallel computational model could be used to speed up the rendering of the film. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:110px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 4):</div><ul>
+          <li>Each frame / the rendering task is split into smaller parts (1)</li>
+          <li>Each part is given to a different processor (1)</li>
+          <li>All processors work on their part simultaneously / at the same time (1)</li>
+          <li>The results from each processor are combined into the final frame (1)</li>
+          <li>This is faster than a single processor doing all the work sequentially (1)</li>
+          <li>Requires an OS supporting multiple processors AND software to distribute the task equally (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c1">
+        <div class="eq-num"><span class="tag tag-med">MED</span> Question 8</div>
+        <div class="eq-marks">[4 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">State what is meant by 'autonomous' and explain the role of negotiation and coordination in a multi-agent system. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li><strong>Autonomous</strong>: self-directed / acts without requiring help or guidance / can choose its own goal and determine how to achieve it (1)</li>
+          <li><strong>Negotiation</strong>: a discussion between agents in order to reach an agreement, e.g. one agent proposes a price and another accepts or counters it (1)</li>
+          <li><strong>Coordination</strong>: organising the different activities of agents so that they all work together effectively towards the shared goal (1)</li>
+          <li>Together, negotiation and coordination allow agents that are acting independently to still cooperate and produce a useful combined result (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c2">
+        <div class="eq-num"><span class="tag tag-med">MED</span> Question 9</div>
+        <div class="eq-marks">[4 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Explain the difference between the parallel and multi-agent computational models. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>In the parallel model, <strong>one task</strong> is split into parts and processed by multiple processors <strong>in the same computer</strong> (1)</li>
+          <li>The parts are combined to produce a single result (1)</li>
+          <li>In the multi-agent model, <strong>separate/different tasks</strong> are processed by <strong>different independent systems (agents)</strong>, which may be on entirely different computers (1)</li>
+          <li>Each agent acts autonomously under its own control, cooperating through negotiation and coordination — rather than being controlled centrally (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c3">
+        <div class="eq-num"><span class="tag tag-hard">HARD</span> Question 10</div>
+        <div class="eq-marks">[6 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A travel company wants to build a system that allows customers to plan a complete holiday. The customer provides their preferences (destination, dates, budget). The system must: find available flights, search for hotels, compare prices, negotiate deals and make all bookings automatically — without the customer needing to do anything else.</div>
+        <div class="eq-txt">Explain how the multi-agent computational model could be used to implement this system. In your answer, refer to the terms: agent, autonomous, negotiation, coordination, effector. [6 marks]</div>
+        <textarea class="ans-ta" style="min-height:170px;" placeholder="Write your extended answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme — any 6 from:</div><ul>
+          <li>The system uses multiple <strong>agents</strong> — separate computer systems each assigned a different task (1)</li>
+          <li>Each agent is <strong>autonomous</strong> — acts independently, under its own control, without needing human instruction at each step (1)</li>
+          <li>Agent 1 searches and compares all available flights for the given dates / destination (1)</li>
+          <li>Agent 2 searches for hotels matching the customer's preferences and budget (1)</li>
+          <li>A pricing / comparison agent uses <strong>negotiation</strong> — discussing prices with flight and hotel agents to reach the best combined deal (1)</li>
+          <li><strong>Coordination</strong> ensures all agents work together effectively — e.g. the flight and hotel dates are aligned and the total stays within budget (1)</li>
+          <li>Once the best deal is agreed, a booking agent uses its <strong>effectors</strong> to act on the environment — sending booking confirmations, making payments, emailing the customer (1)</li>
+          <li>This reflects the multi-agent model: separate tasks, independent agents, cooperating to produce a complete holiday plan (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="eq-wrap">
+      <div class="eq-hdr c4">
+        <div class="eq-num"><span class="tag tag-hard">HARD</span> Question 11</div>
+        <div class="eq-marks">[6 marks]</div>
+      </div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Compare the three computational models — sequential, parallel and multi-agent — in terms of how they process tasks, how many processors/systems are involved, and an example application for each. [6 marks]</div>
+        <textarea class="ans-ta" style="min-height:170px;" placeholder="Write your extended answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme — 2 marks per model (description + example):</div><ul>
+          <li><strong>Sequential</strong>: instructions executed one at a time in order by a single processor; each step completes before the next begins (1); e.g. a simple calculator program, a recipe-following algorithm (1)</li>
+          <li><strong>Parallel</strong>: one task split into parts, each part processed simultaneously by different processors in the same computer, results combined (1); e.g. rendering a 3D animation, weather forecasting simulation (1)</li>
+          <li><strong>Multi-agent</strong>: separate tasks handled by different autonomous independent agents that cooperate through negotiation and coordination (1); e.g. AI holiday booking assistant, self-driving car systems, smart home automation (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+  </div><!-- end exam tab -->
+
+</div><!-- end page-wrap -->
+
+<script>
+// ══ TOGGLE MARK SCHEME ══
+function toggleMS(btn){
+  const ms=btn.nextElementSibling;
+  const showing=ms.classList.toggle('show');
+  btn.textContent=showing?'🙈 Hide Mark Scheme':'👁 Show Mark Scheme';
+}
+
+// ══ TABS ══
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ══ NOTES TOGGLE ══
+function toggleSection(id){
+  const bdy=document.getElementById(id).querySelector('.notes-bdy');
+  const tog=document.getElementById(id).querySelector('.notes-tog');
+  const open=bdy.classList.toggle('open');
+  tog.style.transform=open?'rotate(180deg)':'';
+}
+
+// ══════════════════
+// QUIZ
+// ══════════════════
+const questions=[
+  {q:"What does 'IPO' stand for?",opts:["Information Processing Output","Input–Process–Output","Integrated Programme Output","Input–Protocol–Output"],a:1,fb:"IPO = Input–Process–Output. This describes how ALL computers work: they receive input, process it using an algorithm, and produce output."},
+  {q:"Which of these is an example of an INPUT to a washing machine?",opts:["The motor spinning the drum","Water draining from the drum","The temperature setting chosen by the user","The heater heating the water"],a:2,fb:"The temperature setting is DATA ENTERED into the computer — it is input. The motor, heater and drain pump are all outputs (results of processing)."},
+  {q:"What is an 'embedded computer'?",opts:["A computer built into a rack of servers","A computer fixed firmly into another object, such as a washing machine","A computer that is embedded in a website","A very small portable laptop"],a:1,fb:"An embedded computer is fixed firmly into another object — like a washing machine, car, microwave or printer. It still follows the IPO model even though it doesn't look like a traditional computer."},
+  {q:"Why does a complex algorithm need storage added to the IPO model?",opts:["Storage provides power to the processor","Storage is needed to connect to the internet","Complex algorithms need to store intermediate (temporary) values during processing","Storage makes the output faster"],a:2,fb:"Anything beyond the simplest algorithm needs temporary storage (like RAM) to keep track of intermediate values. For example, calculating a running total requires storing partial results during the calculation."},
+  {q:"What is a 'function machine' in computing?",opts:["A machine specifically designed for manufacturing","A diagram showing how input has a rule applied to produce an output","A machine that tests how fast a computer runs","A type of output device"],a:1,fb:"A function machine is a metaphor/diagram: input goes in, a rule (algorithm) is applied step by step, and an output comes out. It models the PROCESSING stage of any computer."},
+  {q:"In the sequential computational model, instructions are executed:",opts:["Simultaneously by multiple processors","By independent agents that cooperate","Step by step, in order, one at a time, by a single processor","Randomly, in whatever order is fastest"],a:2,fb:"Sequential = step by step, in order, start to finish, using ONE processor. Each step fully completes before the next begins. This is the simplest and most familiar computational model."},
+  {q:"What TWO things are required (besides multiple processors) for the parallel model to work?",opts:["An internet connection and cloud storage","An OS supporting multiple processors AND software that can distribute tasks equally","A VPN and a GPU","A router and a network switch"],a:1,fb:"Parallel processing requires: (1) an OS capable of supporting 2+ processors, AND (2) software programs capable of distributing processes between them equally. Without both, the processors cannot cooperate."},
+  {q:"Which statement correctly distinguishes Parallel from Multi-Agent?",opts:["Parallel uses more processors than multi-agent","In parallel, ONE task is split among processors in the SAME computer; in multi-agent, DIFFERENT agents handle SEPARATE tasks independently","Multi-agent is always faster than parallel","Parallel requires internet access; multi-agent does not"],a:1,fb:"KEY DIFFERENCE: Parallel = one task, split, same computer. Multi-agent = different tasks, different autonomous independent systems. This is the most common exam confusion!"},
+  {q:"What does 'autonomous' mean when describing an agent?",opts:["Connected to a central server for instructions","Self-directed — acts without requiring guidance, chooses its own goal","Requires a human to approve every action","Always connected to the internet"],a:1,fb:"Autonomous = self-directed. An autonomous agent acts under its own control without needing human instruction. It can choose its own goal and uses its experience to achieve it."},
+  {q:"The multi-agent model is described in the textbook as the basis of which technology?",opts:["The Internet","Databases","Artificial Intelligence (AI)","Cloud Computing"],a:2,fb:"The multi-agent model is the basis of artificial intelligence. It also reflects human society — where independent people interact, negotiate, and cooperate to maintain society."},
+  {q:"A screen displaying a web page is an example of:",opts:["Input","Process","Storage","Output"],a:3,fb:"A screen displaying information is an OUTPUT device — it shows the RESULT of processing. Output = data that comes out of a computer after processing."},
+  {q:"What is an 'effector' in a multi-agent system?",opts:["A sensor that collects input data","Something that produces an effect by carrying out an action on the environment","The algorithm that controls the agent's decisions","The network connection between agents"],a:1,fb:"An effector is how an agent ACTS upon its environment — it produces an effect. For example, a robot arm's effector might be a motor, or a booking agent's effector sends a booking confirmation."},
+  {q:"3D rendering of a movie is divided into sections, each processed by a different processor simultaneously. Which model is this?",opts:["Sequential model","Multi-agent model","Parallel model","Input–process–output model"],a:2,fb:"Parallel model! One task (rendering the movie frame) is split into parts (sections of the frame), each processed simultaneously by a different processor, and the results combined. Same task, same computer."},
+  {q:"An AI system uses separate agents to simultaneously search flights, compare hotels, and negotiate prices for a holiday. Which model?",opts:["Sequential","Parallel","Input–process–output","Multi-agent"],a:3,fb:"Multi-agent! Different agents handle DIFFERENT tasks (flights, hotels, pricing) independently and autonomously, then cooperate through coordination and negotiation. Different tasks, different systems."},
+  {q:"What is 'coordination' in a multi-agent system?",opts:["One agent giving orders to all other agents","Organising different activities so that all agents work together effectively","A type of encryption between agents","The process of splitting a task into smaller parts"],a:1,fb:"Coordination = organising different activities so they ALL work together effectively towards a shared goal. It is how agents in a multi-agent system achieve their collective objective."},
+  {q:"A calculator app adds two numbers and shows the result. Which step is the 'process'?",opts:["The user pressing the number keys","The app performing the addition","The result shown on the screen","The calculator being turned on"],a:1,fb:"The PROCESS is the algorithm the CPU executes — in this case, performing the addition. Input = button presses. Output = result on screen. Process = the arithmetic operation."},
+  {q:"Which computational model has the LOWEST complexity?",opts:["Multi-agent","Parallel","Sequential","Distributed"],a:2,fb:"Sequential is the simplest (lowest complexity) — one processor, one instruction at a time. Multi-agent is the most complex (autonomous agents, negotiation, coordination). Parallel is in between."},
+  {q:"What is 'negotiation' between agents?",opts:["Agents splitting tasks randomly","A discussion between agents in order to reach an agreement","An agent sending data to a server","Two processors sharing the same memory"],a:1,fb:"Negotiation = a discussion in order to reach an agreement. For example, a pricing agent might negotiate with a flights agent to agree on the best package deal for the user."},
+  {q:"A printer receives a document file, converts it to print instructions and marks paper with ink. Identify the OUTPUT:",opts:["The document file sent from the computer","The conversion of digital data to print instructions","The printed page coming out of the printer","The ink cartridge"],a:2,fb:"The OUTPUT is the RESULT produced — in this case the physical printed page. Input = document file. Process = converting digital data to ink marks. Output = printed paper."},
+  {q:"Which flowchart symbol represents an INPUT or OUTPUT operation?",opts:["Rectangle (process)","Diamond (decision)","Parallelogram (slanted sides)","Oval (start/end)"],a:2,fb:"The PARALLELOGRAM (with slanted sides) represents input or output in a flowchart. The rectangle = process. The diamond = decision/branch. Knowing these symbols is important for flowchart questions."},
+];
+
+let qIndex=0,qScore=0;
+document.getElementById('qtotal').textContent=questions.length;
+
+function loadQ(){
+  if(qIndex>=questions.length){showResult();return;}
+  const q=questions[qIndex];
+  document.getElementById('qnum').textContent=`Question ${qIndex+1} of ${questions.length}`;
+  document.getElementById('qtext').textContent=q.q;
+  const fb=document.getElementById('qfb'); fb.className='q-fb'; fb.textContent='';
+  document.getElementById('qnext').style.display='none';
+  const opts=document.getElementById('qopts'); opts.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='q-opt'; btn.textContent=opt;
+    btn.onclick=()=>{
+      if(btn.disabled)return;
+      opts.querySelectorAll('.q-opt').forEach(b=>b.disabled=true);
+      if(i===q.a){btn.classList.add('correct');qScore++;document.getElementById('qscore').textContent=qScore;fb.className='q-fb show fb-ok';fb.textContent='✓ Correct! '+q.fb;}
+      else{btn.classList.add('wrong');opts.querySelectorAll('.q-opt')[q.a].classList.add('correct');fb.className='q-fb show fb-no';fb.textContent='✗ '+q.fb;}
+      const pct=((qIndex+1)/questions.length)*100;
+      document.getElementById('qprog').style.width=pct+'%';
+      document.getElementById('qnext').style.display='inline-block';
+    };
+    opts.appendChild(btn);
+  });
+}
+function nextQ(){qIndex++;loadQ();}
+function showResult(){
+  document.getElementById('quiz-area').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  document.getElementById('qfinal').textContent=`${qScore}/${questions.length}`;
+  const pct=qScore/questions.length;
+  document.getElementById('qmsg').textContent=pct<0.5?'Keep revising! Work through the Notes tab carefully.':pct<0.75?'Good effort! Review the explanations for questions you missed.':pct<0.9?'Strong performance! Almost there.':'Excellent! You have mastered Section 16. 🎉';
+}
+function restartQuiz(){qIndex=0;qScore=0;document.getElementById('qscore').textContent='0';document.getElementById('qprog').style.width='0%';document.getElementById('quiz-result').style.display='none';document.getElementById('quiz-area').style.display='block';loadQ();}
+loadQ();
+
+// ══════════════════
+// ACTIVITY 1: IPO DRAG CLASSIFY
+// ══════════════════
+const ipoItems=[
+  {t:'Keyboard typing',c:'Input'},{t:'CPU executing code',c:'Process'},{t:'Screen displaying image',c:'Output'},
+  {t:'Temperature sensor reading',c:'Input'},{t:'Motor spinning drum',c:'Output'},{t:'Sorting a list in memory',c:'Process'},
+  {t:'Mouse click',c:'Input'},{t:'Speaker playing sound',c:'Output'},{t:'Checking password length',c:'Process'},
+  {t:'Camera capturing photo',c:'Input'},{t:'Printer marking paper',c:'Output'},{t:'Calculating a total',c:'Process'},
+];
+function buildIPO(){
+  const pool=document.getElementById('ipo-pool'), cols=document.getElementById('ipo-cols');
+  pool.innerHTML=''; cols.innerHTML='';
+  const shuffled=[...ipoItems].sort(()=>Math.random()-0.5);
+  shuffled.forEach((item,i)=>{
+    const c=document.createElement('span'); c.className='chip'; c.textContent=item.t;
+    c.dataset.cat=item.c; c.dataset.idx=i; c.draggable=true;
+    c.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(i));c.classList.add('dragging');});
+    c.addEventListener('dragend',()=>c.classList.remove('dragging'));
+    pool.appendChild(c);
+  });
+  [['Input','var(--blue)','var(--light-blue)'],['Process','var(--orange)','#fff3e0'],['Output','#059669','var(--light-teal)']].forEach(([cat,border,bg],ci)=>{
+    const col=document.createElement('div'); col.className='drop-col'; col.style.borderColor=border;
+    const hdr=document.createElement('div'); hdr.className='drop-col-hdr'; hdr.style.background=border; hdr.textContent=cat;
+    const zone=document.createElement('div'); zone.className='drop-zone'; zone.id=`dz-${ci}`;
+    zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop',e=>{
+      e.preventDefault(); zone.classList.remove('dragover');
+      const idx=e.dataTransfer.getData('text/plain');
+      const el=document.querySelector(`.chip[data-idx="${idx}"]`);
+      if(el) zone.appendChild(el);
+    });
+    col.appendChild(hdr); col.appendChild(zone); cols.appendChild(col);
+  });
+  document.getElementById('ipo-result').textContent='';
+}
+function checkIPO(){
+  let ok=0,total=0;
+  [['Input',0],['Process',1],['Output',2]].forEach(([cat,ci])=>{
+    document.getElementById(`dz-${ci}`)?.querySelectorAll('.chip').forEach(el=>{
+      total++;
+      el.classList.remove('chip-ok','chip-bad');
+      if(el.dataset.cat===cat){el.classList.add('chip-ok');ok++;}
+      else el.classList.add('chip-bad');
+    });
+  });
+  document.getElementById('ipo-result').textContent=ok===total?`✓ ${ok}/${total} — Perfect!`:`${ok}/${total} correct`;
+  document.getElementById('ipo-result').style.color=ok===total?'var(--teal)':'var(--coral)';
+}
+function revealIPO(){
+  [['Input',0],['Process',1],['Output',2]].forEach(([cat,ci])=>{
+    const zone=document.getElementById(`dz-${ci}`); if(!zone)return;
+    zone.querySelectorAll('.chip').forEach(el=>{if(el.dataset.cat!==cat)document.getElementById('ipo-pool').appendChild(el);});
+    document.getElementById('ipo-pool').querySelectorAll(`.chip[data-cat="${cat}"]`).forEach(el=>{zone.appendChild(el);el.classList.add('chip-ok');});
+  });
+  document.getElementById('ipo-result').textContent='✓ Revealed!';
+  document.getElementById('ipo-result').style.color='var(--teal)';
+}
+function resetIPO(){buildIPO();}
+buildIPO();
+
+// ══════════════════
+// ACTIVITY 2: MATCH
+// ══════════════════
+const matchPairs=[
+  {left:'Sequential model',right:'Instructions executed one at a time, in order, by a single processor'},
+  {left:'Parallel model',right:'One task split across multiple processors in the same computer, results combined'},
+  {left:'Multi-agent model',right:'Separate tasks performed by independent autonomous systems that cooperate'},
+  {left:'Autonomous',right:'Self-directed — acts without requiring help or guidance, chooses own goal'},
+  {left:'Negotiation',right:'A discussion between agents to reach an agreement'},
+  {left:'Coordination',right:'Organising different agent activities so they work together effectively'},
+];
+let matchSel=null,matchScore=0;
+function buildMatch(){
+  matchSel=null; matchScore=0;
+  const left=document.getElementById('match-left'), right=document.getElementById('match-right');
+  left.innerHTML=''; right.innerHTML='';
+  const shuffRight=[...matchPairs].sort(()=>Math.random()-0.5);
+  matchPairs.forEach((p,i)=>{
+    const l=document.createElement('div'); l.className='match-item'; l.textContent=p.left;
+    l.dataset.pair=i; l.onclick=()=>handleMatch(l,'left'); left.appendChild(l);
+  });
+  shuffRight.forEach(p=>{
+    const r=document.createElement('div'); r.className='match-item'; r.textContent=p.right;
+    r.dataset.pair=matchPairs.indexOf(p); r.onclick=()=>handleMatch(r,'right'); right.appendChild(r);
+  });
+  document.getElementById('match-score').textContent='';
+}
+function handleMatch(el,side){
+  if(el.classList.contains('ok')) return;
+  if(!matchSel){
+    document.querySelectorAll('.match-item.sel').forEach(x=>x.classList.remove('sel'));
+    el.classList.add('sel'); matchSel={el,side};
+  } else {
+    if(matchSel.side===side){document.querySelectorAll('.match-item.sel').forEach(x=>x.classList.remove('sel'));el.classList.add('sel');matchSel={el,side};return;}
+    const a=matchSel.el,b=el;
+    if(a.dataset.pair===b.dataset.pair){
+      a.classList.remove('sel'); a.classList.add('ok'); b.classList.add('ok');
+      matchScore++;
+      const sc=document.getElementById('match-score');
+      sc.textContent=matchScore===matchPairs.length?'✓ All matched! 🎉':`${matchScore}/${matchPairs.length} matched`;
+      sc.style.color=matchScore===matchPairs.length?'var(--teal)':'var(--blue)';
+    } else {
+      a.classList.add('bad'); b.classList.add('bad');
+      setTimeout(()=>{a.classList.remove('bad','sel');b.classList.remove('bad');},600);
+    }
+    matchSel=null;
+  }
+}
+function resetMatch(){buildMatch();}
+buildMatch();
+
+// ══════════════════
+// ACTIVITY 3: FILL BLANKS
+// ══════════════════
+const fillWords=['sequential','parallel','multi-agent','autonomous','negotiation','coordination','processors','algorithm','agents','output'];
+const fillAnswers={B0:'sequential',B1:'algorithm',B2:'parallel',B3:'processors',B4:'multi-agent',B5:'agents',B6:'autonomous',B7:'negotiation',B8:'coordination',B9:'output'};
+let fillState={};Object.keys(fillAnswers).forEach(k=>fillState[k]='');
+let fillSel=null;
+
+const fillTemplate=`In the <span class="blank" data-b="B0">__B0__</span> model, the computer follows an <span class="blank" data-b="B1">__B1__</span> step by step using a single processor. In the <span class="blank" data-b="B2">__B2__</span> model, a task is shared between multiple <span class="blank" data-b="B3">__B3__</span>, which work simultaneously and combine their results. In the <span class="blank" data-b="B4">__B4__</span> model, separate tasks are handled by independent <span class="blank" data-b="B5">__B5__</span>. Each agent acts <span class="blank" data-b="B6">__B6__</span>, cooperating through <span class="blank" data-b="B7">__B7__</span> and <span class="blank" data-b="B8">__B8__</span> to produce an <span class="blank" data-b="B9">__B9__</span>.`;
+
+function buildFill(){
+  const wb=document.getElementById('word-bank'); wb.innerHTML='';
+  fillWords.forEach(w=>{
+    const d=document.createElement('span'); d.className='word'; d.textContent=w; d.dataset.word=w;
+    d.onclick=()=>{
+      if(!fillSel)return;
+      const prev=Object.keys(fillState).find(k=>fillState[k]===w);
+      if(prev)fillState[prev]='';
+      fillState[fillSel]=w;
+      document.querySelectorAll('.word').forEach(x=>x.classList.remove('sel'));
+      fillSel=null; renderFill();
+    };
+    wb.appendChild(d);
+  });
+  renderFill();
+}
+function renderFill(){
+  const wrap=document.getElementById('fill-para');
+  let html=fillTemplate;
+  Object.keys(fillAnswers).forEach(k=>{ html=html.replace(`__${k}__`,fillState[k]||'&nbsp;&nbsp;&nbsp;'); });
+  wrap.innerHTML=html;
+  wrap.querySelectorAll('.blank').forEach(b=>{
+    const k=b.dataset.b;
+    if(fillState[k])b.classList.add('filled');
+    if(fillSel===k)b.classList.add('sel-b');
+    b.onclick=()=>{fillSel=k;wrap.querySelectorAll('.blank').forEach(x=>x.classList.remove('sel-b'));b.classList.add('sel-b');};
+  });
+  document.querySelectorAll('#word-bank .word').forEach(w=>{
+    w.classList.toggle('used',Object.values(fillState).includes(w.dataset.word));
+  });
+}
+function checkFill(){
+  let ok=0;
+  Object.keys(fillAnswers).forEach(k=>{
+    const b=document.querySelector(`#fill-para [data-b="${k}"]`); if(!b)return;
+    if(fillState[k]===fillAnswers[k]){b.classList.add('ok');b.classList.remove('bad');ok++;}
+    else if(fillState[k]){b.classList.add('bad');b.classList.remove('ok');}
+  });
+  const sc=document.getElementById('fill-score');
+  sc.textContent=`${ok}/10`; sc.style.color=ok===10?'var(--teal)':'var(--coral)';
+}
+function revealFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]=fillAnswers[k]);renderFill();checkFill();}
+function resetFill(){Object.keys(fillAnswers).forEach(k=>fillState[k]='');fillSel=null;renderFill();document.getElementById('fill-score').textContent='';}
+buildFill();
+
+// ══════════════════
+// ACTIVITY 4: TRUE/FALSE
+// ══════════════════
+const tfItems=[
+  {q:'The sequential model uses a single processor and executes instructions one step at a time.',ans:true,exp:'✓ True! Sequential = single processor, step by step, in order. The most basic model.'},
+  {q:'In the parallel model, different agents handle different tasks independently.',ans:false,exp:'✗ False! That is the MULTI-AGENT model. In PARALLEL, one task is split among multiple processors in the SAME computer.'},
+  {q:'An embedded computer in a washing machine follows the IPO model.',ans:true,exp:'✓ True! Every computer — including embedded ones in washing machines — follows the input-process-output model.'},
+  {q:'Multi-agent systems require agents to always share the same processor.',ans:false,exp:'✗ False! Multi-agent systems involve DIFFERENT independent systems (agents). Each agent is autonomous and acts under its own control.'},
+  {q:'Complex algorithms need storage because they must keep track of intermediate values during processing.',ans:true,exp:'✓ True! Anything beyond the simplest algorithm needs temporary storage (RAM) to hold working values during processing.'},
+  {q:'Parallel processing requires an OS capable of supporting multiple processors AND software that can distribute processes equally.',ans:true,exp:'✓ True! Both are required: a suitable OS AND software designed to split tasks. Without both, processors cannot cooperate.'},
+  {q:'Autonomous means an agent requires human approval before taking any action.',ans:false,exp:'✗ False! Autonomous means SELF-DIRECTED — acts without requiring help or guidance. It can choose its own goal independently.'},
+  {q:'The multi-agent model is the basis of Artificial Intelligence.',ans:true,exp:'✓ True! Multi-agent systems form the basis of AI. They also reflect human society where independent people cooperate to achieve shared goals.'},
+];
+function buildTF(){
+  const area=document.getElementById('tf-area'); area.innerHTML='';
+  tfItems.forEach((item,i)=>{
+    const div=document.createElement('div'); div.className='tf-card';
+    div.innerHTML=`<div class="tf-q">${i+1}. ${item.q}</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="checkTF(this,${i},true)">TRUE</button>
+        <button class="tf-btn" onclick="checkTF(this,${i},false)">FALSE</button>
+      </div>
+      <div class="tf-exp" id="tf-exp-${i}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkTF(btn,i,ans){
+  const item=tfItems[i];
+  const btns=btn.closest('.tf-card').querySelectorAll('.tf-btn');
+  btns.forEach(b=>b.disabled=true);
+  const exp=document.getElementById(`tf-exp-${i}`);
+  if(ans===item.ans){
+    btn.classList.add('correct');
+    exp.className='tf-exp show'; exp.style.cssText='background:#e0faf1;border-left:4px solid var(--teal);';
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if((b.textContent==='TRUE')===item.ans)b.classList.add('correct');});
+    exp.className='tf-exp show'; exp.style.cssText='background:var(--light-coral);border-left:4px solid var(--coral);';
+  }
+  exp.textContent=item.exp;
+}
+buildTF();
+
+// ══════════════════
+// ACTIVITY 5: SORT
+// ══════════════════
+const sortSteps=[
+  'INPUT: Ask the user to enter their password',
+  'PROCESS: Count the number of characters in the password',
+  'PROCESS: Check if the length is 8 or more characters',
+  'PROCESS: Check if there is at least one uppercase letter',
+  'PROCESS: Check if there is at least one symbol',
+  'PROCESS: Store the result of all three checks (using storage/RAM)',
+  'OUTPUT: If all conditions met → display "Strong"',
+  'OUTPUT: Otherwise → display "Weak"',
+];
+let sortOrder=[...sortSteps];
+function buildSort(){
+  const list=document.getElementById('sort-list'); list.innerHTML='';
+  sortOrder.forEach((step,i)=>{
+    const item=document.createElement('div'); item.className='sort-item'; item.draggable=true;
+    item.innerHTML=`<span class="sort-grip">⠿</span><span>${step}</span>`;
+    item.dataset.idx=i;
+    item.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(i));item.classList.add('dragging');});
+    item.addEventListener('dragend',()=>item.classList.remove('dragging'));
+    item.addEventListener('dragover',e=>e.preventDefault());
+    item.addEventListener('drop',e=>{
+      e.preventDefault();
+      const from=parseInt(e.dataTransfer.getData('text/plain')),to=i;
+      if(from===to)return;
+      [sortOrder[from],sortOrder[to]]=[sortOrder[to],sortOrder[from]];
+      buildSort();
+    });
+    list.appendChild(item);
+  });
+}
+function checkSort(){
+  const wrong=sortOrder.filter((s,i)=>s!==sortSteps[i]).length;
+  const res=document.getElementById('sort-result');
+  res.style.color=wrong===0?'var(--teal)':'var(--coral)';
+  res.textContent=wrong===0?'✓ Perfect order! INPUT first → PROCESS steps → OUTPUT last.':wrong===1?'Almost! Just 1 step out of place.':wrong<=3?`${wrong} steps out of order. Keep adjusting!`:`${wrong} steps to fix — try again!`;
+}
+function revealSort(){sortOrder=[...sortSteps];buildSort();const res=document.getElementById('sort-result');res.style.color='var(--teal)';res.textContent='✓ Correct order shown above.';}
+function shuffleSort(){sortOrder=[...sortSteps].sort(()=>Math.random()-0.5);buildSort();document.getElementById('sort-result').textContent='';}
+shuffleSort();
+</script>
+</body>
+</html>

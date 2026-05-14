@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topic 23: Internet & WWW – IGCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e; --paper: #fdf8f0;
+    --yellow: #ffd166; --coral: #ef476f; --teal: #06d6a0;
+    --blue: #118ab2; --purple: #7b2d8b; --orange: #f77f00; --green: #2d6a4f;
+    --light-yellow: #fff9c4; --light-coral: #fce4ec; --light-teal: #e0f7f2;
+    --light-blue: #e3f2fd; --light-purple: #f3e5f5; --light-green: #d8f3dc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); font-family: 'Patrick Hand', cursive; color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: repeating-linear-gradient(transparent,transparent 31px,rgba(100,149,237,0.15) 31px,rgba(100,149,237,0.15) 32px);
+    pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: 0; left: 70px; bottom: 0; width: 2px;
+    background: rgba(239,71,111,0.3); pointer-events: none; z-index: 0;
+  }
+  .page-wrap { max-width: 960px; margin: 0 auto; padding: 20px 30px 60px 90px; position: relative; z-index: 1; }
+  @media(max-width:600px){ .page-wrap{padding:20px 16px 60px 16px;} body::after{display:none;} }
+
+  /* HERO */
+  .hero { text-align: center; padding: 40px 0 20px; }
+  .hero-title {
+    font-family: 'Permanent Marker', cursive; font-size: 2.8rem; color: var(--ink);
+    text-shadow: 3px 3px 0 var(--teal); letter-spacing: 2px; transform: rotate(-1.5deg);
+    display: inline-block; position: relative;
+  }
+  .hero-title::after { content: ''; position: absolute; bottom: -8px; left: 0; right: 0; height: 4px; background: var(--blue); border-radius: 2px; }
+  .hero-sub { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--blue); margin-top: 18px; }
+
+  /* TABS */
+  .tabs-nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 28px 0 20px; justify-content: center; }
+  .tab-btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 8px 18px; border: 3px solid var(--ink); border-radius: 6px;
+    background: white; cursor: pointer; transition: all 0.2s; box-shadow: 3px 3px 0 var(--ink);
+  }
+  .tab-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .tab-btn.active { background: var(--ink); color: white; transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .tab-btn[data-tab="mindmap"].active { background: var(--blue); }
+  .tab-btn[data-tab="notes"].active { background: var(--green); }
+  .tab-btn[data-tab="quiz"].active { background: #059669; }
+  .tab-btn[data-tab="exam"].active { background: var(--purple); }
+  .tab-btn[data-tab="activities"].active { background: var(--orange); }
+  .tab-panel { display: none; animation: fadeIn 0.3s ease; }
+
+  /* ── URL ANATOMY ── */
+  .url-bar { background:#1e1e2e; border-radius:10px; padding:14px 18px; font-family:monospace; font-size:1.05rem; margin:14px 0; display:flex; align-items:center; flex-wrap:wrap; gap:0; border:2px solid #444; }
+  .url-part { padding:4px 2px; cursor:pointer; border-radius:4px; transition:all 0.2s; border-bottom:3px solid transparent; user-select:none; white-space:nowrap; }
+  .url-part:hover { opacity:0.8; }
+  .url-part.u-active { border-bottom-width:3px; filter:brightness(1.3); background:rgba(255,255,255,0.1); border-radius:4px; }
+  .part-https{color:#4ade80;} .part-sep{color:#94a3b8;} .part-sub{color:#fb923c;}
+  .part-domain{color:#60a5fa;} .part-dot{color:#94a3b8;} .part-tld{color:#f472b6;}
+  .part-path{color:#a78bfa;} .part-query{color:#34d399;}
+  .url-legend { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:8px; margin:12px 0; }
+  .leg-item { border:2px solid var(--ink); border-radius:8px; padding:10px 12px; background:white; cursor:pointer; transition:all 0.2s; box-shadow:2px 2px 0 var(--ink); }
+  .leg-item:hover { transform:translate(-1px,-1px); box-shadow:3px 3px 0 var(--ink); }
+  .leg-item.l-active { transform:translate(2px,2px); box-shadow:none; }
+  .leg-dot { width:11px; height:11px; border-radius:50%; display:inline-block; margin-right:5px; }
+  .leg-name { font-family:'Caveat',cursive; font-size:1rem; font-weight:700; }
+  .leg-desc { font-family:'Kalam',cursive; font-size:0.82rem; margin-top:5px; color:#555; display:none; line-height:1.45; }
+  .leg-item.l-active .leg-desc { display:block; }
+  .leg-eg { font-family:monospace; font-size:0.78rem; background:#f5f5f5; padding:2px 6px; border-radius:4px; margin-top:3px; display:inline-block; }
+
+  /* ── IP ADDRESS VISUALS ── */
+  .bit { width:21px; height:21px; border:1.5px solid; border-radius:3px; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:bold; font-family:monospace; }
+  .bit-1{background:#118ab2;color:white;border-color:#0d6efd;} .bit-0{background:#f5f5f5;color:#999;border-color:#ccc;}
+  .addr-bar { height:26px; border-radius:6px; border:2px solid var(--ink); overflow:hidden; margin:6px 0; display:flex; align-items:center; }
+  .addr-fill { height:100%; display:flex; align-items:center; padding:0 10px; font-family:'Caveat',cursive; font-size:0.85rem; font-weight:700; color:white; white-space:nowrap; }
+  .ip-compare { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:12px 0; }
+  @media(max-width:560px){.ip-compare{grid-template-columns:1fr;}}
+  .ip-card-2 { border:3px solid; border-radius:10px; overflow:hidden; box-shadow:3px 3px 0 var(--ink); }
+  .ip-card-hdr2 { padding:10px 14px; font-family:'Permanent Marker',cursive; font-size:1.05rem; color:white; }
+  .ip-card-bdy2 { padding:12px 14px; background:white; font-size:0.9rem; }
+  .ip-fact { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px dashed #e0e0e0; font-family:'Kalam',cursive; font-size:0.88rem; }
+  .ip-fact:last-child{border:none;} .ip-val{font-family:'Caveat',cursive;font-size:0.98rem;font-weight:700;}
+
+  /* ── CHIP ACTIVITY ── */
+  .chip-bank { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; padding:12px; background:#f9f9f9; border:2px dashed #ccc; border-radius:8px; }
+  .chip { padding:6px 14px; background:white; border:2px solid var(--ink); border-radius:20px; font-family:'Patrick Hand',cursive; font-size:0.9rem; cursor:pointer; box-shadow:2px 2px 0 var(--ink); transition:all 0.15s; user-select:none; }
+  .chip:hover { transform:translate(-1px,-1px); background:var(--light-yellow); }
+  .chip.chip-sel { background:var(--yellow); border-color:var(--orange); box-shadow:none; }
+  .chip.chip-used { opacity:0.35; pointer-events:none; }
+  .d-drop { min-width:100px; height:30px; border:2px dashed var(--blue); border-radius:6px; background:var(--light-blue); font-family:'Caveat',cursive; font-size:0.9rem; display:inline-flex; align-items:center; justify-content:center; padding:0 8px; cursor:pointer; transition:all 0.2s; }
+  .d-drop.d-filled { background:var(--light-teal); border-color:#059669; border-style:solid; color:var(--green); font-weight:700; }
+  .d-drop.d-wrong { background:var(--light-coral); border-color:var(--coral); border-style:solid; color:var(--coral); animation:shake 0.3s; }
+  .ans-line { border:none; border-bottom:1.5px solid var(--blue); background:transparent; font-family:'Patrick Hand',cursive; font-size:0.95rem; padding:0 4px; outline:none; min-width:200px; width:60%; }
+  .tab-panel.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+  /* SHARED */
+  .tip-box {
+    background: var(--light-yellow); border: 2px solid var(--yellow); border-left: 5px solid var(--orange);
+    border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-family: 'Kalam', cursive; font-size: 0.95rem;
+  }
+  .btn {
+    font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700;
+    padding: 9px 22px; border: 2.5px solid var(--ink); border-radius: 8px;
+    cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s;
+  }
+  .btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--ink); }
+  .btn-primary { background: var(--ink); color: white; }
+  .btn-teal { background: var(--teal); color: var(--ink); border-color: #059669; box-shadow: 3px 3px 0 #059669; }
+  .tag { display: inline-block; padding: 2px 9px; border-radius: 4px; font-family: 'Caveat', cursive; font-size: 0.85rem; font-weight: 700; border: 1.5px solid; margin-right: 4px; }
+  .tag-hard { color: var(--coral); border-color: var(--coral); background: var(--light-coral); }
+  .tag-med { color: var(--orange); border-color: var(--orange); background: #fff3e0; }
+  .tag-easy { color: #059669; border-color: var(--teal); background: var(--light-teal); }
+
+  /* IMPORTANCE BANNER */
+  .imp-banner { margin-bottom: 20px; border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .imp-header {
+    background: var(--blue); color: white; padding: 10px 18px;
+    font-family: 'Permanent Marker', cursive; font-size: 1.2rem;
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .imp-body { display: none; background: white; }
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); }
+  .imp-cell { padding: 14px 16px; border-right: 2px solid #eee; border-bottom: 2px solid #eee; }
+  .imp-cell-title { font-family: 'Permanent Marker', cursive; font-size: 0.95rem; margin-bottom: 6px; }
+  .imp-cell p { font-family: 'Kalam', cursive; font-size: 0.88rem; line-height: 1.5; }
+  .imp-footer { background: #fff9c4; border-top: 2px solid var(--ink); padding: 10px 16px; font-family: 'Kalam', cursive; font-size: 0.88rem; display: flex; align-items: center; gap: 8px; }
+
+  /* MINDMAP */
+  .ig-wrap { background: #fffdf5; border: 3px solid var(--ink); border-radius: 12px; padding: 28px; box-shadow: 6px 6px 0 var(--ink); }
+  .ig-title { font-family: 'Permanent Marker', cursive; font-size: 2rem; text-align: center; margin-bottom: 20px; }
+  .ig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media(max-width:600px){ .ig-grid{grid-template-columns:1fr;} }
+  .ig-sec { border: 2.5px solid var(--ink); border-radius: 10px; padding: 16px; background: white; position: relative; }
+  .ig-label { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; position: absolute; top: -13px; left: 14px; background: white; padding: 0 8px; }
+  .ig-item { display: flex; align-items: flex-start; gap: 9px; margin: 7px 0; font-family: 'Kalam', cursive; font-size: 0.92rem; line-height: 1.4; }
+  .ig-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .highlight-box { background: var(--light-teal); border: 2.5px solid var(--ink); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-family: 'Kalam', cursive; font-size: 1rem; text-align: center; transform: rotate(-0.3deg); }
+  .step-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(160px,1fr)); gap: 10px; padding: 16px; }
+  .step-card { text-align: center; padding: 12px 8px; border: 2px solid; border-radius: 8px; }
+  .step-emoji { font-size: 1.5rem; }
+  .step-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; margin: 4px 0 2px; }
+  .step-txt { font-family: 'Kalam', cursive; font-size: 0.8rem; }
+
+  /* NOTES */
+  .notes-sec { margin-bottom: 14px; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; box-shadow: 4px 4px 0 var(--ink); }
+  .notes-hdr { padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+  .notes-hdr:hover { opacity: 0.9; }
+  .notes-hdr-left { display: flex; align-items: center; gap: 12px; }
+  .notes-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; background: rgba(255,255,255,0.2); color: white; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+  .notes-title { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; color: white; }
+  .notes-tog { font-family: 'Caveat', cursive; font-size: 1.2rem; color: white; transition: transform 0.3s; }
+  .notes-bdy { display: none; padding: 18px 20px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.65; }
+  .notes-bdy.open { display: block; animation: fadeIn 0.25s ease; }
+  .def-box { border: 2px solid; border-radius: 8px; padding: 12px 14px 10px; margin: 12px 0; position: relative; padding-top: 22px; font-size: 0.92rem; line-height: 1.55; }
+  .def-label { position: absolute; top: -11px; left: 12px; color: white; font-family: 'Caveat', cursive; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+  .notes-tip { background: #fff9c4; border: 2px solid var(--yellow); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 12px 0 4px; font-size: 0.9rem; font-family: 'Kalam', cursive; }
+  .notes-eg { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 8px 12px; margin: 8px 0; border-radius: 0 6px 6px 0; font-size: 0.88rem; font-style: italic; font-family: 'Kalam', cursive; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:580px){ .g2{grid-template-columns:1fr;} }
+  .nl { display: flex; align-items: flex-start; gap: 9px; margin: 6px 0; font-size: 0.92rem; line-height: 1.5; }
+  .nd { width: 24px; height: 24px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-family: 'Permanent Marker', cursive; flex-shrink: 0; margin-top: 1px; }
+  .subh { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+  .subh::after { content: ''; flex: 1; height: 2px; background: currentColor; opacity: 0.2; }
+  .n-card { border: 2.5px solid; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+  .n-card-hdr { padding: 8px 14px; font-family: 'Permanent Marker', cursive; font-size: 1rem; color: white; }
+  .n-card-bdy { padding: 12px 14px; background: white; font-size: 0.92rem; line-height: 1.55; }
+  .hl-b { color: var(--blue); font-weight: 700; } .hl-t { color: #059669; font-weight: 700; }
+  .hl-c { color: var(--coral); font-weight: 700; } .hl-p { color: var(--purple); font-weight: 700; }
+  .hl-o { color: var(--orange); font-weight: 700; } .hl-g { color: var(--green); font-weight: 700; }
+
+  /* QUIZ */
+  .q-prog-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .q-prog-bar { flex: 1; height: 14px; background: #e0e0e0; border: 2px solid var(--ink); border-radius: 20px; overflow: hidden; }
+  .q-prog-fill { height: 100%; background: var(--teal); border-radius: 20px; transition: width 0.4s; }
+  .q-score { font-family: 'Permanent Marker', cursive; font-size: 1.1rem; background: var(--yellow); border: 2px solid var(--ink); padding: 4px 12px; border-radius: 20px; }
+  .q-card { border: 3px solid var(--ink); border-radius: 12px; padding: 22px; background: white; box-shadow: 5px 5px 0 var(--ink); }
+  .q-num { font-family: 'Permanent Marker', cursive; font-size: 0.9rem; color: var(--teal); margin-bottom: 8px; }
+  .q-text { font-family: 'Caveat', cursive; font-size: 1.35rem; font-weight: 600; margin-bottom: 16px; line-height: 1.4; }
+  .q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media(max-width:480px){ .q-opts{grid-template-columns:1fr;} }
+  .q-opt { padding: 11px 14px; border: 2.5px solid var(--ink); border-radius: 8px; background: white; font-family: 'Patrick Hand', cursive; font-size: 0.98rem; cursor: pointer; transition: all 0.15s; text-align: left; box-shadow: 2px 2px 0 var(--ink); }
+  .q-opt:hover:not(:disabled) { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .q-opt.correct { background: var(--teal) !important; color: white; border-color: #059669; box-shadow: none; }
+  .q-opt.wrong { background: var(--coral) !important; color: white; border-color: #c0392b; box-shadow: none; animation: shake 0.3s; }
+  .q-opt:disabled { cursor: default; }
+  .q-fb { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 600; border: 2px solid; display: none; }
+  .q-fb.show { display: block; }
+  .q-fb.fb-ok { background: #e0faf1; border-color: var(--teal); color: #059669; }
+  .q-fb.fb-no { background: var(--light-coral); border-color: var(--coral); color: var(--coral); }
+  .q-result { text-align: center; padding: 30px; }
+  .q-result h2 { font-family: 'Permanent Marker', cursive; font-size: 2.5rem; margin-bottom: 10px; }
+  .big-score { font-family: 'Permanent Marker', cursive; font-size: 4rem; color: var(--teal); }
+
+  /* EXAM */
+  .eq-wrap { margin-bottom: 26px; border: 2.5px solid var(--ink); border-radius: 10px; background: white; box-shadow: 4px 4px 0 var(--ink); overflow: hidden; }
+  .eq-hdr { padding: 11px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--ink); }
+  .eq-hdr.c1{background:var(--light-teal);} .eq-hdr.c2{background:var(--light-blue);} .eq-hdr.c3{background:var(--light-purple);}
+  .eq-hdr.c4{background:#fff3e0;} .eq-hdr.c5{background:var(--light-yellow);} .eq-hdr.c6{background:var(--light-coral);}
+  .eq-hdr.c7{background:var(--light-green);} .eq-hdr.c8{background:var(--light-blue);}
+  .eq-num { font-family: 'Permanent Marker', cursive; font-size: 1.05rem; }
+  .eq-marks { font-family: 'Caveat', cursive; font-size: 1.1rem; font-weight: 700; background: var(--ink); color: white; padding: 2px 10px; border-radius: 20px; }
+  .eq-bdy { padding: 14px 16px; }
+  .eq-txt { font-size: 1.02rem; line-height: 1.6; margin-bottom: 12px; }
+  .eq-ctx { background: #f5f5f5; border-left: 4px solid var(--blue); padding: 10px 14px; margin-bottom: 12px; font-size: 0.93rem; line-height: 1.5; border-radius: 0 6px 6px 0; font-style: italic; font-family: 'Kalam', cursive; }
+  .ans-line { width: 100%; height: 28px; border: none; border-bottom: 1.5px solid var(--blue); background: transparent; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; padding: 0 4px; outline: none; margin-bottom: 4px; }
+  .ans-ta { width: 100%; border: 1.5px solid #b0bec5; border-radius: 6px; background: transparent; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; padding: 8px; outline: none; resize: vertical; min-height: 80px; }
+  .show-ms { font-family: 'Caveat', cursive; font-size: 1rem; padding: 6px 16px; border: 2px solid var(--purple); border-radius: 20px; background: white; color: var(--purple); cursor: pointer; margin-top: 10px; transition: all 0.15s; }
+  .show-ms:hover { background: var(--purple); color: white; }
+  .ms { display: none; margin-top: 10px; background: var(--light-purple); border: 2px solid var(--purple); border-radius: 8px; padding: 12px 16px; font-size: 0.93rem; line-height: 1.6; }
+  .ms.show { display: block; animation: fadeIn 0.3s ease; }
+  .ms ul { padding-left: 20px; margin-top: 6px; }
+  .ms li { margin: 4px 0; }
+  .ms-lbl { font-family: 'Permanent Marker', cursive; font-size: 1rem; color: var(--purple); margin-bottom: 6px; }
+
+  /* ACTIVITIES */
+  .act-card { border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; margin-bottom: 22px; box-shadow: 5px 5px 0 var(--ink); }
+  .act-hdr { padding: 13px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid var(--ink); }
+  .act-icon { font-size: 1.8rem; }
+  .act-title { font-family: 'Permanent Marker', cursive; font-size: 1.25rem; }
+  .act-bdy { background: white; padding: 18px; font-size: 0.95rem; line-height: 1.6; }
+
+  .scen-box { background: #f9f9ff; border: 2px solid var(--purple); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .scen-reveal { display: none; margin-top: 10px; padding: 10px 12px; background: var(--light-purple); border-radius: 8px; font-family: 'Kalam', cursive; font-size: 0.93rem; border-left: 4px solid var(--purple); }
+  .scen-reveal.show { display: block; animation: fadeIn 0.3s ease; }
+
+  .t-q { margin: 14px 0; padding: 14px; border: 2px solid var(--ink); border-radius: 8px; background: white; }
+  .t-q-text { font-family: 'Caveat', cursive; font-size: 1.15rem; margin-bottom: 8px; }
+  .t-inp { width: 100%; padding: 7px 11px; font-family: 'Patrick Hand', cursive; font-size: 0.98rem; border: 2px solid #ccc; border-radius: 6px; outline: none; transition: border-color 0.2s; }
+  .t-inp:focus { border-color: var(--blue); }
+  .t-inp.ok { border-color: var(--teal); background: #e0faf1; }
+  .t-inp.no { border-color: var(--coral); background: var(--light-coral); }
+  .t-fb { margin-top: 5px; font-family: 'Caveat', cursive; font-size: 0.98rem; display: none; }
+  .t-fb.show { display: block; }
+
+  .tf-card { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: white; }
+  .tf-q { font-family: 'Kalam', cursive; font-size: 0.95rem; margin-bottom: 8px; line-height: 1.5; }
+  .tf-btns { display: flex; gap: 10px; }
+  .tf-btn { font-family: 'Caveat', cursive; font-size: 1rem; font-weight: 700; padding: 6px 20px; border: 2px solid var(--ink); border-radius: 20px; cursor: pointer; transition: all 0.15s; background: white; }
+  .tf-btn:hover { background: var(--light-yellow); }
+  .tf-btn.correct { background: var(--teal); color: white; border-color: #059669; }
+  .tf-btn.wrong { background: var(--coral); color: white; border-color: #c0392b; }
+  .tf-btn:disabled { cursor: default; }
+  .tf-exp { display: none; margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-family: 'Kalam', cursive; font-size: 0.88rem; }
+  .tf-exp.show { display: block; }
+
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  @media(max-width:500px){ .match-grid{grid-template-columns:1fr;} }
+  .match-item { padding: 10px 13px; border: 2.5px solid var(--ink); border-radius: 8px; font-family: 'Patrick Hand', cursive; font-size: 0.88rem; cursor: pointer; background: white; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; min-height: 46px; display: flex; align-items: center; }
+  .match-item:hover { transform: translate(-1px,-1px); background: var(--light-yellow); }
+  .match-item.sel { background: var(--yellow); border-color: var(--orange); }
+  .match-item.ok { background: #e0faf1; border-color: var(--teal); pointer-events: none; }
+  .match-item.bad { background: var(--light-coral); border-color: var(--coral); animation: shake 0.3s; }
+
+  /* ── DIAGRAM ZOOM LIGHTBOX ──────────────────────── */
+  .svg-zoom-wrap {
+    position: relative;
+    cursor: zoom-in;
+    display: block;
+    margin: 0 auto;
+  }
+  .svg-zoom-wrap::after {
+    content: '🔍 Click to zoom';
+    position: absolute;
+    bottom: 6px;
+    right: 8px;
+    background: rgba(26,26,46,0.75);
+    color: #fff;
+    font-family: 'Caveat', cursive;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .svg-zoom-wrap:hover::after { opacity: 1; }
+  .svg-zoom-wrap svg { display: block; width: 100%; }
+
+  /* lightbox overlay */
+  #svg-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.82);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+  }
+  #svg-lightbox.open { display: flex; }
+  #svg-lightbox-inner {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    max-width: 95vw;
+    max-height: 92vh;
+    overflow: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    position: relative;
+    cursor: default;
+  }
+  #svg-lightbox-inner svg {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    display: block;
+  }
+  #svg-lightbox-close {
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #555;
+    line-height: 1;
+    z-index: 10000;
+  }
+  #svg-lightbox-close:hover { color: #000; }
+  #svg-lightbox-dl {
+    display: block;
+    margin: 12px auto 0;
+    text-align: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #118ab2;
+    background: #e3f2fd;
+    border: 2px solid #118ab2;
+    border-radius: 8px;
+    padding: 6px 20px;
+    cursor: pointer;
+    width: fit-content;
+  }
+  #svg-lightbox-dl:hover { background: #118ab2; color: #fff; }
+
+</style>
+</head>
+<body>
+
+<!-- Back-to-hub bar (matches the paper aesthetic) -->
+<div style="background:#fdf8f0;border-bottom:2px dashed rgba(13,148,136,.35);padding:8px 0;font-family:'Patrick Hand',cursive;position:relative;z-index:2;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 30px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Caveat',cursive;font-size:1.05rem;font-weight:700;">
+      <a href="index.html" style="color:#0d9488;text-decoration:none;">← All topics</a>
+      <span style="color:#999;">·</span>
+      <a href="topic-5-communication-internet.html" style="color:#ef476f;text-decoration:none;">📑 Topic 5 menu</a>
+    </div>
+    <div style="display:flex;gap:18px;font-size:1rem;font-family:'Caveat',cursive;font-weight:700;">
+      <a href="index.html" style="color:#118ab2;text-decoration:none;">🏠 Home</a>
+      <a href="past-papers.html" style="color:#118ab2;text-decoration:none;">📅 Past Papers</a>
+      <a href="about.html" style="color:#118ab2;text-decoration:none;">ℹ️ About</a>
+    </div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- BACK BUTTON -->
+  <a href="topic-5-communication-internet.html" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1rem;
+    color: #1a1a2e;
+    text-decoration: none;
+    border: 2.5px solid #1a1a2e;
+    border-radius: 8px;
+    padding: 8px 18px;
+    background: #fff9c4;
+    box-shadow: 3px 3px 0 #1a1a2e;
+    margin: 20px 0 10px;
+    transform: rotate(-0.5deg);
+    transition: transform 0.15s, box-shadow 0.15s;
+  " onmouseover="this.style.transform='translate(-2px,-2px) rotate(-0.5deg)';this.style.boxShadow='5px 5px 0 #1a1a2e'"
+     onmouseout="this.style.transform='rotate(-0.5deg)';this.style.boxShadow='3px 3px 0 #1a1a2e'">
+    ← Back to Cover Page
+  </a>
+
+  <div class="hero">
+    <h1 class="hero-title"> The Internet & the WWW - 5.3</h1>
+    <p class="hero-sub">IGCSE Computer Science · Unit 5 Topic 5.3</p>
+  </div>
+
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="mindmap"> Mind Map</button>
+    <button class="tab-btn" data-tab="notes">Topic Wise Notes</button>
+    <button class="tab-btn" data-tab="quiz"> Quick Quiz</button>
+    <button class="tab-btn" data-tab="exam"> Exam Questions</button>
+    <button class="tab-btn" data-tab="activities"> Activities</button>
+  </div>
+
+  <!-- ════════════ MIND MAP TAB ════════════ -->
+  <div class="tab-panel active" id="tab-mindmap">
+
+    <!-- Importance Banner -->
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+         Why Does the Internet & WWW Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏢 Business</div><p>Businesses rely on the Internet for communication, online sales and cloud services. Without it, global commerce stops.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🎓 Education</div><p>The WWW gives instant access to vast knowledge. Schools and researchers worldwide share information online.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">💬 Communication</div><p>Email, video calls, messaging apps — all use the Internet. Instant global communication became possible.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🏥 Critical Services</div><p>Healthcare, emergency services, banking and government all depend on Internet-connected systems.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">📺 Entertainment</div><p>Streaming, gaming, social media — the WWW transformed how we consume entertainment and culture.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">🔗 Global Connection</div><p>Billions of devices connected worldwide. Understanding how the Internet works is fundamental computer science.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key distinction:</strong> The Internet ≠ the WWW. The Internet is the physical global network. The WWW is just ONE service that runs on it (along with email, FTP, etc.).</div>
+      </div>
+    </div>
+
+    <div class="ig-wrap">
+      <div class="ig-title">🌐 Internet & WWW — Big Picture</div>
+
+      <div class="highlight-box">
+        The <strong>Internet</strong> = global network of networks (the infrastructure) &nbsp;|&nbsp; The <strong>WWW</strong> = a <em>service</em> that runs on the Internet (web pages + hyperlinks)
+      </div>
+
+      <div class="ig-grid">
+
+        <div class="ig-sec" style="border-color:var(--blue);">
+          <span class="ig-label" style="color:var(--blue);">🌍 The Internet</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">•</div><div>Global network of networks — the biggest WAN of all</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">•</div><div>Connected via cables, fibre-optic links & satellites (<strong>Internet backbone</strong>)</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">•</div><div>Uses <strong>TCP/IP protocol stack</strong> for all communication</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-blue);border-color:var(--blue);">•</div><div>Connected to via your <strong>ISP (Internet Service Provider)</strong></div></div>
+          </div>
+          <div style="text-align:center;margin-top:10px;">
+            <svg viewBox="0 0 280 90" style="max-width:280px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="140" cy="45" rx="115" ry="38" fill="none" stroke="#118ab2" stroke-width="2" stroke-dasharray="6,3"/>
+              <circle cx="55" cy="45" r="13" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/><text x="55" y="49" font-size="8" text-anchor="middle" fill="#118ab2" font-family="sans-serif">LAN</text>
+              <circle cx="140" cy="18" r="13" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/><text x="140" y="22" font-size="8" text-anchor="middle" fill="#118ab2" font-family="sans-serif">LAN</text>
+              <circle cx="225" cy="45" r="13" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/><text x="225" y="49" font-size="8" text-anchor="middle" fill="#118ab2" font-family="sans-serif">LAN</text>
+              <circle cx="140" cy="72" r="13" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/><text x="140" y="76" font-size="8" text-anchor="middle" fill="#118ab2" font-family="sans-serif">LAN</text>
+              <line x1="68" y1="45" x2="127" y2="45" stroke="#118ab2" stroke-width="1.5"/>
+              <line x1="140" y1="31" x2="140" y2="59" stroke="#118ab2" stroke-width="1.5"/>
+              <line x1="153" y1="45" x2="212" y2="45" stroke="#118ab2" stroke-width="1.5"/>
+              <text x="140" y="49" font-size="9" text-anchor="middle" fill="#118ab2" font-family="sans-serif" font-weight="bold">Internet</text>
+              <text x="140" y="88" font-size="8" text-anchor="middle" fill="#666" font-family="sans-serif">Network of networks</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:#059669;">
+          <span class="ig-label" style="color:#059669;">🔤 Domain Names & DNS</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div><strong>Domain name</strong> — human-readable address (e.g. bbc.co.uk)</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div><strong>DNS</strong> — translates domain names into IP addresses</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div>DNS = network of servers — if one doesn't know, it asks another</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-teal);border-color:#059669;">•</div><div>This is called <strong>resolving the domain name</strong></div></div>
+          </div>
+          <div style="margin-top:8px;background:var(--light-teal);border-radius:6px;padding:9px;font-family:'Kalam',cursive;font-size:0.85rem;">
+            bbc.co.uk → <strong>DNS</strong> → 212.58.244.27 → browser connects ✅
+          </div>
+          <div style="text-align:center;margin-top:10px;">
+            <svg viewBox="0 0 280 80" style="max-width:280px;width:100%;" xmlns="http://www.w3.org/2000/svg">
+              <defs><marker id="ma1" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#059669"/></marker></defs>
+              <rect x="5" y="25" width="60" height="32" rx="5" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+              <text x="35" y="43" font-size="9" text-anchor="middle" fill="#059669" font-family="sans-serif">💻 User</text>
+              <line x1="65" y1="41" x2="100" y2="41" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#ma1)"/>
+              <rect x="100" y="25" width="70" height="32" rx="5" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+              <text x="135" y="38" font-size="9" text-anchor="middle" fill="#059669" font-family="sans-serif">🖥️ DNS</text>
+              <text x="135" y="50" font-size="8" text-anchor="middle" fill="#059669" font-family="sans-serif">looks up IP</text>
+              <line x1="170" y1="41" x2="210" y2="41" stroke="#059669" stroke-width="1.5" marker-end="url(#ma1)"/>
+              <rect x="210" y="25" width="65" height="32" rx="5" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+              <text x="242" y="38" font-size="9" text-anchor="middle" fill="#059669" font-family="sans-serif">🌐 Web</text>
+              <text x="242" y="50" font-size="8" text-anchor="middle" fill="#059669" font-family="sans-serif">Server</text>
+              <text x="140" y="75" font-size="8" text-anchor="middle" fill="#666" font-family="sans-serif">DNS resolution — finding the right server</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--orange);">
+          <span class="ig-label" style="color:var(--orange);">📍 IP Addressing</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:#fff3e0;border-color:var(--orange);">•</div><div>Every device needs a unique IP address — like a postal address</div></div>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:10px;margin:8px 0;">
+            <div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:3px;">🔵 IPv4 — 32 bits</div>
+            <div style="font-family:'Kalam',cursive;font-size:0.85rem;"><code style="background:white;padding:2px 6px;border-radius:4px;">216.27.61.137</code><br>4 octets · ~4 billion addresses · <span style="color:var(--coral);">running out!</span></div>
+          </div>
+          <div style="background:var(--light-teal);border:2px solid #059669;border-radius:8px;padding:10px;margin:8px 0;">
+            <div style="font-family:'Caveat',cursive;font-weight:700;margin-bottom:3px;">🟢 IPv6 — 128 bits</div>
+            <div style="font-family:'Kalam',cursive;font-size:0.85rem;"><code style="background:white;padding:2px 4px;border-radius:4px;font-size:0.75rem;">2001:cdba:0000:...:3257:9652</code><br>8 hex groups · 3.4×10³⁸ addresses ♾️</div>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--coral);">
+          <span class="ig-label" style="color:var(--coral);">🕸️ World Wide Web</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>WWW</strong> — service on the Internet; web pages linked by hyperlinks</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>URL</strong> — Uniform Resource Locator; address of a web page/file</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>HTTP</strong> — protocol transferring web pages</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>HTTPS</strong> — encrypted HTTP; secure (padlock 🔒)</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>HTML</strong> — the language web pages are written in</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>Web browser</strong> — converts HTML into a human-readable page</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-coral);border-color:var(--coral);">•</div><div><strong>ISP</strong> — organisation that provides Internet connection</div></div>
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--purple);">
+          <span class="ig-label" style="color:var(--purple);">📦 Packets & Routing</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">1</div><div>Data split into <strong>packets</strong> by sending computer</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">2</div><div>Each packet has a <strong>header</strong>: sender, destination, packet #, total #</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">3</div><div>Sent to ISP's <strong>router</strong> which uses a routing table to forward it</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">4</div><div>Packets pass through <em>multiple routers</em> — may arrive out of order</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-purple);border-color:var(--purple);">5</div><div>Receiver reassembles packets in correct order using header info</div></div>
+          </div>
+          <div style="margin-top:8px;background:var(--light-purple);border-radius:6px;padding:8px;font-family:'Kalam',cursive;font-size:0.82rem;">
+            ⚠️ Packets may arrive out of order — header info tells receiver how to reassemble!
+          </div>
+        </div>
+
+        <div class="ig-sec" style="border-color:var(--green);">
+          <span class="ig-label" style="color:var(--green);">🔌 Hardware to Access Internet</span>
+          <div style="margin-top:10px;">
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">•</div><div><strong>Switch</strong> — links computers in a LAN; sends data only to the intended device</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">•</div><div><strong>Router</strong> — forwards packets <em>between</em> networks; uses routing table</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">•</div><div><strong>WAP</strong> — wireless access point; connects wireless devices via Wi-Fi; broadcasts to all</div></div>
+            <div class="ig-item"><div class="ig-dot" style="background:var(--light-green);border-color:var(--green);">•</div><div><strong>Modem</strong> — converts digital LAN signals to ISP cable signals; usually combined with router</div></div>
+          </div>
+          <div style="margin-top:8px;background:var(--light-green);border-radius:6px;padding:8px;font-family:'Kalam',cursive;font-size:0.82rem;">
+            🔑 Switch = WITHIN one network &nbsp;|&nbsp; Router = BETWEEN networks
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Step-by-step accessing a web page -->
+      <div style="margin-top:20px;border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:white;box-shadow:4px 4px 0 var(--ink);">
+        <div style="background:var(--ink);color:white;padding:12px 18px;font-family:'Permanent Marker',cursive;font-size:1.2rem;">🔄 How Accessing a Web Page Works — Step by Step</div>
+        <div class="step-grid">
+          <div class="step-card" style="border-color:var(--blue);background:var(--light-blue);">
+            <div class="step-emoji">⌨️</div>
+            <div class="step-num" style="color:var(--blue);">Step 1</div>
+            <div class="step-txt">User types URL into web browser</div>
+          </div>
+          <div class="step-card" style="border-color:#059669;background:var(--light-teal);">
+            <div class="step-emoji">🔤</div>
+            <div class="step-num" style="color:#059669;">Step 2</div>
+            <div class="step-txt">DNS translates domain name → IP address</div>
+          </div>
+          <div class="step-card" style="border-color:var(--orange);background:#fff3e0;">
+            <div class="step-emoji">🔗</div>
+            <div class="step-num" style="color:var(--orange);">Step 3</div>
+            <div class="step-txt">Browser connects to web server using IP</div>
+          </div>
+          <div class="step-card" style="border-color:var(--coral);background:var(--light-coral);">
+            <div class="step-emoji">📤</div>
+            <div class="step-num" style="color:var(--coral);">Step 4</div>
+            <div class="step-txt">Web page transferred via HTTP / HTTPS</div>
+          </div>
+          <div class="step-card" style="border-color:var(--purple);background:var(--light-purple);">
+            <div class="step-emoji">📄</div>
+            <div class="step-num" style="color:var(--purple);">Step 5</div>
+            <div class="step-txt">HTML sent from web server to browser</div>
+          </div>
+          <div class="step-card" style="border-color:var(--green);background:var(--light-green);">
+            <div class="step-emoji">🖥️</div>
+            <div class="step-num" style="color:var(--green);">Step 6</div>
+            <div class="step-txt">Browser renders HTML → displays page</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ NOTES TAB ════════════ -->
+  <div class="tab-panel" id="tab-notes">
+
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🌍 Why Does the Internet & WWW Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏢 Business</div><p>Businesses rely on the Internet for communication, online sales and cloud services. Without it, global commerce stops.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🎓 Education</div><p>The WWW gives instant access to vast knowledge. Schools and researchers worldwide share information online.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">💬 Communication</div><p>Email, video calls, messaging — all use the Internet. Instant global communication became possible.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🏥 Critical Services</div><p>Healthcare, emergency services, banking and government all depend on Internet-connected systems.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--orange);">📺 Entertainment</div><p>Streaming, gaming, social media — the WWW transformed how we consume entertainment.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--green);">🔗 Global Connection</div><p>Billions of devices connected worldwide. Understanding how this works is fundamental computer science.</p></div>
+        </div>
+        <div class="imp-footer">✏️ <strong>Key exam distinction:</strong> The Internet is the global infrastructure. The WWW is one SERVICE that runs on it. Never say they are the same thing!</div>
+      </div>
+    </div>
+
+    <!-- 23.1 -->
+    <div class="notes-sec" id="ns1">
+      <div class="notes-hdr" onclick="toggleSection('ns1')" style="background:linear-gradient(135deg,#118ab2,#0d6efd);">
+        <div class="notes-hdr-left"><span class="notes-num">5.3.1</span><span class="notes-title">The Internet</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>The word 'Internet' is a shortened form of 'inter' and 'network' — meaning <strong class="hl-b">interconnected networks</strong>. Think of the Internet as a network of networks — the biggest WAN of all. Schools, organisations and homes all have networks that are part of the Internet.</p>
+        <p style="margin-top:10px;">The reach of the Internet is global — all countries have cables, fibre-optic links and satellites that connect them. These links can be thought of as the <strong class="hl-b">Internet backbone</strong> — the connections that link all networks together.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 480 160" xmlns="http://www.w3.org/2000/svg" style="max-width:480px;width:100%;font-family:'Caveat',cursive;">
+            <ellipse cx="240" cy="80" rx="155" ry="65" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <line x1="90" y1="80" x2="390" y2="80" stroke="#118ab2" stroke-width="2" stroke-dasharray="6,3"/>
+            <line x1="120" y1="38" x2="360" y2="122" stroke="#118ab2" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="120" y1="122" x2="360" y2="38" stroke="#118ab2" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <circle cx="90" cy="80" r="20" fill="white" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="90" y="84" font-size="10" text-anchor="middle" fill="#118ab2" font-weight="bold">LAN</text>
+            <circle cx="240" cy="80" r="26" fill="white" stroke="#118ab2" stroke-width="3"/>
+            <text x="240" y="77" font-size="10" text-anchor="middle" fill="#118ab2" font-weight="bold">Internet</text>
+            <text x="240" y="90" font-size="9" text-anchor="middle" fill="#118ab2">backbone</text>
+            <circle cx="390" cy="80" r="20" fill="white" stroke="#118ab2" stroke-width="2.5"/>
+            <text x="390" y="84" font-size="10" text-anchor="middle" fill="#118ab2" font-weight="bold">LAN</text>
+            <circle cx="160" cy="40" r="17" fill="white" stroke="#118ab2" stroke-width="2"/>
+            <text x="160" y="44" font-size="10" text-anchor="middle" fill="#118ab2">LAN</text>
+            <circle cx="320" cy="40" r="17" fill="white" stroke="#118ab2" stroke-width="2"/>
+            <text x="320" y="44" font-size="10" text-anchor="middle" fill="#118ab2">LAN</text>
+            <circle cx="160" cy="120" r="17" fill="white" stroke="#118ab2" stroke-width="2"/>
+            <text x="160" y="124" font-size="10" text-anchor="middle" fill="#118ab2">LAN</text>
+            <circle cx="320" cy="120" r="17" fill="white" stroke="#118ab2" stroke-width="2"/>
+            <text x="320" y="124" font-size="10" text-anchor="middle" fill="#118ab2">LAN</text>
+            <text x="240" y="152" font-size="10" text-anchor="middle" fill="#666">The Internet = many LANs and WANs connected globally</text>
+          </svg>
+        </div>
+
+        <h4 class="subh" style="color:var(--blue);">🔤 Domain Names</h4>
+        <div class="def-box" style="border-color:var(--blue);">
+          <span class="def-label" style="background:var(--blue);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-b">Domain name</strong> — this is part of the URL for a resource on the Internet. When the domain name is used, it is converted to the correct IP address by the domain name service (DNS) and the connection takes place.</p>
+        </div>
+        <p>Domain names are more convenient and easier to remember than the four octets of binary numbers that make up an IP address.</p>
+        <div class="notes-eg">e.g. The IP address of bbc.co.uk is <code>212.58.244.27</code> — much harder to remember than the domain name!</div>
+
+        <h4 class="subh" style="color:var(--blue);">🔁 Domain Name Service (DNS)</h4>
+        <p>This is an Internet service that translates domain names into IP addresses. The Internet is based on IP addresses, but domain names (being alphabetical) are easier to remember. Every time a user enters a domain name, a DNS must translate it into the corresponding IP address.</p>
+        <p style="margin-top:8px;">The DNS system is a <strong>network of servers</strong>. If one DNS server doesn't know how to translate a domain name, it asks another — and so on — until the correct IP address is returned to the user.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 520 155" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;font-family:'Caveat',cursive;">
+            <defs>
+              <marker id="ab" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#118ab2"/></marker>
+              <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#059669"/></marker>
+              <marker id="ao" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f77f00"/></marker>
+            </defs>
+            <rect x="5" y="55" width="75" height="45" rx="5" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="42" y="75" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">💻 User</text>
+            <text x="42" y="89" font-size="9" text-anchor="middle" fill="#1a1a2e">enters URL</text>
+            <circle cx="42" cy="50" r="11" fill="#118ab2"/><text x="42" y="54" font-size="9" fill="white" text-anchor="middle" font-weight="bold">1</text>
+            <line x1="80" y1="77" x2="150" y2="77" stroke="#118ab2" stroke-width="2" marker-end="url(#ab)"/>
+            <text x="115" y="70" font-size="8" fill="#118ab2">contacts DNS</text>
+            <circle cx="82" cy="100" r="11" fill="#118ab2"/><text x="82" y="104" font-size="9" fill="white" text-anchor="middle" font-weight="bold">2</text>
+            <rect x="150" y="55" width="85" height="45" rx="5" fill="#fff3e0" stroke="#f77f00" stroke-width="2"/>
+            <text x="192" y="76" font-size="11" text-anchor="middle" fill="#f77f00" font-weight="bold">🖥️ DNS 1</text>
+            <text x="192" y="90" font-size="9" text-anchor="middle" fill="#1a1a2e">doesn't know</text>
+            <circle cx="215" cy="50" r="11" fill="#f77f00"/><text x="215" y="54" font-size="9" fill="white" text-anchor="middle" font-weight="bold">3</text>
+            <line x1="235" y1="68" x2="315" y2="48" stroke="#f77f00" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#ao)"/>
+            <text x="278" y="50" font-size="8" fill="#f77f00">asks another</text>
+            <rect x="315" y="25" width="85" height="45" rx="5" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+            <text x="357" y="46" font-size="11" text-anchor="middle" fill="#059669" font-weight="bold">🖥️ DNS 2</text>
+            <text x="357" y="60" font-size="9" text-anchor="middle" fill="#1a1a2e">resolves it ✅</text>
+            <circle cx="357" cy="20" r="11" fill="#059669"/><text x="357" y="24" font-size="9" fill="white" text-anchor="middle" font-weight="bold">4</text>
+            <line x1="315" y1="55" x2="240" y2="73" stroke="#059669" stroke-width="1.5" marker-end="url(#ag)"/>
+            <line x1="150" y1="84" x2="82" y2="84" stroke="#059669" stroke-width="2" marker-end="url(#ag)"/>
+            <text x="116" y="98" font-size="8" fill="#059669">IP returned</text>
+            <circle cx="150" cy="110" r="11" fill="#059669"/><text x="150" y="114" font-size="9" fill="white" text-anchor="middle" font-weight="bold">5</text>
+            <line x1="80" y1="75" x2="405" y2="75" stroke="#059669" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#ag)"/>
+            <rect x="405" y="55" width="108" height="45" rx="5" fill="#e0faf1" stroke="#059669" stroke-width="2"/>
+            <text x="459" y="75" font-size="11" text-anchor="middle" fill="#059669" font-weight="bold">🌐 Web Server</text>
+            <text x="459" y="89" font-size="9" text-anchor="middle" fill="#059669">hosts the site</text>
+            <circle cx="459" cy="50" r="11" fill="#059669"/><text x="459" y="54" font-size="9" fill="white" text-anchor="middle" font-weight="bold">6</text>
+            <text x="260" y="145" font-size="10" text-anchor="middle" fill="#666">Figure 5.8 — Domain Name Service (DNS) resolution process</text>
+          </svg>
+        </div>
+
+        <div class="def-box" style="border-color:#059669;">
+          <span class="def-label" style="background:#059669;">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-t">Internet service provider (ISP)</strong> — an organisation that provides its customers with a connection to the Internet.<br><br>
+          <strong class="hl-b">Router</strong> — a piece of networking hardware used to forward packets of data from one network to another.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 23.2 Packets & Routing -->
+    <div class="notes-sec" id="ns2">
+      <div class="notes-hdr" onclick="toggleSection('ns2')" style="background:linear-gradient(135deg,var(--purple),#5a1f6e);">
+        <div class="notes-hdr-left"><span class="notes-num">5.3.2</span><span class="notes-title">Packets & Routing</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>The Internet uses the <strong class="hl-b">TCP/IP protocol stack</strong> to allow communication between all different networks. The IP part provides the technical rules on addressing — giving each device a unique address to send data to/from.</p>
+        <p style="margin-top:8px;">When an Internet-connected computer wants to send data to another computer, the following steps happen:</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;font-family:'Caveat',cursive;">
+            <defs><marker id="ap" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#7b2d8b"/></marker></defs>
+            <rect x="5" y="50" width="75" height="50" rx="6" fill="var(--light-purple)" stroke="var(--purple)" stroke-width="2.5"/>
+            <text x="42" y="72" font-size="11" text-anchor="middle" fill="var(--purple)" font-weight="bold">💻 Sender</text>
+            <text x="42" y="86" font-size="9" text-anchor="middle">splits into</text>
+            <text x="42" y="97" font-size="9" text-anchor="middle">packets</text>
+            <rect x="92" y="40" width="38" height="22" rx="4" fill="white" stroke="var(--purple)" stroke-width="1.5"/>
+            <text x="111" y="55" font-size="8" text-anchor="middle" fill="var(--purple)">PKT 1</text>
+            <rect x="92" y="67" width="38" height="22" rx="4" fill="white" stroke="var(--purple)" stroke-width="1.5"/>
+            <text x="111" y="82" font-size="8" text-anchor="middle" fill="var(--purple)">PKT 2</text>
+            <rect x="92" y="94" width="38" height="22" rx="4" fill="white" stroke="var(--purple)" stroke-width="1.5"/>
+            <text x="111" y="109" font-size="8" text-anchor="middle" fill="var(--purple)">PKT 3</text>
+            <line x1="130" y1="75" x2="175" y2="75" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#ap)"/>
+            <rect x="175" y="55" width="70" height="38" rx="5" fill="#fff3e0" stroke="var(--orange)" stroke-width="2"/>
+            <text x="210" y="73" font-size="11" text-anchor="middle" fill="var(--orange)" font-weight="bold">📡 Router</text>
+            <text x="210" y="86" font-size="8" text-anchor="middle">routing table</text>
+            <line x1="245" y1="74" x2="295" y2="74" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#ap)"/>
+            <rect x="295" y="55" width="70" height="38" rx="5" fill="#fff3e0" stroke="var(--orange)" stroke-width="2"/>
+            <text x="330" y="73" font-size="11" text-anchor="middle" fill="var(--orange)" font-weight="bold">📡 Router</text>
+            <text x="330" y="86" font-size="8" text-anchor="middle">routing table</text>
+            <line x1="365" y1="74" x2="405" y2="74" stroke="var(--purple)" stroke-width="1.5" marker-end="url(#ap)"/>
+            <rect x="405" y="48" width="108" height="52" rx="6" fill="var(--light-purple)" stroke="var(--purple)" stroke-width="2.5"/>
+            <text x="459" y="70" font-size="11" text-anchor="middle" fill="var(--purple)" font-weight="bold">💻 Receiver</text>
+            <text x="459" y="84" font-size="9" text-anchor="middle">reassembles</text>
+            <text x="459" y="96" font-size="9" text-anchor="middle">all packets ✅</text>
+            <text x="260" y="130" font-size="9" text-anchor="middle" fill="#666">Packets travel via multiple routers — may arrive out of order!</text>
+          </svg>
+        </div>
+
+        <div class="nl"><span class="nd" style="background:var(--purple);">1</span><div>Sending computer <strong>splits the data into packets</strong></div></div>
+        <div class="nl"><span class="nd" style="background:var(--purple);">2</span><div>Each packet has a <strong>header</strong> containing: sender's address, destination address, current packet number, total number of packets</div></div>
+        <div class="nl"><span class="nd" style="background:var(--purple);">3</span><div>Packet sent to your <strong>ISP</strong></div></div>
+        <div class="nl"><span class="nd" style="background:var(--purple);">4</span><div>Your ISP's <strong>router</strong> inspects the packet header — decides where to send it based on the destination IP address</div></div>
+        <div class="nl"><span class="nd" style="background:var(--purple);">5</span><div>Packet forwarded through <strong>multiple routers</strong> until it reaches the destination network</div></div>
+        <div class="nl"><span class="nd" style="background:var(--purple);">6</span><div>Receiving computer puts packets back together. If they arrive out of order, the header information is used to reassemble them correctly</div></div>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> A router uses a <strong>routing table</strong> — a list of rules about where to send packets for different destinations. A packet may travel through many routers before reaching its destination.</div>
+      </div>
+    </div>
+
+    <!-- 23.3 WWW -->
+    <div class="notes-sec" id="ns3">
+      <div class="notes-hdr" onclick="toggleSection('ns3')" style="background:linear-gradient(135deg,var(--coral),#922b21);">
+        <div class="notes-hdr-left"><span class="notes-num">5.3.3</span><span class="notes-title">The World Wide Web</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>The World Wide Web (WWW or 'the Web') is a <strong class="hl-c">service that runs on the Internet</strong>. It provides access to web pages linked together using a hypertext system. Hypertext is text containing links (hyperlinks) that take you to another document or web page. These documents can contain text, graphics and multimedia.</p>
+        <div class="notes-eg">⚠️ Important: The Internet ≠ the WWW. The Internet is the global infrastructure. The WWW is just one service that uses it (along with email, FTP, VoIP, etc.)</div>
+
+        <h4 class="subh" style="color:var(--coral);">🌐 Accessing the World Wide Web</h4>
+        <p>You access the WWW using a program called a <strong>web browser</strong>. All browsers use the same protocols and the Internet to transfer information. The web browser's job is to convert the data received from a web server into a human-readable format.</p>
+
+        <h4 class="subh" style="color:var(--coral);">🔄 How the World Wide Web Works</h4>
+        <div class="def-box" style="border-color:var(--coral);">
+          <span class="def-label" style="background:var(--coral);">SUBJECT VOCABULARY</span>
+          <p><strong class="hl-c">HyperText Markup Language (HTML)</strong> — essentially a text document that contains text to be displayed along with: details of how text should be formatted (font size, colour, etc.); details of any hyperlinks and where they link to using a URL; details of any objects such as pictures or videos to be shown in the web page.</p>
+        </div>
+
+        <div class="nl"><span class="nd" style="background:var(--coral);">1</span><div>User enters a <strong>URL</strong> (Uniform Resource Locator / web address) into a web browser. A URL may be for a web page or an individual file (e.g. a specific picture).</div></div>
+        <div class="nl"><span class="nd" style="background:var(--coral);">2</span><div>Computer uses the <strong>DNS</strong> to find the IP address of the required web server</div></div>
+        <div class="nl"><span class="nd" style="background:var(--coral);">3</span><div>Browser connects to the web server using the IP address and requests the relevant web page or object (picture, sound or video file)</div></div>
+        <div class="nl"><span class="nd" style="background:var(--coral);">4</span><div>Web page is transferred using <strong>HTTP</strong> or <strong>HTTPS</strong></div></div>
+        <div class="nl"><span class="nd" style="background:var(--coral);">5</span><div>Data sent from server to browser is in <strong>HTML format</strong>. The browser displays the web page as described by the HTML</div></div>
+
+        <div style="background:#f5f5f5;border:2px solid #ccc;border-radius:8px;padding:14px;margin:14px 0;font-family:monospace;font-size:0.88rem;line-height:1.7;">
+          <span style="color:#059669;">&lt;!DOCTYPE html&gt;</span><br>
+          <span style="color:#118ab2;">&lt;html&gt;&lt;head&gt;</span><br>
+          <span style="color:#7b2d8b;">&nbsp;&nbsp;&lt;title&gt;Page Title&lt;/title&gt;</span><br>
+          <span style="color:#118ab2;">&lt;/head&gt;&lt;body&gt;</span><br>
+          <span style="color:#f77f00;">&nbsp;&nbsp;&lt;h1&gt;This is a Heading&lt;/h1&gt;</span><br>
+          <span style="color:#f77f00;">&nbsp;&nbsp;&lt;p&gt;This is a paragraph.&lt;/p&gt;</span><br>
+          <span style="color:#118ab2;">&lt;/body&gt;&lt;/html&gt;</span>
+        </div>
+        <p style="font-family:'Kalam',cursive;font-size:0.85rem;color:#666;text-align:center;">Figure 5.9 — Basic HTML structure; the browser interprets this and displays a formatted web page</p>
+
+        <p style="margin-top:10px;">If the user selects a hyperlink, the URL it points to is loaded using the same method above. The URL might point to a page on the same web server or a different one — this is where the 'web' part of World Wide Web comes from. Different pages and web servers are linked in a complex pattern.</p>
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> HTTP = unsecured transfer protocol. HTTPS = encrypted (secure) version. The 'S' stands for Secure and uses encryption to protect data in transit.</div>
+      </div>
+    </div>
+
+    <!-- 23.4 IP Addressing -->
+    <div class="notes-sec" id="ns4">
+      <div class="notes-hdr" onclick="toggleSection('ns4')" style="background:linear-gradient(135deg,var(--orange),#d35400);">
+        <div class="notes-hdr-left"><span class="notes-num">5.3.4</span><span class="notes-title">The Need for IP Addressing Standards</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>An IP address is a set of numbers that identify one particular computer. It is like a <strong class="hl-o">postal address</strong> — it allows Internet data to be sent to the correct computer. It is therefore essential that all IP addresses conform to the same standard.</p>
+
+        <!-- ── URL / DOMAIN NAME ANATOMY ── -->
+        <h4 class="subh" style="color:var(--blue);">🔤 Parts of a Web Address (URL)</h4>
+        <p>A <strong class="hl-b">URL (Uniform Resource Locator)</strong> is the full web address used to find a specific resource online. For IGCSE, you need to be able to identify and describe these four key parts:</p>
+
+        <!-- Exam-style URL bar with the actual exam question URL -->
+        <div style="background:var(--light-yellow);border:2px solid var(--orange);border-left:5px solid var(--orange);border-radius:8px;padding:10px 14px;margin:10px 0;font-family:'Kalam',cursive;font-size:0.9rem;">
+          ⭐ <strong>Exam question URL (actual past paper):</strong> <code style="background:#1e1e2e;color:#60a5fa;padding:3px 8px;border-radius:4px;font-size:0.88rem;">https://www.cloudisfab.com/re12/ru2.mp3</code>
+        </div>
+
+        <!-- Annotated URL visual -->
+        <div style="overflow-x:auto;margin:14px 0;">
+          <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="min-width:480px;max-width:700px;width:100%;font-family:'Caveat',cursive;">
+            <!-- URL bar -->
+            <rect x="10" y="20" width="680" height="46" rx="8" fill="#1e1e2e" stroke="#444" stroke-width="1.5"/>
+            <!-- parts coloured -->
+            <text x="22" y="50" font-size="15" fill="#4ade80" font-family="monospace">https</text>
+            <text x="71" y="50" font-size="15" fill="#94a3b8" font-family="monospace">://</text>
+            <text x="100" y="50" font-size="15" fill="#fb923c" font-family="monospace">www.</text>
+            <text x="143" y="50" font-size="15" fill="#60a5fa" font-family="monospace">cloudisfab</text>
+            <text x="242" y="50" font-size="15" fill="#f472b6" font-family="monospace">.com</text>
+            <text x="286" y="50" font-size="15" fill="#a78bfa" font-family="monospace">/re12/ru2.mp3</text>
+            <!-- Bracket arrows pointing down to labels -->
+            <!-- Protocol bracket -->
+            <line x1="44" y1="66" x2="44" y2="88" stroke="#4ade80" stroke-width="2"/>
+            <text x="44" y="102" font-size="11" text-anchor="middle" fill="#4ade80" font-weight="bold">①</text>
+            <text x="44" y="116" font-size="10" text-anchor="middle" fill="#4ade80">Protocol</text>
+            <!-- Subdomain+domain bracket -->
+            <line x1="171" y1="66" x2="171" y2="88" stroke="#fb923c" stroke-width="2"/>
+            <text x="171" y="102" font-size="11" text-anchor="middle" fill="#fb923c" font-weight="bold">②</text>
+            <text x="171" y="116" font-size="10" text-anchor="middle" fill="#fb923c">www</text>
+            <!-- Domain name bracket -->
+            <line x1="193" y1="66" x2="193" y2="130" stroke="#60a5fa" stroke-width="2"/>
+            <text x="225" y="148" font-size="11" text-anchor="middle" fill="#60a5fa" font-weight="bold">③</text>
+            <text x="225" y="162" font-size="10" text-anchor="middle" fill="#60a5fa">Domain name</text>
+            <!-- Path bracket -->
+            <line x1="350" y1="66" x2="350" y2="88" stroke="#a78bfa" stroke-width="2"/>
+            <text x="350" y="102" font-size="11" text-anchor="middle" fill="#a78bfa" font-weight="bold">④</text>
+            <text x="350" y="116" font-size="10" text-anchor="middle" fill="#a78bfa">File path/name</text>
+          </svg>
+        </div>
+
+        <!-- IGCSE exam-style table — the 4 things they need to know -->
+        <div style="border:3px solid var(--ink);border-radius:10px;overflow:hidden;margin:14px 0;box-shadow:4px 4px 0 var(--ink);">
+          <!-- Table header -->
+          <div style="display:grid;grid-template-columns:1fr 2fr 2fr;background:var(--ink);color:white;font-family:'Permanent Marker',cursive;font-size:0.95rem;">
+            <div style="padding:10px 14px;">URL Part</div>
+            <div style="padding:10px 14px;border-left:2px solid rgba(255,255,255,0.2);">Example from URL</div>
+            <div style="padding:10px 14px;border-left:2px solid rgba(255,255,255,0.2);">What it means / description</div>
+          </div>
+          <!-- Row 1 Protocol -->
+          <div style="display:grid;grid-template-columns:1fr 2fr 2fr;border-bottom:2px solid #eee;background:white;">
+            <div style="padding:12px 14px;font-family:'Permanent Marker',cursive;font-size:0.9rem;color:#059669;display:flex;align-items:center;gap:6px;border-right:2px solid #eee;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4ade80;"></span> Protocol
+            </div>
+            <div style="padding:12px 14px;font-family:monospace;font-size:0.9rem;color:#4ade80;background:#1e1e2e;display:flex;align-items:center;border-right:2px solid #444;">https://</div>
+            <div style="padding:12px 14px;font-family:'Kalam',cursive;font-size:0.9rem;line-height:1.5;">Defines how data is transferred between the browser and server. <strong>HTTPS</strong> = encrypted/secure connection (padlock 🔒). <strong>HTTP</strong> = unsecured.</div>
+          </div>
+          <!-- Row 2 www -->
+          <div style="display:grid;grid-template-columns:1fr 2fr 2fr;border-bottom:2px solid #eee;background:#fafafa;">
+            <div style="padding:12px 14px;font-family:'Permanent Marker',cursive;font-size:0.9rem;color:#ea580c;display:flex;align-items:center;gap:6px;border-right:2px solid #eee;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fb923c;"></span> www
+            </div>
+            <div style="padding:12px 14px;font-family:monospace;font-size:0.9rem;color:#fb923c;background:#1e1e2e;display:flex;align-items:center;border-right:2px solid #444;">www</div>
+            <div style="padding:12px 14px;font-family:'Kalam',cursive;font-size:0.9rem;line-height:1.5;">Stands for <strong>World Wide Web</strong>. It is a subdomain indicating this resource is on the WWW. Most websites use www but some don't.</div>
+          </div>
+          <!-- Row 3 Domain name -->
+          <div style="display:grid;grid-template-columns:1fr 2fr 2fr;border-bottom:2px solid #eee;background:white;">
+            <div style="padding:12px 14px;font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--blue);display:flex;align-items:center;gap:6px;border-right:2px solid #eee;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#60a5fa;"></span> Domain name
+            </div>
+            <div style="padding:12px 14px;font-family:monospace;font-size:0.9rem;color:#60a5fa;background:#1e1e2e;display:flex;align-items:center;border-right:2px solid #444;">cloudisfab.com</div>
+            <div style="padding:12px 14px;font-family:'Kalam',cursive;font-size:0.9rem;line-height:1.5;">The unique name that identifies the website. The DNS converts this into an IP address so the browser can connect to the right server. Includes the TLD (e.g. <strong>.com</strong>).</div>
+          </div>
+          <!-- Row 4 File path -->
+          <div style="display:grid;grid-template-columns:1fr 2fr 2fr;background:#fafafa;">
+            <div style="padding:12px 14px;font-family:'Permanent Marker',cursive;font-size:0.9rem;color:var(--purple);display:flex;align-items:center;gap:6px;border-right:2px solid #eee;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#a78bfa;"></span> File path/name
+            </div>
+            <div style="padding:12px 14px;font-family:monospace;font-size:0.85rem;color:#a78bfa;background:#1e1e2e;display:flex;align-items:center;border-right:2px solid #444;">/re12/ru2.mp3</div>
+            <div style="padding:12px 14px;font-family:'Kalam',cursive;font-size:0.9rem;line-height:1.5;">The location of the specific file on the web server. Like a file path on a computer. Here it points to an mp3 audio file inside the <code>/re12/</code> folder.</div>
+          </div>
+        </div>
+
+        <!-- Interactive click-to-highlight URL bar -->
+        <p style="margin:10px 0;font-family:'Kalam',cursive;font-size:0.92rem;"><strong>🖱️ Click any part of the URL below to highlight it:</strong></p>
+        <div class="url-bar">
+          <span class="url-part part-https" data-upart="protocol" onclick="activateURLPart('protocol',this)">https</span>
+          <span class="url-part part-sep" style="cursor:default;">://</span>
+          <span class="url-part part-sub" data-upart="subdomain" onclick="activateURLPart('subdomain',this)">www</span>
+          <span class="url-part part-dot" style="cursor:default;">.</span>
+          <span class="url-part part-domain" data-upart="domain" onclick="activateURLPart('domain',this)">cloudisfab</span>
+          <span class="url-part part-dot" style="cursor:default;">.</span>
+          <span class="url-part part-tld" data-upart="tld" onclick="activateURLPart('tld',this)">com</span>
+          <span class="url-part part-path" data-upart="path" onclick="activateURLPart('path',this)">/re12/ru2.mp3</span>
+        </div>
+        <div class="url-legend" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));">
+          <div class="leg-item" id="ul-protocol" onclick="activateURLPart('protocol',null)">
+            <span class="leg-dot" style="background:#4ade80;"></span><span class="leg-name" style="color:#059669;">① Protocol</span>
+            <div class="leg-desc">How data is transferred.<br><strong>HTTP</strong> = standard<br><strong>HTTPS</strong> = secure 🔒<br><span class="leg-eg">https://</span></div>
+          </div>
+          <div class="leg-item" id="ul-subdomain" onclick="activateURLPart('subdomain',null)">
+            <span class="leg-dot" style="background:#fb923c;"></span><span class="leg-name" style="color:#ea580c;">② www</span>
+            <div class="leg-desc">Subdomain = World Wide Web. Shows this is a web resource.<br><span class="leg-eg">www.</span></div>
+          </div>
+          <div class="leg-item" id="ul-domain" onclick="activateURLPart('domain',null)">
+            <span class="leg-dot" style="background:#60a5fa;"></span><span class="leg-name" style="color:var(--blue);">③ Domain name</span>
+            <div class="leg-desc">Unique name of the website. DNS converts this to an IP address.<br><span class="leg-eg">cloudisfab.com</span></div>
+          </div>
+          <div class="leg-item" id="ul-tld" onclick="activateURLPart('tld',null)">
+            <span class="leg-dot" style="background:#f472b6;"></span><span class="leg-name" style="color:#db2777;">TLD</span>
+            <div class="leg-desc">Part of the domain name. Shows type/country:<br><strong>.com</strong> · <strong>.org</strong> · <strong>.co.uk</strong> · <strong>.gov</strong><br><span class="leg-eg">.com</span></div>
+          </div>
+          <div class="leg-item" id="ul-path" onclick="activateURLPart('path',null)">
+            <span class="leg-dot" style="background:#a78bfa;"></span><span class="leg-name" style="color:var(--purple);">④ File path/name</span>
+            <div class="leg-desc">Location of the specific file on the server. Like a folder path on a computer.<br><span class="leg-eg">/re12/ru2.mp3</span></div>
+          </div>
+        </div>
+
+        <!-- Exam worked example box -->
+        <div style="margin:14px 0;border:3px solid var(--green);border-radius:10px;overflow:hidden;box-shadow:3px 3px 0 var(--ink);">
+          <div style="background:var(--green);color:white;padding:9px 16px;font-family:'Permanent Marker',cursive;font-size:1rem;">📋 Worked Exam Answer — Alyssa's Music File</div>
+          <div style="background:white;padding:14px 16px;">
+            <p style="font-family:'Kalam',cursive;font-size:0.88rem;margin-bottom:10px;">URL: <code style="background:#1e1e2e;color:#60a5fa;padding:2px 8px;border-radius:4px;">https://www.cloudisfab.com/re12/ru2.mp3</code></p>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;border-collapse:collapse;font-family:'Patrick Hand',cursive;font-size:0.9rem;">
+                <tr style="background:#f5f5f5;">
+                  <th style="border:2px solid var(--ink);padding:8px 12px;text-align:left;font-family:'Permanent Marker',cursive;font-size:0.85rem;width:35%;">URL component</th>
+                  <th style="border:2px solid var(--ink);padding:8px 12px;text-align:left;font-family:'Permanent Marker',cursive;font-size:0.85rem;">Description ✅</th>
+                </tr>
+                <tr>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;font-family:monospace;color:#4ade80;background:#1e1e2e;">https</td>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;">The <strong>protocol</strong> — specifies how data is transferred between browser and server. HTTPS means the connection is encrypted/secure.</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                  <td style="border:2px solid var(--ink);padding:8px 12px;font-family:monospace;color:#fb923c;background:#1e1e2e;">www</td>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;">Stands for <strong>World Wide Web</strong> — a subdomain indicating this resource is part of the WWW.</td>
+                </tr>
+                <tr>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;font-family:monospace;color:#60a5fa;background:#1e1e2e;">cloudisfab.com</td>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;">The <strong>domain name</strong> of the website — uniquely identifies the web server. DNS converts this to an IP address.</td>
+                </tr>
+                <tr style="background:#fafafa;">
+                  <td style="border:2px solid var(--ink);padding:8px 12px;font-family:monospace;color:#a78bfa;background:#1e1e2e;">/re12/ru2.mp3</td>
+                  <td style="border:2px solid var(--ink);padding:8px 12px;">The <strong>file path and filename</strong> — shows the location of the mp3 file within the web server's folder structure (<code>/re12/</code> folder, file <code>ru2.mp3</code>).</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="notes-tip">✏️ <strong>IGCSE Exam Tip:</strong> You need to know <strong>4 parts</strong>: ① Protocol (http/https) ② www (subdomain) ③ Domain name (includes TLD like .com) ④ File path/name. In the exam they may give you a URL and ask you to complete a table — exactly like the worked example above!</div>
+
+        <!-- ── IPv4 DEEP DIVE ── -->
+        <h4 class="subh" style="color:var(--blue);">📍 IPv4 — Internet Protocol version 4</h4>
+        <p>IPv4 addresses consist of <strong class="hl-b">four 8-bit numbers (octets)</strong> separated by dots — called dotted decimal notation.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 580 120" xmlns="http://www.w3.org/2000/svg" style="max-width:580px;width:100%;font-family:'Caveat',cursive;">
+            <rect x="30" y="28" width="520" height="40" rx="8" fill="#e3f2fd" stroke="#118ab2" stroke-width="2.5"/>
+            <rect x="38" y="34" width="110" height="28" rx="5" fill="#118ab2"/>
+            <text x="93" y="53" font-size="15" text-anchor="middle" fill="white" font-weight="bold">216</text>
+            <text x="153" y="52" font-size="17" text-anchor="middle" fill="#118ab2" font-weight="bold">.</text>
+            <rect x="163" y="34" width="100" height="28" rx="5" fill="#118ab2"/>
+            <text x="213" y="53" font-size="15" text-anchor="middle" fill="white" font-weight="bold">27</text>
+            <text x="268" y="52" font-size="17" text-anchor="middle" fill="#118ab2" font-weight="bold">.</text>
+            <rect x="278" y="34" width="100" height="28" rx="5" fill="#118ab2"/>
+            <text x="328" y="53" font-size="15" text-anchor="middle" fill="white" font-weight="bold">61</text>
+            <text x="383" y="52" font-size="17" text-anchor="middle" fill="#118ab2" font-weight="bold">.</text>
+            <rect x="393" y="34" width="110" height="28" rx="5" fill="#118ab2"/>
+            <text x="448" y="53" font-size="15" text-anchor="middle" fill="white" font-weight="bold">137</text>
+            <text x="93" y="82" font-size="9" text-anchor="middle" fill="#118ab2">1st octet (8 bits)</text>
+            <text x="213" y="82" font-size="9" text-anchor="middle" fill="#118ab2">2nd octet (8 bits)</text>
+            <text x="328" y="82" font-size="9" text-anchor="middle" fill="#118ab2">3rd octet (8 bits)</text>
+            <text x="448" y="82" font-size="9" text-anchor="middle" fill="#118ab2">4th octet (8 bits)</text>
+            <text x="290" y="16" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">IPv4: 4 octets × 8 bits = 32 bits total → ~4.3 billion unique addresses</text>
+            <text x="290" y="107" font-size="9" text-anchor="middle" fill="#666">Each octet can be 0–255 (because 2⁸ = 256 possible values)</text>
+          </svg>
+        </div>
+
+        <p style="margin-bottom:8px;"><strong>What it looks like in binary (each octet shown):</strong></p>
+        <div style="background:#f5f5f5;border-radius:8px;padding:12px;overflow-x:auto;">
+          <div style="font-family:'Kalam',cursive;font-size:0.82rem;color:#666;margin-bottom:6px;">216 = 11011000 &nbsp;|&nbsp; 27 = 00011011 &nbsp;|&nbsp; 61 = 00111101 &nbsp;|&nbsp; 137 = 10001001</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center;">
+            <div style="display:flex;gap:2px;padding:3px 5px;border:2px solid var(--blue);border-radius:6px;">
+              <span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span>
+            </div>
+            <span style="font-family:monospace;color:#999;font-size:1.2rem;">.</span>
+            <div style="display:flex;gap:2px;padding:3px 5px;border:2px solid var(--blue);border-radius:6px;">
+              <span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span>
+            </div>
+            <span style="font-family:monospace;color:#999;font-size:1.2rem;">.</span>
+            <div style="display:flex;gap:2px;padding:3px 5px;border:2px solid var(--blue);border-radius:6px;">
+              <span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span>
+            </div>
+            <span style="font-family:monospace;color:#999;font-size:1.2rem;">.</span>
+            <div style="display:flex;gap:2px;padding:3px 5px;border:2px solid var(--blue);border-radius:6px;">
+              <span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span><span class="bit bit-0">0</span><span class="bit bit-0">0</span><span class="bit bit-1">1</span>
+            </div>
+            <span style="font-family:'Kalam',cursive;font-size:0.82rem;color:#666;margin-left:8px;">= 32 bits total</span>
+          </div>
+        </div>
+
+        <div style="margin:10px 0;">
+          <div style="font-family:'Caveat',cursive;font-size:0.9rem;color:#666;margin-bottom:4px;">IPv4 address space — nearly exhausted:</div>
+          <div class="addr-bar">
+            <div class="addr-fill" style="background:var(--coral);width:95%;">~95% USED ⚠️ Running out!</div>
+            <div style="width:5%;background:var(--light-teal);height:100%;"></div>
+          </div>
+        </div>
+
+        <!-- ── IPv6 DEEP DIVE ── -->
+        <h4 class="subh" style="color:#059669;">📍 IPv6 — Internet Protocol version 6</h4>
+        <p>IPv6 uses <strong class="hl-t">eight groups of four hexadecimal digits</strong> separated by colons. This gives a vastly larger address space.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 660 110" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;font-family:'Caveat',cursive;">
+            <rect x="5" y="15" width="650" height="42" rx="8" fill="#e0faf1" stroke="#059669" stroke-width="2.5"/>
+            <rect x="12" y="21" width="68" height="28" rx="4" fill="#059669"/>
+            <text x="46" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">2001</text>
+            <text x="83" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="89" y="21" width="68" height="28" rx="4" fill="#059669"/>
+            <text x="123" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">cdba</text>
+            <text x="160" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="166" y="21" width="68" height="28" rx="4" fill="#2d9e6e"/>
+            <text x="200" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">0000</text>
+            <text x="237" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="243" y="21" width="68" height="28" rx="4" fill="#2d9e6e"/>
+            <text x="277" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">0000</text>
+            <text x="314" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="320" y="21" width="68" height="28" rx="4" fill="#2d9e6e"/>
+            <text x="354" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">0000</text>
+            <text x="391" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="397" y="21" width="68" height="28" rx="4" fill="#2d9e6e"/>
+            <text x="431" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">0000</text>
+            <text x="468" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="474" y="21" width="68" height="28" rx="4" fill="#059669"/>
+            <text x="508" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">3257</text>
+            <text x="545" y="39" font-size="14" text-anchor="middle" fill="#059669" font-weight="bold">:</text>
+            <rect x="551" y="21" width="98" height="28" rx="4" fill="#059669"/>
+            <text x="600" y="40" font-size="12" text-anchor="middle" fill="white" font-weight="bold">9652</text>
+            <text x="46" y="72" font-size="8" text-anchor="middle" fill="#059669">Group 1</text>
+            <text x="123" y="72" font-size="8" text-anchor="middle" fill="#059669">Group 2</text>
+            <text x="277" y="72" font-size="8" text-anchor="middle" fill="#2d9e6e">Groups 3–6 (often 0)</text>
+            <text x="508" y="72" font-size="8" text-anchor="middle" fill="#059669">Group 7</text>
+            <text x="600" y="72" font-size="8" text-anchor="middle" fill="#059669">Group 8</text>
+            <text x="330" y="10" font-size="10" text-anchor="middle" fill="#059669" font-weight="bold">IPv6: 8 groups × 16 bits (4 hex digits each) = 128 bits total</text>
+            <text x="330" y="90" font-size="9" text-anchor="middle" fill="#666">Hexadecimal digits: 0–9 and a–f &nbsp;|&nbsp; Each group = 4 hex digits = 16 bits</text>
+            <text x="330" y="103" font-size="9" text-anchor="middle" fill="#059669">2¹²⁸ = 3.4 × 10³⁸ unique addresses — effectively unlimited ♾️</text>
+          </svg>
+        </div>
+
+        <div style="margin:10px 0;">
+          <div style="font-family:'Caveat',cursive;font-size:0.9rem;color:#666;margin-bottom:4px;">IPv6 address space — essentially unlimited:</div>
+          <div class="addr-bar">
+            <div class="addr-fill" style="background:#059669;width:1%;">tiny fraction used</div>
+            <div style="flex:1;background:var(--light-teal);height:100%;display:flex;align-items:center;padding-left:10px;font-family:'Caveat',cursive;font-size:0.82rem;color:#059669;">3.4 × 10³⁸ available ♾️</div>
+          </div>
+        </div>
+
+        <!-- ── COMPARISON TABLE ── -->
+        <h4 class="subh" style="color:var(--ink);">⚖️ IPv4 vs IPv6 — Full Comparison</h4>
+        <div class="ip-compare">
+          <div class="ip-card-2" style="border-color:var(--blue);">
+            <div class="ip-card-hdr2" style="background:var(--blue);">🔵 IPv4</div>
+            <div class="ip-card-bdy2">
+              <div class="ip-fact"><span>Format</span><span class="ip-val" style="color:var(--blue);">Dotted decimal</span></div>
+              <div class="ip-fact"><span>Groups</span><span class="ip-val" style="color:var(--blue);">4 octets</span></div>
+              <div class="ip-fact"><span>Bits per group</span><span class="ip-val" style="color:var(--blue);">8 bits</span></div>
+              <div class="ip-fact"><span>Total bits</span><span class="ip-val" style="color:var(--blue);">32 bits</span></div>
+              <div class="ip-fact"><span>Number system</span><span class="ip-val" style="color:var(--blue);">Decimal (0–255)</span></div>
+              <div class="ip-fact"><span>Separator</span><span class="ip-val" style="color:var(--blue);">Dot (.)</span></div>
+              <div class="ip-fact"><span>Total addresses</span><span class="ip-val" style="color:var(--coral);">~4.3 billion ⚠️</span></div>
+              <div class="ip-fact"><span>Status</span><span class="ip-val" style="color:var(--coral);">Running out!</span></div>
+            </div>
+          </div>
+          <div class="ip-card-2" style="border-color:#059669;">
+            <div class="ip-card-hdr2" style="background:#059669;">🟢 IPv6</div>
+            <div class="ip-card-bdy2">
+              <div class="ip-fact"><span>Format</span><span class="ip-val" style="color:#059669;">Colon-separated hex</span></div>
+              <div class="ip-fact"><span>Groups</span><span class="ip-val" style="color:#059669;">8 groups</span></div>
+              <div class="ip-fact"><span>Bits per group</span><span class="ip-val" style="color:#059669;">16 bits</span></div>
+              <div class="ip-fact"><span>Total bits</span><span class="ip-val" style="color:#059669;">128 bits</span></div>
+              <div class="ip-fact"><span>Number system</span><span class="ip-val" style="color:#059669;">Hexadecimal (0–f)</span></div>
+              <div class="ip-fact"><span>Separator</span><span class="ip-val" style="color:#059669;">Colon (:)</span></div>
+              <div class="ip-fact"><span>Total addresses</span><span class="ip-val" style="color:#059669;">3.4 × 10³⁸ ♾️</span></div>
+              <div class="ip-fact"><span>Status</span><span class="ip-val" style="color:#059669;">Future-proof ✅</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── WHY IPv6 ── -->
+        <h4 class="subh" style="color:var(--coral);">🚨 Why Was IPv6 Introduced?</h4>
+
+        <div style="text-align:center;margin:12px 0;">
+          <svg viewBox="0 0 660 140" xmlns="http://www.w3.org/2000/svg" style="max-width:660px;width:100%;font-family:'Caveat',cursive;">
+            <line x1="50" y1="80" x2="620" y2="80" stroke="#ccc" stroke-width="2"/>
+            <circle cx="80" cy="80" r="12" fill="var(--blue)"/>
+            <text x="80" y="84" font-size="9" text-anchor="middle" fill="white" font-weight="bold">1983</text>
+            <text x="80" y="102" font-size="9" text-anchor="middle" fill="var(--blue)">IPv4 created</text>
+            <text x="80" y="113" font-size="8" text-anchor="middle" fill="#666">4.3bn addresses</text>
+            <circle cx="220" cy="80" r="12" fill="var(--orange)"/>
+            <text x="220" y="84" font-size="9" text-anchor="middle" fill="white" font-weight="bold">1990s</text>
+            <text x="220" y="55" font-size="9" text-anchor="middle" fill="var(--orange)">WWW boom!</text>
+            <text x="220" y="66" font-size="8" text-anchor="middle" fill="#666">millions new devices</text>
+            <circle cx="370" cy="80" r="12" fill="var(--coral)"/>
+            <text x="370" y="84" font-size="9" text-anchor="middle" fill="white" font-weight="bold">2000s</text>
+            <text x="370" y="102" font-size="9" text-anchor="middle" fill="var(--coral)">Smartphones!</text>
+            <text x="370" y="113" font-size="8" text-anchor="middle" fill="#666">billions of new devices</text>
+            <circle cx="510" cy="80" r="14" fill="var(--coral)"/>
+            <text x="510" y="84" font-size="9" text-anchor="middle" fill="white" font-weight="bold">2011</text>
+            <text x="510" y="52" font-size="9" text-anchor="middle" fill="var(--coral)" font-weight="bold">IPv4 RUNS</text>
+            <text x="510" y="63" font-size="9" text-anchor="middle" fill="var(--coral)" font-weight="bold">OUT 🚨</text>
+            <circle cx="620" cy="80" r="14" fill="#059669"/>
+            <text x="620" y="84" font-size="9" text-anchor="middle" fill="white" font-weight="bold">2012+</text>
+            <text x="620" y="102" font-size="9" text-anchor="middle" fill="#059669">IPv6 rolls</text>
+            <text x="620" y="113" font-size="8" text-anchor="middle" fill="#059669">out ✅</text>
+            <text x="350" y="135" font-size="10" text-anchor="middle" fill="#666">IPv4's 4.3bn addresses couldn't keep pace with the explosion of Internet-connected devices</text>
+          </svg>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:8px;margin:10px 0;">
+          <div style="background:var(--light-coral);border:2px solid var(--coral);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.85rem;color:var(--coral);margin-bottom:4px;">📱 Smartphones</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.82rem;">Over 6 billion smartphones exist today — every one needs an IP address, far exceeding IPv4's capacity.</p>
+          </div>
+          <div style="background:#fff3e0;border:2px solid var(--orange);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.85rem;color:var(--orange);margin-bottom:4px;">🏠 IoT Devices</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.82rem;">Smart TVs, thermostats, fridges, cameras — every home appliance now needs its own IP address.</p>
+          </div>
+          <div style="background:var(--light-blue);border:2px solid var(--blue);border-radius:8px;padding:10px;">
+            <div style="font-family:'Permanent Marker',cursive;font-size:0.85rem;color:var(--blue);margin-bottom:4px;">🌍 Global Growth</div>
+            <p style="font-family:'Kalam',cursive;font-size:0.82rem;">Developing countries coming online added hundreds of millions of new users, each needing unique IPs.</p>
+          </div>
+        </div>
+
+        <div style="background:var(--ink);color:white;border-radius:8px;padding:12px 16px;margin-top:8px;font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.9;">
+          <strong style="font-family:'Permanent Marker',cursive;font-size:0.95rem;">📌 Key Facts to Remember:</strong><br>
+          ✅ IPv4 provides ~4.3 billion addresses (2³²) — we ran out in 2011<br>
+          ✅ IPv6 provides 3.4 × 10³⁸ addresses (2¹²⁸) — essentially unlimited<br>
+          ✅ Both IPv4 and IPv6 are currently in use during the transition period<br>
+          ✅ IPv6 uses hexadecimal (digits 0–9 and letters a–f)
+        </div>
+
+        <div class="notes-tip">✏️ <strong>Exam tip:</strong> IPv4 = 32 bits, 4 octets, dotted decimal e.g. <code>216.27.61.137</code>. IPv6 = 128 bits, 8 hex groups, colons e.g. <code>2001:cdba:...:9652</code>. Know WHY IPv6 was needed — always say "IPv4 addresses were running out because the number of Internet-connected devices exceeded the ~4.3 billion available."</div>
+      </div>
+    </div>
+
+    <!-- 23.5 Hardware Components -->
+    <div class="notes-sec" id="ns5">
+      <div class="notes-hdr" onclick="toggleSection('ns5')" style="background:linear-gradient(135deg,var(--green),#1b4332);">
+        <div class="notes-hdr-left"><span class="notes-num">5.3.5</span><span class="notes-title">Components Needed to Access the Internet</span></div>
+        <span class="notes-tog">▼</span>
+      </div>
+      <div class="notes-bdy">
+        <p>Devices are needed to connect to a LAN, and that LAN to a WAN such as the Internet. Devices can connect using cables or wirelessly using radio waves.</p>
+
+        <div style="text-align:center;margin:14px 0;">
+          <svg viewBox="0 0 460 195" xmlns="http://www.w3.org/2000/svg" style="max-width:460px;width:100%;font-family:'Caveat',cursive;">
+            <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a1a2e"/></marker></defs>
+            <ellipse cx="230" cy="22" rx="75" ry="18" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="230" y="26" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">🌐 Internet</text>
+            <rect x="187" y="50" width="86" height="32" rx="5" fill="#fff3e0" stroke="#f77f00" stroke-width="2.5"/>
+            <text x="230" y="69" font-size="11" text-anchor="middle" fill="#f77f00" font-weight="bold">📡 Modem</text>
+            <line x1="230" y1="40" x2="230" y2="50" stroke="#1a1a2e" stroke-width="2" marker-end="url(#ah)"/>
+            <rect x="187" y="97" width="86" height="32" rx="5" fill="var(--light-green)" stroke="var(--green)" stroke-width="2.5"/>
+            <text x="230" y="116" font-size="11" text-anchor="middle" fill="var(--green)" font-weight="bold">🔀 Router</text>
+            <line x1="230" y1="82" x2="230" y2="97" stroke="#1a1a2e" stroke-width="2" marker-end="url(#ah)"/>
+            <rect x="105" y="148" width="78" height="30" rx="5" fill="var(--light-purple)" stroke="var(--purple)" stroke-width="2"/>
+            <text x="144" y="166" font-size="11" text-anchor="middle" fill="var(--purple)" font-weight="bold">🔌 Switch</text>
+            <line x1="210" y1="120" x2="170" y2="148" stroke="#1a1a2e" stroke-width="1.5" marker-end="url(#ah)"/>
+            <rect x="274" y="148" width="78" height="30" rx="5" fill="var(--light-coral)" stroke="var(--coral)" stroke-width="2"/>
+            <text x="313" y="166" font-size="11" text-anchor="middle" fill="var(--coral)" font-weight="bold">📶 WAP</text>
+            <line x1="250" y1="120" x2="290" y2="148" stroke="#1a1a2e" stroke-width="1.5" marker-end="url(#ah)"/>
+            <text x="70" y="192" font-size="10" text-anchor="middle" fill="#1a1a2e">💻 PC</text>
+            <text x="144" y="192" font-size="10" text-anchor="middle" fill="#1a1a2e">💻 PC</text>
+            <text x="313" y="192" font-size="10" text-anchor="middle" fill="#1a1a2e">📱 Phone</text>
+            <text x="390" y="192" font-size="10" text-anchor="middle" fill="#1a1a2e">💻 Laptop</text>
+            <line x1="70" y1="185" x2="110" y2="178" stroke="#1a1a2e" stroke-width="1.2"/>
+            <line x1="144" y1="185" x2="144" y2="178" stroke="#1a1a2e" stroke-width="1.2"/>
+            <line x1="313" y1="185" x2="313" y2="178" stroke="#1a1a2e" stroke-width="1.2"/>
+            <line x1="390" y1="185" x2="355" y2="178" stroke="#1a1a2e" stroke-width="1.2"/>
+          </svg>
+          <p style="font-family:'Kalam',cursive;font-size:0.82rem;color:#666;margin-top:4px;">Figure 5.10 — Devices allowing network users to connect to the Internet</p>
+        </div>
+
+        <div class="n-card" style="border-color:var(--purple);margin-top:8px;">
+          <div class="n-card-hdr" style="background:var(--purple);">🔌 Switch</div>
+          <div class="n-card-bdy">
+            <div class="def-box" style="border-color:var(--purple);margin-bottom:8px;">
+              <span class="def-label" style="background:var(--purple);">SUBJECT VOCABULARY</span>
+              <p><strong class="hl-p">Switch</strong> — a device that receives incoming data packets and redirects them to their destination on a local area network (LAN).</p>
+            </div>
+            <p>A switch links computers within a LAN. Cables from each computer feed into it so messages can be transmitted from one to another. Switches are <strong>'intelligent'</strong> — they can read the destination addresses and send them to <em>only</em> the intended computers rather than all of them. They build up a table of all the addresses on the network. This cuts down on network traffic.</p>
+          </div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--coral);margin-top:8px;">
+          <div class="n-card-hdr" style="background:var(--coral);">📶 Wireless Access Point (WAP)</div>
+          <div class="n-card-bdy">
+            <div class="def-box" style="border-color:var(--coral);margin-bottom:8px;">
+              <span class="def-label" style="background:var(--coral);">SUBJECT VOCABULARY</span>
+              <p><strong class="hl-c">Wireless access point (WAP)</strong> — a device that is used to connect one or more computers wirelessly to an existing physical wired network.</p>
+            </div>
+            <p>WAPs allow wireless devices to connect to a wired network using Wi-Fi. They convert data received through cables into a wireless signal and vice versa. Commonly used in public buildings to provide 'Internet hotspots'.</p>
+            <div class="notes-eg">⚠️ WAPs are similar to switches but <strong>cannot direct messages to particular devices</strong> — they transmit to all wireless devices within range.</div>
+          </div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--green);margin-top:8px;">
+          <div class="n-card-hdr" style="background:var(--green);">🔀 Router</div>
+          <div class="n-card-bdy">
+            <p>Routers are similar to switches because they read address information, but they transmit messages <strong>between networks</strong>. A switch does this within a single network; a router does this across several networks.</p>
+            <div class="nl"><span class="nd" style="background:var(--green);">•</span><div>Has a <strong>routing table</strong> — a list of rules stating where to send packets for different destinations</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">•</span><div>When a packet arrives, the router looks at the destination IP address in the header and uses the routing table to decide where to forward it</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">•</span><div>A packet may be forwarded between several routers before reaching its destination</div></div>
+            <div class="nl"><span class="nd" style="background:var(--green);">•</span><div>Commonly used in homes to share an Internet connection; can have both cable and Wi-Fi connections</div></div>
+            <div class="notes-eg">e.g. When you view a web page hosted in the USA, data travels router to router until it reaches your network — all in less than a second!</div>
+          </div>
+        </div>
+
+        <div class="n-card" style="border-color:var(--orange);margin-top:8px;">
+          <div class="n-card-hdr" style="background:var(--orange);">📡 Modem</div>
+          <div class="n-card-bdy">
+            <div class="def-box" style="border-color:var(--orange);margin-bottom:8px;">
+              <span class="def-label" style="background:var(--orange);">SUBJECT VOCABULARY</span>
+              <p><strong class="hl-o">Modem</strong> — short for 'modulator-demodulator'. It modulates and demodulates signals (converts them from digital to analogue and vice versa) sent and received by a computer over a communications network.</p>
+            </div>
+            <p>A modem converts signals in a LAN (such as a home network) into signals that can travel along cables provided by the ISP. The type of modem depends on the cable type:</p>
+            <div class="nl"><span class="nd" style="background:var(--orange);">•</span><div>Copper telephone line — carries electrical signals</div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">•</span><div>Cable TV cable — carries electrical signals</div></div>
+            <div class="nl"><span class="nd" style="background:var(--orange);">•</span><div>Fibre-optic cable — carries signals as light</div></div>
+            <p style="margin-top:8px;">To make setup easier, modems are usually <strong>combined with routers</strong> in a single box — referred to as an <strong>Internet router</strong>.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;background:var(--ink);color:white;border-radius:8px;padding:12px 16px;font-family:'Kalam',cursive;font-size:0.9rem;line-height:1.8;">
+          <strong style="font-family:'Permanent Marker',cursive;font-size:1rem;">📌 Key Comparison:</strong><br>
+          <strong>Switch</strong> — within ONE network; sends to specific device only (builds address table) ✅<br>
+          <strong>WAP</strong> — within one network; broadcasts to ALL wireless devices 📡<br>
+          <strong>Router</strong> — BETWEEN networks; reads IP and forwards to correct network 🔀<br>
+          <strong>Modem</strong> — converts signals between your LAN and ISP cables 📡
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ QUIZ TAB ════════════ -->
+  <div class="tab-panel" id="tab-quiz">
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🌍 Why Does the Internet & WWW Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏢 Business</div><p>Businesses rely on the Internet for communication, online sales and cloud services.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🎓 Education</div><p>The WWW gives instant access to vast knowledge worldwide.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--coral);">💬 Communication</div><p>Email, video calls, messaging — all use the Internet.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--purple);">🏥 Critical Services</div><p>Healthcare, banking, government all depend on Internet-connected systems.</p></div>
+        </div>
+        <div class="imp-footer">✏️ The Internet is the physical global network. The WWW is one SERVICE running on it. Never say they are the same!</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>⚡ Quick Quiz:</strong> 15 questions covering the whole topic. Select an answer and click Next! 🏆</div>
+    <div class="q-prog-wrap">
+      <div class="q-prog-bar"><div class="q-prog-fill" id="qprog" style="width:0%"></div></div>
+      <div class="q-score">Score: <span id="qscore">0</span> / 15</div>
+    </div>
+    <div id="quiz-area">
+      <div class="q-card" id="q-card">
+        <div class="q-num" id="q-num">Question 1 of 15</div>
+        <div class="q-text" id="q-text"></div>
+        <div class="q-opts" id="q-opts"></div>
+        <div class="q-fb" id="q-fb"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+          <button class="btn btn-teal" id="btn-next" onclick="nextQ()" style="display:none;">Next →</button>
+        </div>
+      </div>
+    </div>
+    <div id="quiz-result" class="q-result" style="display:none;">
+      <div style="font-size:3rem;margin-bottom:10px;">🏆</div>
+      <h2>Quiz Complete!</h2>
+      <div class="big-score" id="final-score"></div>
+      <p style="font-family:'Kalam',cursive;font-size:1.1rem;margin:12px 0 20px;" id="result-msg"></p>
+      <button class="btn btn-primary" onclick="restartQuiz()">Try Again 🔄</button>
+    </div>
+  </div>
+
+  <!-- ════════════ EXAM TAB ════════════ -->
+  <div class="tab-panel" id="tab-exam">
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🌍 Why Does the Internet & WWW Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏢 Business</div><p>Businesses rely on the Internet for communication, online sales and cloud services.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🎓 Education</div><p>The WWW gives instant access to vast knowledge worldwide.</p></div>
+        </div>
+        <div class="imp-footer">✏️ The Internet is the physical global network. The WWW is one SERVICE running on it.</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>📝 Exam Questions:</strong> Write your answer then reveal the mark scheme. Always use precise technical vocabulary!</div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c1"><div class="eq-num"><span class="tag tag-easy">EASY</span> Question 1</div><div class="eq-marks">[2 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">State the difference between the Internet and the World Wide Web. [2 marks]</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>The Internet is a global network of networks / the physical infrastructure that connects networks worldwide (1)</li>
+          <li>The World Wide Web is a service that runs on the Internet, providing access to web pages linked by hyperlinks (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c2"><div class="eq-num"><span class="tag tag-easy">EASY</span> Question 2</div><div class="eq-marks">[2 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">State what is meant by a 'domain name' and explain how it is used when accessing a website.</div>
+        <textarea class="ans-ta" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>A domain name is a human-readable name used to identify one or more IP addresses / a resource on the Internet (1)</li>
+          <li>It is converted to the corresponding IP address by the Domain Name Service (DNS) so the browser can connect to the correct web server (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c3"><div class="eq-num"><span class="tag tag-easy">EASY</span> Question 3</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Describe what happens when a user types a domain name into a web browser. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 4):</div><ul>
+          <li>The browser sends the domain name to a DNS server to resolve it (1)</li>
+          <li>The DNS translates the domain name into an IP address (1)</li>
+          <li>If one DNS server doesn't know the address it asks another (1)</li>
+          <li>The browser connects to the web server using the IP address (1)</li>
+          <li>The web page is transferred using HTTP/HTTPS (1)</li>
+          <li>The data is sent in HTML format and the browser renders/displays it (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c4"><div class="eq-num"><span class="tag tag-med">MED</span> Question 4</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Explain what IPv4 and IPv6 are, and explain why IPv6 was introduced. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>IPv4: four 8-bit numbers (octets) separated by dots, e.g. 216.27.61.137 (1); uses 32 bits, ~4 billion addresses (1)</li>
+          <li>IPv6: eight groups of hexadecimal numbers separated by colons (1); uses 128 bits, ~3.4×10³⁸ addresses (1)</li>
+          <li>IPv6 was needed because IPv4 addresses were running out / not enough unique addresses for the growing number of devices (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c5"><div class="eq-num"><span class="tag tag-med">MED</span> Question 5</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A business has three desktop computers in an office. They want to connect all computers to share files and access the Internet. Staff also want to connect laptops and tablets wirelessly.</div>
+        <div class="eq-txt">Name four pieces of hardware the business will need and describe the purpose of each. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:110px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark each, must name AND state purpose):</div><ul>
+          <li>Switch — links computers within the LAN, sends data to only the intended device ✓</li>
+          <li>Router — connects the LAN to the Internet/WAN, forwards packets between networks ✓</li>
+          <li>Wireless Access Point (WAP) — allows laptops/tablets to connect wirelessly via Wi-Fi ✓</li>
+          <li>Modem — converts LAN signals into signals that can travel along ISP cables ✓</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c6"><div class="eq-num"><span class="tag tag-med">MED</span> Question 6</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Describe how data is split into packets and transmitted across the Internet. Include the role of routers. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:110px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 4):</div><ul>
+          <li>The sending computer splits data into packets (1)</li>
+          <li>Each packet has a header: sender address, destination address, packet number, total packets (1)</li>
+          <li>Packets are sent to the ISP's router; the router reads the destination IP in the header (1)</li>
+          <li>The router uses a routing table to decide where to forward the packet (1)</li>
+          <li>Packets may pass through multiple routers before reaching the destination (1)</li>
+          <li>The receiving computer reassembles packets using the header information (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c7"><div class="eq-num"><span class="tag tag-med">MED</span> Question 7</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Explain the differences between a switch and a wireless access point (WAP). [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme:</div><ul>
+          <li>A switch connects computers using cables / operates on a wired LAN (1)</li>
+          <li>A switch sends data only to the intended device by reading destination addresses and building an address table (1)</li>
+          <li>A WAP allows wireless devices to connect to a wired network using Wi-Fi / radio waves (1)</li>
+          <li>A WAP transmits data to all devices within range — cannot direct to a specific device (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c8"><div class="eq-num"><span class="tag tag-hard">HARD</span> Question 8</div><div class="eq-marks">[6 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A student types "https://www.bbc.co.uk/news" into their web browser at home. The home network has a modem-router and a wireless access point. The student's laptop is connected wirelessly.</div>
+        <div class="eq-txt">Describe in detail all the steps that happen from when the student presses Enter to when the BBC News web page is displayed. [6 marks]</div>
+        <textarea class="ans-ta" style="min-height:160px;" placeholder="Write your extended answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme — any 6 from:</div><ul>
+          <li>The browser extracts the domain name (www.bbc.co.uk) from the URL ✓</li>
+          <li>The browser contacts a DNS server to resolve the domain name to an IP address ✓</li>
+          <li>The DNS returns the IP address of the BBC web server ✓</li>
+          <li>The request travels wirelessly from the laptop to the WAP / access point ✓</li>
+          <li>The WAP passes the request to the router (modem-router) ✓</li>
+          <li>The modem converts the signal to travel along the ISP's cables ✓</li>
+          <li>The router forwards the request across the Internet via multiple routers using the destination IP ✓</li>
+          <li>The BBC web server receives the request and sends back the web page data ✓</li>
+          <li>The data is transferred using HTTPS (encrypted HTTP) ✓</li>
+          <li>The data is split into packets; each packet has a header with sender/destination/packet number ✓</li>
+          <li>Packets travel back to the student's network via routers and are reassembled in correct order ✓</li>
+          <li>The browser receives HTML and renders/displays the BBC News web page ✓</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c1"><div class="eq-num"><span class="tag tag-easy">EASY</span> Question 9 — URL Structure</div><div class="eq-marks">[3 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Identify the following parts of this URL: <code style="background:#1e1e2e;color:#60a5fa;padding:3px 10px;border-radius:4px;font-size:0.95rem;">https://www.amazon.co.uk/offers?cat=electronics</code></div>
+        <p style="font-family:'Kalam',cursive;font-size:0.9rem;margin:8px 0;">State what each highlighted part represents and its purpose:</p>
+        <p style="font-family:'Patrick Hand',cursive;margin:6px 0;"><strong style="color:#4ade80;">https</strong> → <input class="ans-line" placeholder="name and purpose..."></p>
+        <p style="font-family:'Patrick Hand',cursive;margin:6px 0;"><strong style="color:#f472b6;">.co.uk</strong> → <input class="ans-line" placeholder="name and purpose..."></p>
+        <p style="font-family:'Patrick Hand',cursive;margin:6px 0;"><strong style="color:#34d399;">?cat=electronics</strong> → <input class="ans-line" placeholder="name and purpose..."></p>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark each):</div><ul>
+          <li><strong>https</strong> — the protocol; specifies how data is transferred; HTTPS means the connection is encrypted/secure (1)</li>
+          <li><strong>.co.uk</strong> — the Top-Level Domain (TLD); indicates this is a UK-based commercial organisation (1)</li>
+          <li><strong>?cat=electronics</strong> — the query string; extra parameters sent to the web server, e.g. to filter results by category (1)</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c2"><div class="eq-num"><span class="tag tag-med">MED</span> Question 10 — Star Topology Network Diagram</div><div class="eq-marks">[3 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-ctx">A library sets up a network using a star topology. The library is connecting: two desktop computers with wired network interface cards, a laptop with a wireless network interface card, a switch, and a wireless access point.</div>
+        <div class="eq-txt">Complete the diagram description below to show how the devices are connected. Use the words <strong>solid line</strong> (wired) or <strong>dashed line</strong> (wireless) and explain <em>why</em> each connection is that type. [3 marks]</div>
+        <textarea class="ans-ta" style="min-height:100px;" placeholder="e.g. 'The two desktop computers connect to the switch using a solid line (wired) because...'"></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (any 3):</div><ul>
+          <li>Both desktop computers connect to the switch using a <strong>solid line</strong> (wired connection) — because they have wired NICs and are fixed devices (1)</li>
+          <li>The wireless access point (WAP) connects to the switch using a <strong>solid line</strong> (wired) — the WAP itself must be on the wired network to relay data (1)</li>
+          <li>The laptop connects to the WAP using a <strong>dashed line</strong> (wireless) — because the laptop only has a wireless NIC, so it cannot connect directly to the switch (1)</li>
+          <li>In a star topology, all devices link back to the central switch — the laptop achieves this indirectly through the WAP (bonus point)</li>
+        </ul>
+        <div style="margin-top:12px;">
+          <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;font-family:'Caveat',cursive;border:1.5px solid #ccc;border-radius:8px;background:#fafafa;padding:6px;">
+            <text x="15" y="18" font-size="11" fill="#666">Model Answer Diagram:</text>
+            <line x1="20" y1="30" x2="60" y2="30" stroke="#1a1a2e" stroke-width="2.5"/><text x="65" y="34" font-size="10" fill="#1a1a2e">Wired (solid)</text>
+            <line x1="160" y1="30" x2="200" y2="30" stroke="#1a1a2e" stroke-width="2" stroke-dasharray="6,4"/><text x="205" y="34" font-size="10" fill="#1a1a2e">Wireless (dashed)</text>
+            <rect x="205" y="55" width="110" height="36" rx="6" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2.5"/>
+            <text x="260" y="77" font-size="12" text-anchor="middle" fill="#2d6a4f" font-weight="bold">Switch</text>
+            <line x1="235" y1="91" x2="115" y2="178" stroke="#1a1a2e" stroke-width="2.5"/>
+            <line x1="285" y1="91" x2="405" y2="178" stroke="#1a1a2e" stroke-width="2.5"/>
+            <line x1="220" y1="68" x2="110" y2="120" stroke="#1a1a2e" stroke-width="2.5"/>
+            <line x1="118" y1="148" x2="350" y2="188" stroke="#ef476f" stroke-width="2" stroke-dasharray="8,5"/>
+            <rect x="50" y="178" width="130" height="42" rx="6" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="115" y="196" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">Desktop 1</text>
+            <text x="115" y="211" font-size="9" text-anchor="middle" fill="#118ab2">🔌 Wired NIC</text>
+            <rect x="340" y="178" width="130" height="42" rx="6" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="405" y="196" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">Desktop 2</text>
+            <text x="405" y="211" font-size="9" text-anchor="middle" fill="#118ab2">🔌 Wired NIC</text>
+            <rect x="38" y="100" width="140" height="44" rx="6" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+            <text x="108" y="120" font-size="11" text-anchor="middle" fill="#ef476f" font-weight="bold">📶 WAP</text>
+            <text x="108" y="135" font-size="9" text-anchor="middle" fill="#ef476f">Wired to switch</text>
+            <rect x="330" y="188" width="130" height="42" rx="6" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+            <text x="395" y="207" font-size="11" text-anchor="middle" fill="#7b2d8b" font-weight="bold">Laptop</text>
+            <text x="395" y="222" font-size="9" text-anchor="middle" fill="#7b2d8b">📶 Wireless NIC</text>
+            <text x="200" y="170" font-size="9" fill="#ef476f" transform="rotate(8,200,170)">wireless - - - -</text>
+          </svg>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-wrap">
+      <div class="eq-hdr c3"><div class="eq-num"><span class="tag tag-hard">HARD</span> Question 11 — IPv4 vs IPv6 Extended</div><div class="eq-marks">[4 marks]</div></div>
+      <div class="eq-bdy">
+        <div class="eq-txt">Compare IPv4 and IPv6 in terms of their structure and address capacity. Explain why the transition from IPv4 to IPv6 was necessary. [4 marks]</div>
+        <textarea class="ans-ta" style="min-height:120px;" placeholder="Write your answer here..."></textarea>
+        <button class="show-ms" onclick="toggleMS(this)">👁 Show Mark Scheme</button>
+        <div class="ms"><div class="ms-lbl">✅ Mark Scheme (1 mark each, max 4):</div><ul>
+          <li>IPv4 uses 32 bits, written as four 8-bit numbers (octets) in dotted decimal notation, e.g. <code>216.27.61.137</code> (1)</li>
+          <li>IPv6 uses 128 bits, written as eight groups of 4 hexadecimal digits separated by colons, e.g. <code>2001:cdba:...:9652</code> (1)</li>
+          <li>IPv4 provides approximately 4.3 billion (2³²) addresses; IPv6 provides approximately 3.4 × 10³⁸ (2¹²⁸) addresses (1)</li>
+          <li>IPv6 was necessary because IPv4 addresses were running out — the number of Internet-connected devices (smartphones, IoT, etc.) far exceeded IPv4 capacity (1)</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ ACTIVITIES TAB ════════════ -->
+  <div class="tab-panel" id="tab-activities">
+    <div class="imp-banner">
+      <div class="imp-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.tog').textContent=this.nextElementSibling.style.display==='none'?'▼ expand':'▲ collapse';">
+        🌍 Why Does the Internet & WWW Matter? <span class="tog" style="margin-left:auto;font-family:'Caveat',cursive;font-size:1rem;font-weight:normal;">▼ expand</span>
+      </div>
+      <div class="imp-body">
+        <div class="imp-grid">
+          <div class="imp-cell"><div class="imp-cell-title" style="color:var(--blue);">🏢 Business</div><p>Businesses rely on the Internet for communication, online sales and cloud services.</p></div>
+          <div class="imp-cell"><div class="imp-cell-title" style="color:#059669;">🎓 Education</div><p>The WWW gives instant access to vast knowledge worldwide.</p></div>
+        </div>
+        <div class="imp-footer">✏️ The Internet ≠ the WWW. The Internet is infrastructure. The WWW is one service on it.</div>
+      </div>
+    </div>
+
+    <!-- Activity 1: Spot the Scenario -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-purple);">
+        <div class="act-icon">🔍</div>
+        <div class="act-title">Activity 1: Spot the Hardware!</div>
+      </div>
+      <div class="act-bdy">
+        <p>Read each scenario and identify which piece of hardware is being described. Click to reveal the answer!</p>
+        <div class="scen-box">
+          <p>📘 Scenario A: <em>"This device in the school office has cables running from every classroom computer plugged into it. It reads where each message needs to go and sends it only to the right computer — not all of them."</em></p>
+          <button class="btn btn-primary" style="margin-top:10px;font-size:0.95rem;padding:6px 16px;" onclick="this.nextElementSibling.classList.toggle('show')">Reveal Answer</button>
+          <div class="scen-reveal">✅ <strong>Switch</strong> — it links computers within the LAN and uses an address table to send data to only the intended device, cutting down network traffic.</div>
+        </div>
+        <div class="scen-box">
+          <p>📘 Scenario B: <em>"This box at home is connected to the phone line coming out of the wall. It converts the digital signals from the home network into signals that can travel through the cable to the Internet provider."</em></p>
+          <button class="btn btn-primary" style="margin-top:10px;font-size:0.95rem;padding:6px 16px;" onclick="this.nextElementSibling.classList.toggle('show')">Reveal Answer</button>
+          <div class="scen-reveal">✅ <strong>Modem</strong> — it modulates/demodulates signals, converting between the digital LAN signals and the type of signal that travels along the ISP's cable (electrical or light).</div>
+        </div>
+        <div class="scen-box">
+          <p>📘 Scenario C: <em>"In a coffee shop, this device allows customers' phones and laptops to connect to the Internet without any cables. However, it sends all data to every connected device — it can't choose just one."</em></p>
+          <button class="btn btn-primary" style="margin-top:10px;font-size:0.95rem;padding:6px 16px;" onclick="this.nextElementSibling.classList.toggle('show')">Reveal Answer</button>
+          <div class="scen-reveal">✅ <strong>Wireless Access Point (WAP)</strong> — it connects wireless devices to a wired network via Wi-Fi, but broadcasts to all devices rather than directing to specific ones. This is the key difference from a switch.</div>
+        </div>
+        <div class="scen-box">
+          <p>📘 Scenario D: <em>"This device receives data packets from the home network and decides which path they should take across the Internet to reach the BBC's web server in London. It has a table of rules for this."</em></p>
+          <button class="btn btn-primary" style="margin-top:10px;font-size:0.95rem;padding:6px 16px;" onclick="this.nextElementSibling.classList.toggle('show')">Reveal Answer</button>
+          <div class="scen-reveal">✅ <strong>Router</strong> — it forwards packets <em>between</em> networks using a routing table. It reads the destination IP in each packet header and decides the best path to forward it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 2: Type the Term -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-teal);">
+        <div class="act-icon">✍️</div>
+        <div class="act-title">Activity 2: Type the Term!</div>
+      </div>
+      <div class="act-bdy">
+        <p>Read the definition and type the correct term. Press Enter or click Check to see if you're right!</p>
+        <div class="t-q">
+          <div class="t-q-text">1. A service that translates domain names into IP addresses: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'dns')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'dns')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+        <div class="t-q">
+          <div class="t-q-text">2. The unique address used to identify a device on the Internet: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'ip address')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'ip address')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+        <div class="t-q">
+          <div class="t-q-text">3. The markup language that web pages are written in: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'html')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'html')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+        <div class="t-q">
+          <div class="t-q-text">4. The encrypted and secure version of HTTP: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'https')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'https')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+        <div class="t-q">
+          <div class="t-q-text">5. Hardware that forwards packets BETWEEN networks using a routing table: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'router')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'router')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+        <div class="t-q">
+          <div class="t-q-text">6. An organisation that provides a connection to the Internet: _______</div>
+          <input class="t-inp" type="text" placeholder="Type your answer..." onkeydown="if(event.key==='Enter')checkType(this,'isp')">
+          <button class="btn btn-teal" style="margin-top:6px;padding:5px 14px;font-size:0.95rem;" onclick="checkType(this.previousElementSibling,'isp')">Check ✓</button>
+          <div class="t-fb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 3: True or False -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-yellow);">
+        <div class="act-icon">✅❌</div>
+        <div class="act-title">Activity 3: True or False?</div>
+      </div>
+      <div class="act-bdy">
+        <p>Decide if each statement is True or False. Click to reveal an explanation!</p>
+        <div id="tf-area"></div>
+      </div>
+    </div>
+
+    <!-- Activity 4: Order the Steps -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-coral);">
+        <div class="act-icon">🔢</div>
+        <div class="act-title">Activity 4: Match the Hardware to its Job!</div>
+      </div>
+      <div class="act-bdy">
+        <p>Click a hardware item on the left, then click its correct description on the right. Match all 4!</p>
+        <div id="match-score" style="font-family:'Caveat',cursive;font-size:1.1rem;margin-bottom:10px;color:var(--teal);">Matched: 0 / 4</div>
+        <div class="match-grid" id="match-left" style="margin-bottom:8px;"></div>
+        <div style="text-align:center;font-family:'Caveat',cursive;font-size:1rem;margin:4px 0;">↕ Match to:</div>
+        <div class="match-grid" id="match-right"></div>
+        <button class="btn btn-primary" style="margin-top:14px;" onclick="resetMatch()">Reset 🔄</button>
+      </div>
+    </div>
+
+    <!-- Activity 5: Label the URL -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-blue);border-bottom:3px solid var(--ink);">
+        <div class="act-icon">🔗</div>
+        <div class="act-title" style="color:var(--blue);">Activity 5: Label the URL Parts!</div>
+      </div>
+      <div class="act-bdy">
+        <p>Click a label from the bank below, then click the matching blank drop zone to place it. Match all 5!</p>
+        <div style="background:#1e1e2e;border-radius:10px;padding:14px 18px;font-family:monospace;font-size:1rem;margin:12px 0;display:flex;flex-wrap:wrap;align-items:center;gap:2px;line-height:2.2;border:2px solid #444;">
+          <span style="color:#4ade80;">https</span><span style="color:#94a3b8;">://</span><span style="color:#fb923c;">www</span><span style="color:#94a3b8;">.</span><span style="color:#60a5fa;">amazon</span><span style="color:#f472b6;">.com</span><span style="color:#a78bfa;">/dp/B09XYZ123</span><span style="color:#34d399;">?ref=sale</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;margin:14px 0;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <code style="background:#1e1e2e;color:#4ade80;padding:3px 10px;border-radius:4px;font-size:0.9rem;">https</code>
+            <span style="font-family:'Kalam',cursive;">→</span>
+            <div class="d-drop" id="a5-dd1" onclick="a5Place('a5-dd1')">drop here</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <code style="background:#1e1e2e;color:#fb923c;padding:3px 10px;border-radius:4px;font-size:0.9rem;">www</code>
+            <span style="font-family:'Kalam',cursive;">→</span>
+            <div class="d-drop" id="a5-dd2" onclick="a5Place('a5-dd2')">drop here</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <code style="background:#1e1e2e;color:#60a5fa;padding:3px 10px;border-radius:4px;font-size:0.9rem;">amazon</code>
+            <span style="font-family:'Kalam',cursive;">→</span>
+            <div class="d-drop" id="a5-dd3" onclick="a5Place('a5-dd3')">drop here</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <code style="background:#1e1e2e;color:#f472b6;padding:3px 10px;border-radius:4px;font-size:0.9rem;">.com</code>
+            <span style="font-family:'Kalam',cursive;">→</span>
+            <div class="d-drop" id="a5-dd4" onclick="a5Place('a5-dd4')">drop here</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <code style="background:#1e1e2e;color:#a78bfa;padding:3px 10px;border-radius:4px;font-size:0.9rem;">/dp/B09XYZ123</code>
+            <span style="font-family:'Kalam',cursive;">→</span>
+            <div class="d-drop" id="a5-dd5" onclick="a5Place('a5-dd5')">drop here</div>
+          </div>
+        </div>
+        <div style="font-family:'Caveat',cursive;font-size:1rem;color:#666;margin-bottom:8px;">👆 Click a label first, then click the blank you want to fill:</div>
+        <div class="chip-bank" id="a5-bank">
+          <div class="chip" id="a5-ch-Protocol" onclick="a5Select('Protocol')">Protocol</div>
+          <div class="chip" id="a5-ch-Subdomain" onclick="a5Select('Subdomain')">Subdomain</div>
+          <div class="chip" id="a5-ch-Domain" onclick="a5Select('Domain name')">Domain name</div>
+          <div class="chip" id="a5-ch-TLD" onclick="a5Select('TLD')">TLD</div>
+          <div class="chip" id="a5-ch-Path" onclick="a5Select('File path')">File path</div>
+          <div class="chip" id="a5-ch-Query" onclick="a5Select('Query string')">Query string</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn btn-teal" onclick="a5Check()">Check Answers ✓</button>
+          <button class="btn" style="background:white;" onclick="a5Reset()">Reset 🔄</button>
+        </div>
+        <div class="scen-reveal" id="a5-fb" style="margin-top:10px;"></div>
+      </div>
+    </div>
+
+    <!-- Activity 6: Star Topology Diagram Quiz -->
+    <div class="act-card">
+      <div class="act-hdr" style="background:var(--light-green);border-bottom:3px solid var(--ink);">
+        <div class="act-icon">🔌</div>
+        <div class="act-title" style="color:var(--green);">Activity 6: Build the Star Topology!</div>
+      </div>
+      <div class="act-bdy">
+        <div class="eq-ctx">A library sets up a network using a star topology with: two desktop computers (wired NICs), one laptop (wireless NIC), one switch, and one wireless access point (WAP).</div>
+        <p style="margin:10px 0;font-family:'Kalam',cursive;font-size:0.92rem;">For each connection below, decide whether it should be <strong>wired (solid line)</strong> or <strong>wireless (dashed line)</strong>, then click to reveal the answer:</p>
+
+        <div class="scen-box" style="margin:10px 0;">
+          <p>🔌 <strong>Desktop computer 1 → Switch:</strong> Wired or Wireless?</p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="tf-btn" onclick="a6Check(this,'wired','wired')">— Wired</button>
+            <button class="tf-btn" onclick="a6Check(this,'wireless','wired')">- - Wireless</button>
+          </div>
+          <div class="scen-reveal" style="margin-top:8px;">✅ <strong>Wired (solid line)</strong> — Desktop computers have wired network interface cards and sit in fixed positions, so a cable connection to the switch is used.</div>
+        </div>
+
+        <div class="scen-box" style="margin:10px 0;">
+          <p>🔌 <strong>Desktop computer 2 → Switch:</strong> Wired or Wireless?</p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="tf-btn" onclick="a6Check(this,'wired','wired')">— Wired</button>
+            <button class="tf-btn" onclick="a6Check(this,'wireless','wired')">- - Wireless</button>
+          </div>
+          <div class="scen-reveal" style="margin-top:8px;">✅ <strong>Wired (solid line)</strong> — Same reason: wired NIC, fixed device. All wired devices connect directly to the central switch in a star topology.</div>
+        </div>
+
+        <div class="scen-box" style="margin:10px 0;">
+          <p>📶 <strong>WAP → Switch:</strong> Wired or Wireless?</p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="tf-btn" onclick="a6Check(this,'wired','wired')">— Wired</button>
+            <button class="tf-btn" onclick="a6Check(this,'wireless','wired')">- - Wireless</button>
+          </div>
+          <div class="scen-reveal" style="margin-top:8px;">✅ <strong>Wired (solid line)</strong> — The WAP itself needs to be connected to the wired network (the switch) so it can pass data to and from the Internet. The WAP's wireless signal is for end devices, not for its own uplink.</div>
+        </div>
+
+        <div class="scen-box" style="margin:10px 0;">
+          <p>💻 <strong>Laptop → WAP:</strong> Wired or Wireless?</p>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button class="tf-btn" onclick="a6Check(this,'wireless','wireless')">- - Wireless</button>
+            <button class="tf-btn" onclick="a6Check(this,'wired','wireless')">— Wired</button>
+          </div>
+          <div class="scen-reveal" style="margin-top:8px;">✅ <strong>Wireless (dashed line)</strong> — The laptop has a wireless NIC only — it cannot plug directly into the switch. It connects wirelessly to the WAP, which then relays its data through the wired network to the switch.</div>
+        </div>
+
+        <div style="margin-top:16px;background:var(--light-teal);border:2px solid #059669;border-radius:10px;padding:14px 16px;">
+          <div style="font-family:'Permanent Marker',cursive;font-size:1rem;color:#059669;margin-bottom:8px;">📌 Key Rule for Star Topology Diagrams:</div>
+          <div style="font-family:'Kalam',cursive;font-size:0.88rem;line-height:1.8;">
+            ✅ All wired devices connect directly to the central <strong>switch</strong> with solid lines<br>
+            ✅ The WAP connects to the switch with a solid line (it's a wired device on the network)<br>
+            ✅ Wireless devices (laptop, phone, tablet) connect to the <strong>WAP</strong> with dashed lines<br>
+            ✅ The type of connection depends on the device's <strong>Network Interface Card (NIC)</strong>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;text-align:center;">
+          <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;font-family:'Caveat',cursive;border:2px solid var(--ink);border-radius:10px;background:white;padding:4px;">
+            <text x="15" y="18" font-size="11" fill="#666" font-weight="bold">✅ Correct Star Topology Diagram</text>
+            <text x="15" y="33" font-size="10" fill="#1a1a2e">— solid = wired</text>
+            <line x1="100" y1="33" x2="135" y2="33" stroke="#1a1a2e" stroke-width="2.5"/>
+            <text x="175" y="33" font-size="10" fill="#ef476f">- - dashed = wireless</text>
+            <line x1="270" y1="33" x2="310" y2="33" stroke="#ef476f" stroke-width="2" stroke-dasharray="6,4"/>
+            <!-- Switch centre -->
+            <rect x="195" y="50" width="110" height="36" rx="6" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="3"/>
+            <text x="250" y="73" font-size="13" text-anchor="middle" fill="#2d6a4f" font-weight="bold">Switch</text>
+            <!-- Solid lines to desktops + WAP -->
+            <line x1="225" y1="86" x2="110" y2="165" stroke="#1a1a2e" stroke-width="2.5"/>
+            <line x1="275" y1="86" x2="390" y2="165" stroke="#1a1a2e" stroke-width="2.5"/>
+            <line x1="210" y1="65" x2="115" y2="118" stroke="#1a1a2e" stroke-width="2.5"/>
+            <!-- Dashed line WAP to Laptop -->
+            <line x1="152" y1="143" x2="355" y2="175" stroke="#ef476f" stroke-width="2" stroke-dasharray="8,5"/>
+            <text x="255" y="166" font-size="9" fill="#ef476f" transform="rotate(8,255,166)">wireless</text>
+            <!-- Desktop 1 -->
+            <rect x="45" y="165" width="130" height="42" rx="6" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="110" y="183" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">💻 Desktop 1</text>
+            <text x="110" y="198" font-size="9" text-anchor="middle" fill="#118ab2">Wired NIC</text>
+            <!-- Desktop 2 -->
+            <rect x="325" y="165" width="130" height="42" rx="6" fill="#e3f2fd" stroke="#118ab2" stroke-width="2"/>
+            <text x="390" y="183" font-size="11" text-anchor="middle" fill="#118ab2" font-weight="bold">💻 Desktop 2</text>
+            <text x="390" y="198" font-size="9" text-anchor="middle" fill="#118ab2">Wired NIC</text>
+            <!-- WAP -->
+            <rect x="40" y="98" width="150" height="42" rx="6" fill="#fce4ec" stroke="#ef476f" stroke-width="2"/>
+            <text x="115" y="118" font-size="11" text-anchor="middle" fill="#ef476f" font-weight="bold">📶 WAP</text>
+            <text x="115" y="132" font-size="9" text-anchor="middle" fill="#ef476f">wired to switch</text>
+            <!-- Laptop -->
+            <rect x="325" y="175" width="130" height="42" rx="6" fill="#f3e5f5" stroke="#7b2d8b" stroke-width="2"/>
+            <text x="390" y="193" font-size="11" text-anchor="middle" fill="#7b2d8b" font-weight="bold">💻 Laptop</text>
+            <text x="390" y="208" font-size="9" text-anchor="middle" fill="#7b2d8b">Wireless NIC</text>
+            <text x="250" y="248" font-size="9" text-anchor="middle" fill="#666">All wired devices → Switch · Laptop → WAP (wirelessly) → Switch</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+// ─── TAB SWITCHING ─────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ─── NOTES TOGGLE ──────────────────────────────────────────────────────
+function toggleSection(id) {
+  const sec = document.getElementById(id);
+  const body = sec.querySelector('.notes-bdy');
+  const tog = sec.querySelector('.notes-tog');
+  const open = body.classList.toggle('open');
+  tog.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+// ─── MARK SCHEME TOGGLE ────────────────────────────────────────────────
+function toggleMS(btn) {
+  const ms = btn.nextElementSibling;
+  ms.classList.toggle('show');
+  btn.textContent = ms.classList.contains('show') ? '🙈 Hide Mark Scheme' : '👁 Show Mark Scheme';
+}
+
+// ─── QUIZ ───────────────────────────────────────────────────────────────
+const questions = [
+  { q: "What is the Internet?", opts: ["A service for accessing web pages", "A global network of interconnected networks", "The World Wide Web", "A single large computer"], a: 1 },
+  { q: "What does DNS stand for?", opts: ["Data Networking System", "Domain Name Service", "Digital Number Standard", "Direct Network Server"], a: 1 },
+  { q: "What does a DNS server do?", opts: ["Stores web pages", "Translates domain names into IP addresses", "Routes packets between networks", "Encrypts data"], a: 1 },
+  { q: "Which of the following is a valid IPv4 address?", opts: ["2001:cdba::3257:9652", "216.27.61.137", "www.bbc.co.uk", "HTTP://mysite.com"], a: 1 },
+  { q: "How many binary bits are in an IPv4 address?", opts: ["16", "64", "32", "128"], a: 2 },
+  { q: "Why was IPv6 introduced?", opts: ["To make the Internet faster", "Because IPv4 addresses were running out", "To replace HTTP", "To improve Wi-Fi signals"], a: 1 },
+  { q: "What is the World Wide Web?", opts: ["Another name for the Internet", "A service running on the Internet that provides access to web pages", "The physical cables connecting countries", "A type of web browser"], a: 1 },
+  { q: "What language are web pages written in?", opts: ["CSS", "Python", "HTML", "TCP/IP"], a: 2 },
+  { q: "What does a router do?", opts: ["Connects computers within a single LAN only", "Converts digital signals for ISP cables", "Forwards packets between different networks", "Sends data to all devices wirelessly"], a: 2 },
+  { q: "What is the main difference between a switch and a WAP?", opts: ["A switch is wireless; a WAP uses cables", "A switch sends data to specific devices; a WAP broadcasts to all wireless devices", "A switch connects to the Internet; a WAP stays on the LAN", "They do the same thing"], a: 1 },
+  { q: "What does a modem do?", opts: ["Routes packets between networks", "Translates domain names to IPs", "Converts signals between LAN and ISP cables", "Assigns IP addresses to devices"], a: 2 },
+  { q: "What information does a packet header contain?", opts: ["The web page HTML only", "Sender address, destination address, packet number and total packets", "Username and password", "The domain name only"], a: 1 },
+  { q: "What does HTTPS provide that HTTP does not?", opts: ["Faster data transfer", "Encryption of the connection", "A different type of IP address", "Access to FTP files"], a: 1 },
+  { q: "The Internet backbone refers to:", opts: ["The main website of the Internet", "The physical cables and links that connect all networks globally", "The TCP/IP protocol stack", "A type of router"], a: 1 },
+  { q: "If packets arrive at the destination out of order, how are they reassembled correctly?", opts: ["The router puts them in order automatically", "They are discarded and resent", "The receiver uses the packet number in the header to reassemble them", "DNS resolves the order"], a: 2 },
+  { q: "In the URL 'https://www.bbc.co.uk/news', what does '.co.uk' represent?", opts: ["The domain name", "The Top-Level Domain (TLD)", "The file path", "The protocol"], a: 1 },
+  { q: "What is the purpose of the 'www' in a URL like 'https://www.google.com'?", opts: ["It is the protocol", "It is the subdomain indicating the World Wide Web section", "It is the TLD", "It is the file path"], a: 1 },
+  { q: "How many bits make up an IPv6 address?", opts: ["32 bits", "64 bits", "128 bits", "256 bits"], a: 2 },
+  { q: "Which number system does IPv6 use to write its address groups?", opts: ["Binary (0s and 1s)", "Decimal (0–9)", "Hexadecimal (0–9 and a–f)", "Octal (0–7)"], a: 2 },
+  { q: "What does the file path '/news/technology' tell you in a URL?", opts: ["The protocol used to transfer the page", "The specific page or folder location on the web server", "The country where the server is located", "The IP address of the server"], a: 1 }
+];
+
+let qIdx = 0, score = 0, answered = false;
+
+function loadQ() {
+  const q = questions[qIdx];
+  document.getElementById('q-num').textContent = `Question ${qIdx+1} of ${questions.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('qprog').style.width = (qIdx / questions.length * 100) + '%';
+  const optsEl = document.getElementById('q-opts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt'; btn.textContent = opt;
+    btn.onclick = () => selectOpt(i);
+    optsEl.appendChild(btn);
+  });
+  const fb = document.getElementById('q-fb');
+  fb.className = 'q-fb'; fb.textContent = '';
+  document.getElementById('btn-next').style.display = 'none';
+  answered = false;
+}
+
+function selectOpt(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[qIdx];
+  const opts = document.querySelectorAll('.q-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('q-fb');
+  if (i === q.a) {
+    opts[i].classList.add('correct');
+    fb.textContent = '✅ Correct! Well done!';
+    fb.className = 'q-fb show fb-ok';
+    score++;
+    document.getElementById('qscore').textContent = score;
+  } else {
+    opts[i].classList.add('wrong');
+    opts[q.a].classList.add('correct');
+    fb.textContent = `❌ Not quite. The correct answer is: "${q.opts[q.a]}"`;
+    fb.className = 'q-fb show fb-no';
+  }
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+function nextQ() {
+  qIdx++;
+  if (qIdx >= questions.length) {
+    document.getElementById('q-card').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    document.getElementById('final-score').textContent = score + ' / ' + questions.length;
+    const pct = score / questions.length;
+    let msg = pct === 1 ? '🌟 Perfect score! You know this topic inside out!' :
+              pct >= 0.8 ? '🎉 Excellent! Almost there — review any you got wrong.' :
+              pct >= 0.6 ? '👍 Good effort! Go back over the notes and try again.' :
+              '📖 Keep studying — you can do it! Review the notes carefully.';
+    document.getElementById('result-msg').textContent = msg;
+  } else {
+    loadQ();
+  }
+}
+
+function restartQuiz() {
+  qIdx = 0; score = 0;
+  document.getElementById('qscore').textContent = 0;
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('q-card').style.display = 'block';
+  loadQ();
+}
+
+// ─── TYPE THE TERM ─────────────────────────────────────────────────────
+function checkType(input, correct) {
+  const val = input.value.trim().toLowerCase();
+  const fb = input.parentElement.querySelector('.t-fb');
+  if (val === correct || val === correct.replace(' ','')) {
+    input.classList.add('ok'); input.classList.remove('no');
+    fb.textContent = '✅ Correct!'; fb.className = 't-fb show'; fb.style.color = '#059669';
+  } else {
+    input.classList.add('no'); input.classList.remove('ok');
+    fb.textContent = `❌ Not quite — the answer is "${correct.toUpperCase()}". Try again!`;
+    fb.className = 't-fb show'; fb.style.color = 'var(--coral)';
+  }
+}
+
+// ─── TRUE OR FALSE ─────────────────────────────────────────────────────
+const tfData = [
+  { s: "The Internet and the World Wide Web are the same thing.", a: false, exp: "False! The Internet is the global physical network infrastructure. The WWW is just one service that runs on it (along with email, FTP, VoIP, etc.)." },
+  { s: "A router forwards packets between different networks, not just within one LAN.", a: true, exp: "True! A switch works within ONE network. A router works BETWEEN networks — forwarding packets using its routing table." },
+  { s: "IPv6 uses 32 binary bits to create addresses.", a: false, exp: "False! IPv4 uses 32 bits. IPv6 uses 128 bits, providing approximately 3.4×10³⁸ unique addresses." },
+  { s: "A WAP can direct data to a specific wireless device, just like a switch.", a: false, exp: "False! A WAP broadcasts to ALL wireless devices within range. It cannot direct to a specific device — that's the key difference from a switch." },
+  { s: "HTTPS provides an encrypted connection, making it more secure than HTTP.", a: true, exp: "True! HTTPS uses encryption (via TLS/SSL) to protect data in transit. The 'S' stands for Secure. Always look for the padlock in your browser!" },
+  { s: "When data is sent over the Internet, it travels as one complete file.", a: false, exp: "False! Data is split into packets. Each packet has a header with sender/destination addresses and packet numbers. They may take different routes and arrive out of order." },
+  { s: "A modem is often combined with a router in a single home device.", a: true, exp: "True! To make setup easier, most home Internet devices are a modem-router combination, often just called an 'Internet router'." },
+  { s: "If a DNS server doesn't know a domain name, it gives up and returns an error.", a: false, exp: "False! If one DNS server doesn't know the domain name, it asks another server — and so on — until the correct IP address is found and returned to the user." }
+];
+
+function buildTF() {
+  const area = document.getElementById('tf-area');
+  tfData.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'tf-card';
+    div.innerHTML = `<div class="tf-q">${idx+1}. ${item.s}</div>
+      <div class="tf-btns">
+        <button class="tf-btn" onclick="checkTF(this, true, ${item.a}, ${idx})">✅ True</button>
+        <button class="tf-btn" onclick="checkTF(this, false, ${item.a}, ${idx})">❌ False</button>
+      </div>
+      <div class="tf-exp" id="tf-exp-${idx}" style="background:${item.a ? '#e0faf1;border-left:4px solid #059669' : '#fce4ec;border-left:4px solid var(--coral)'};">${item.exp}</div>`;
+    area.appendChild(div);
+  });
+}
+
+function checkTF(btn, chosen, correct, idx) {
+  const btns = btn.parentElement.querySelectorAll('.tf-btn');
+  btns.forEach(b => b.disabled = true);
+  if (chosen === correct) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if ((b.textContent.includes('True') && correct) || (b.textContent.includes('False') && !correct)) b.classList.add('correct'); });
+  }
+  document.getElementById('tf-exp-' + idx).classList.add('show');
+}
+
+// ─── MATCHING ──────────────────────────────────────────────────────────
+const matchItems = [
+  { hw: "Switch", desc: "Links computers in a LAN; sends data to ONLY the intended device using an address table" },
+  { hw: "Router", desc: "Forwards packets BETWEEN different networks using a routing table; connects LAN to Internet" },
+  { hw: "WAP", desc: "Allows wireless devices to connect to a wired network via Wi-Fi; broadcasts to all devices" },
+  { hw: "Modem", desc: "Converts digital LAN signals into signals that can travel along ISP cables (electrical or light)" }
+];
+let selectedLeft = null, matchCount = 0;
+
+function buildMatch() {
+  const leftEl = document.getElementById('match-left');
+  const rightEl = document.getElementById('match-right');
+  const shuffled = [...matchItems].sort(() => Math.random() - 0.5);
+  const shuffledDesc = [...matchItems].sort(() => Math.random() - 0.5);
+  leftEl.innerHTML = ''; rightEl.innerHTML = '';
+  shuffled.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item';
+    div.textContent = item.hw;
+    div.dataset.hw = item.hw;
+    div.onclick = () => {
+      document.querySelectorAll('#match-left .match-item').forEach(d => d.classList.remove('sel'));
+      if (!div.classList.contains('ok')) { div.classList.add('sel'); selectedLeft = item.hw; }
+    };
+    leftEl.appendChild(div);
+  });
+  shuffledDesc.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'match-item';
+    div.textContent = item.desc;
+    div.dataset.hw = item.hw;
+    div.onclick = () => {
+      if (!selectedLeft) return;
+      if (selectedLeft === item.hw) {
+        div.classList.add('ok');
+        document.querySelectorAll('#match-left .match-item').forEach(d => { if (d.dataset.hw === selectedLeft) { d.classList.add('ok'); d.classList.remove('sel'); } });
+        matchCount++;
+        document.getElementById('match-score').textContent = `Matched: ${matchCount} / 4`;
+        if (matchCount === 4) document.getElementById('match-score').textContent = '🎉 All matched! Excellent work!';
+      } else {
+        div.classList.add('bad');
+        document.querySelectorAll('#match-left .match-item').forEach(d => d.classList.remove('sel'));
+        setTimeout(() => div.classList.remove('bad'), 500);
+      }
+      selectedLeft = null;
+    };
+    rightEl.appendChild(div);
+  });
+}
+
+function resetMatch() {
+  matchCount = 0; selectedLeft = null;
+  document.getElementById('match-score').textContent = 'Matched: 0 / 4';
+  buildMatch();
+}
+
+// ─── INIT ───────────────────────────────────────────────────────────────
+loadQ();
+buildTF();
+buildMatch();
+
+// ─── URL PART HIGHLIGHTER (Notes tab 23.4) ─────────────────────────────
+let activeUPart = null;
+function activateURLPart(partId, clickedEl) {
+  document.querySelectorAll('.url-part[data-upart]').forEach(el => {
+    el.classList.remove('u-active');
+  });
+  document.querySelectorAll('.leg-item').forEach(el => el.classList.remove('l-active'));
+  if (activeUPart === partId && clickedEl !== null) { activeUPart = null; return; }
+  activeUPart = partId;
+  document.querySelectorAll(`.url-part[data-upart="${partId}"]`).forEach(el => el.classList.add('u-active'));
+  const leg = document.getElementById('ul-' + partId);
+  if (leg) leg.classList.add('l-active');
+}
+
+// ─── ACTIVITY 5: URL CHIP LABELLING ────────────────────────────────────
+const a5Correct = { 'a5-dd1':'Protocol', 'a5-dd2':'Subdomain', 'a5-dd3':'Domain name', 'a5-dd4':'TLD', 'a5-dd5':'File path' };
+let a5Selected = null;
+
+function a5Select(label) {
+  document.querySelectorAll('#a5-bank .chip').forEach(c => c.classList.remove('chip-sel'));
+  if (a5Selected === label) { a5Selected = null; return; }
+  a5Selected = label;
+  const chipId = 'a5-ch-' + label.split(' ')[0];
+  const el = document.getElementById(chipId);
+  if (el) el.classList.add('chip-sel');
+}
+
+function a5Place(dropId) {
+  if (!a5Selected) return;
+  const drop = document.getElementById(dropId);
+  drop.textContent = a5Selected;
+  drop.dataset.placed = a5Selected;
+  drop.classList.add('d-filled');
+  drop.classList.remove('d-wrong');
+  document.querySelectorAll('#a5-bank .chip').forEach(c => c.classList.remove('chip-sel'));
+  a5Selected = null;
+}
+
+function a5Check() {
+  let correct = 0;
+  Object.entries(a5Correct).forEach(([id, ans]) => {
+    const drop = document.getElementById(id);
+    const placed = drop.dataset.placed || '';
+    if (placed === ans) { drop.classList.add('d-filled'); drop.classList.remove('d-wrong'); correct++; }
+    else if (placed) { drop.classList.add('d-wrong'); drop.classList.remove('d-filled'); }
+  });
+  const fb = document.getElementById('a5-fb');
+  const total = Object.keys(a5Correct).length;
+  if (correct === total) {
+    fb.textContent = `🎉 Perfect! All ${total} parts correctly labelled!`;
+    fb.style.background = 'var(--light-teal)'; fb.style.borderLeft = '4px solid #059669';
+  } else {
+    fb.textContent = `${correct}/${total} correct — check the red ones and review the URL diagram in the Notes tab!`;
+    fb.style.background = 'var(--light-coral)'; fb.style.borderLeft = '4px solid var(--coral)';
+  }
+  fb.classList.add('show');
+}
+
+function a5Reset() {
+  Object.keys(a5Correct).forEach(id => {
+    const drop = document.getElementById(id);
+    drop.textContent = 'drop here';
+    drop.dataset.placed = '';
+    drop.classList.remove('d-filled', 'd-wrong');
+  });
+  document.querySelectorAll('#a5-bank .chip').forEach(c => c.classList.remove('chip-sel', 'chip-used'));
+  document.getElementById('a5-fb').classList.remove('show');
+  a5Selected = null;
+}
+
+// ─── ACTIVITY 6: STAR TOPOLOGY CHECK ───────────────────────────────────
+function a6Check(btn, chosen, correct) {
+  const btns = btn.parentElement.querySelectorAll('.tf-btn');
+  btns.forEach(b => b.disabled = true);
+  const reveal = btn.closest('.scen-box').querySelector('.scen-reveal');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => { if (b.textContent.toLowerCase().includes(correct)) b.classList.add('correct'); });
+  }
+  reveal.classList.add('show');
+}
+</script>
+
+<!-- Diagram Zoom Lightbox -->
+<div id="svg-lightbox" onclick="closeLightbox(event)">
+  <div id="svg-lightbox-inner" onclick="event.stopPropagation()">
+    <button id="svg-lightbox-close" onclick="closeLightbox(null)" title="Close">✕</button>
+    <div id="svg-lightbox-content"></div>
+    <button id="svg-lightbox-dl" onclick="downloadSVG()">⬇ Download diagram as PNG</button>
+  </div>
+</div>
+
+
+<script>
+// ── Diagram zoom lightbox ─────────────────────────────
+let _currentSVGContent = '';
+function openLightbox(el) {
+  const svgEl = el.querySelector('svg');
+  if (!svgEl) return;
+  _currentSVGContent = svgEl.outerHTML;
+  document.getElementById('svg-lightbox-content').innerHTML = _currentSVGContent;
+  document.getElementById('svg-lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('svg-lightbox') && e.type !== 'click') return;
+  document.getElementById('svg-lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeLightbox(null); });
+function downloadSVG() {
+  const svgEl = document.querySelector('#svg-lightbox-content svg');
+  if (!svgEl) return;
+
+  // Clone SVG and inline all computed styles + safe fonts
+  const clone = svgEl.cloneNode(true);
+
+  // Set explicit dimensions
+  const vb = svgEl.viewBox.baseVal;
+  const W = vb.width || svgEl.getBoundingClientRect().width || 680;
+  const H = vb.height || svgEl.getBoundingClientRect().height || 400;
+  clone.setAttribute('width', W);
+  clone.setAttribute('height', H);
+  clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+  // Replace any custom fonts with safe web-safe fallback
+  clone.querySelectorAll('[font-family],[style]').forEach(el => {
+    if (el.getAttribute('font-family')) {
+      el.setAttribute('font-family', 'Arial, sans-serif');
+    }
+    if (el.style && el.style.fontFamily) {
+      el.style.fontFamily = 'Arial, sans-serif';
+    }
+  });
+
+  // Also fix any text elements
+  clone.querySelectorAll('text, tspan').forEach(el => {
+    el.setAttribute('font-family', 'Arial, sans-serif');
+  });
+
+  // Add a white background rect at the back
+  const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  bg.setAttribute('width', W);
+  bg.setAttribute('height', H);
+  bg.setAttribute('fill', 'white');
+  clone.insertBefore(bg, clone.firstChild);
+
+  const svgData = new XMLSerializer().serializeToString(clone);
+  // Use data URL instead of blob URL to avoid CORS issues
+  const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgData);
+
+  const scale = 3;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * scale;
+  canvas.height = H * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  const img = new Image();
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0, W, H);
+    const a = document.createElement('a');
+    a.download = 'diagram.png';
+    a.href = canvas.toDataURL('image/png');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+  img.onerror = function() {
+    const a = document.createElement('a');
+    a.download = 'diagram.svg';
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+  img.src = dataUrl;
+}
+// Wrap all inline SVGs with clickable containers
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.notes-body svg, .mindmap-wrap svg, .eq-ctx svg, .act-bdy svg, .notes-section svg').forEach(function(svg) {
+    if (svg.closest('.svg-zoom-wrap')) return; // already wrapped
+    const wrap = document.createElement('div');
+    wrap.className = 'svg-zoom-wrap';
+    // copy width/max-width style from svg to wrap
+    if (svg.style.maxWidth) wrap.style.maxWidth = svg.style.maxWidth;
+    wrap.style.margin = svg.style.margin || '0 auto';
+    svg.parentNode.insertBefore(wrap, svg);
+    wrap.appendChild(svg);
+    svg.removeAttribute('style'); // clean up inline style on svg itself
+    wrap.onclick = function() { openLightbox(wrap); };
+    wrap.setAttribute('title', 'Click to zoom diagram');
+  });
+});
+</script>
+
+</body>
+</html>
